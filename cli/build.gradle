@@ -1,0 +1,46 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.beryx.jlink' version '2.24.1'
+}
+
+group = 'net.ryan'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.google.code.gson:gson:2.10.1'
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+application {
+    mainClass = "net.ryan.Main"
+    mainModule = "beanpedia.cli.main"
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': "ClI",
+                'Main-Class': 'net.ryan.Main'
+    }
+}
+
+jlink {
+    launcher {
+        name = 'ClI'
+    }
+    jpackage {
+        if (org.gradle.internal.os.OperatingSystem.current().windows) {
+            installerOptions += ['--win-per-user-install', '--win-dir-chooser', '--win-menu', '--win-shortcut']
+            imageOptions += ['--win-console']
+        }
+    }
+}
