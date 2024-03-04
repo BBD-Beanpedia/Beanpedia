@@ -5,37 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="15a3a4b8-ea8e-4980-bc95-b336cb4ff529" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/build.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/net/ryan/SpringOauthApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/net/ryan/app/AuthController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/net/ryan/app/MyRestController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/net/ryan/error/BadRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/net/ryan/model/AuthResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/net/ryan/service/AuthServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/net/ryan/service/IAuthService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/package-info.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cli/build.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cli/src/main/java/module-info.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cli/src/main/java/net/ryan/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cli/src/main/java/net/ryan/auth/AuthHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cli/src/main/java/net/ryan/model/GithubCodeAuthResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cli/src/main/java/net/ryan/model/GithubPollAuthResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cli/src/main/java/net/ryan/util/HttpHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cli/src/main/java/net/ryan/util/Result.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.github/workflows/build-j.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +33,30 @@
         </task>
         <projects_view>
           <tree_state>
-            <expand />
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="beanpedia" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="beanpedia" type="f1a62948:ProjectNode" />
+                <item name="cli" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="beanpedia" type="f1a62948:ProjectNode" />
+                <item name="cli" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="beanpedia" type="f1a62948:ProjectNode" />
+                <item name="cli" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build" type="c8890929:TasksNode$1" />
+              </path>
+            </expand>
             <select />
           </tree_state>
         </projects_view>
@@ -95,12 +90,14 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Gradle.Beanpedia:cli [jpackage].executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "master",
     "jdk.selected.JAVA_MODULE": "17",
+    "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/ryanb/IdeaProjects/beanpedia/backend/src/main/java/net/ryan",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -110,7 +107,7 @@
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "File.Encoding",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -128,7 +125,29 @@
       <recent name="net.ryan" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.beanpedia:cli [run]">
+  <component name="RunManager" selected="Gradle.Beanpedia:cli [jpackage]">
+    <configuration name="Beanpedia:cli [jpackage]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/cli" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="jpackage" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
     <configuration name="beanpedia:backend [bootRun]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -174,15 +193,24 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Gradle.Beanpedia:cli [jpackage]" />
       <item itemvalue="Gradle.beanpedia:backend [bootRun]" />
       <item itemvalue="Gradle.beanpedia:cli [run]" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.Beanpedia:cli [jpackage]" />
         <item itemvalue="Gradle.beanpedia:backend [bootRun]" />
         <item itemvalue="Gradle.beanpedia:cli [run]" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-17.0.10-azul-17.0.10-f644763e9732-59acb15f" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
