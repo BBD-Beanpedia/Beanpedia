@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up JDK
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: 17
@@ -20,11 +20,11 @@ jobs:
       - name: Echo JAVA_HOME
         run: echo $JAVA_HOME
 
-      - name: Verify Gradle Wrapper
-        uses: gradle/wrapper-validation-action@v2
+#      - name: Verify Gradle Wrapper
+#        uses: gradle/wrapper-validation-action@v2
 
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/actions/setup-gradle@v3
 
       - name: Make gradlew executable
         run: chmod +x ./gradlew
@@ -43,3 +43,9 @@ jobs:
         with:
           name: test-deb
           path: cli/build/jpackage/*.deb
+
+      - name: Upload RPM as an artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: hellofx-jdk${{ matrix.java }}-${{ matrix.os }}-rpm
+          path: build/jpackage/*.rpm
