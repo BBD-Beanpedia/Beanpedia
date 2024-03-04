@@ -39,7 +39,7 @@ jobs:
         run: ./gradlew --info --stacktrace jpackage
 
       - name: Upload DEB as an artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: test-deb
           path: cli/build/jpackage/*.deb
@@ -47,5 +47,11 @@ jobs:
       - name: Upload RPM as an artifact
         uses: actions/upload-artifact@v2
         with:
-          name: hellofx-jdk${{ matrix.java }}-${{ matrix.os }}-rpm
-          path: build/jpackage/*.rpm
+          name: test-rpm
+          path: cli/build/jpackage/*.rpm
+
+      - name: Upload Non-installable
+        uses: actions/upload-artifact@v2
+        with:
+          name: non-installable
+          path: cli/build/distributions/*
