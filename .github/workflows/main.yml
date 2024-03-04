@@ -1,6 +1,6 @@
 on:
   push:
-    branches: [feature/actions]
+    branches: [ feature/actions ]
 
   workflow_dispatch:
 
@@ -8,7 +8,24 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: manual approve
-        run: |
-          echo "Manually approved"
-    
+      - name: Git checkout
+        uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 17
+      - name: Echo JAVA_HOME
+        run: echo $JAVA_HOME
+      - name: Verify Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
+      - name: Execute build
+        run: ./gradlew --info --stacktrace build
+      - name: Execute jlink
+        run: ./gradlew --info --stacktrace jlink
+      - name: Execute jpackage
+        run: ./gradlew --info --stacktrace jpackage
+      - name: Upload DEB as an artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-deb
+          path: cli/build/jpackage/*.deb
