@@ -45,13 +45,13 @@ jobs:
           path: cli/build/jpackage/*.deb
 
       - name: Upload RPM as an artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: test-rpm
           path: cli/build/jpackage/*.rpm
 
       - name: Upload Non-installable
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: non-installable
           path: cli/build/distributions/*
