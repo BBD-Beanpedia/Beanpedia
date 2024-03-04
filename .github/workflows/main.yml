@@ -18,12 +18,14 @@ jobs:
         run: echo $JAVA_HOME
       - name: Verify Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
       - name: Execute build
-        run: sudo ./gradlew --info --stacktrace build
+        run: ./gradlew --info --stacktrace build
       - name: Execute jlink
-        run: sudo ./gradlew --info --stacktrace jlink
+        run: ./gradlew --info --stacktrace jlink
       - name: Execute jpackage
-        run: sudo ./gradlew --info --stacktrace jpackage
+        run: ./gradlew --info --stacktrace jpackage
       - name: Upload DEB as an artifact
         uses: actions/upload-artifact@v2
         with:
