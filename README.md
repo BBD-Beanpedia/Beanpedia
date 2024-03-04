@@ -15,7 +15,7 @@ Before you begin ensure that you have the following installed
 1. **Clone the Repo:**
 
     ```bash
-    git clone https://
+    git clone https://github.com/BBD-Beanpedia/Beanpedia.git
     ```
 
 2. **Navigate into the cloned directory**
