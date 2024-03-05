@@ -123,7 +123,10 @@ export class BeanStack extends cdk.Stack {
     };
 
     const beanDeployRole = new iam.Role(this, "BeanDeployRole", {
-      assumedBy: new iam.OpenIdConnectPrincipal(ghProvider, conditions),
+      assumedBy: new iam.WebIdentityPrincipal(
+        ghProvider.openIdConnectProviderArn,
+        conditions
+      ),
       description: "Role assumed by GitHub Actions",
       roleName: "BeanDeployRole",
       maxSessionDuration: cdk.Duration.hours(1),
