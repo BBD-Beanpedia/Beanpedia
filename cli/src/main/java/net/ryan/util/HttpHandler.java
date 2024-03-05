@@ -1,13 +1,11 @@
 package net.ryan.util;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import net.ryan.model.GithubPollAuthResponse;
+import net.ryan.model.JsonDeserializable;
+import net.ryan.model.JsonSerializable;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
@@ -17,7 +15,6 @@ import java.util.stream.Stream;
 
 public class HttpHandler {
     private static final HttpClient CLIENT = HttpClient.newHttpClient();
-    private static final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
 
     private enum Method {
         GET, POST
@@ -70,13 +67,6 @@ public class HttpHandler {
             return this;
         }
 
-        public Request bodyJson(Object object) {
-            builder.header("Content-Type", "application/json");
-            builder.method(method.name(), HttpRequest.BodyPublishers.ofString(GSON.toJson(object)));
-            method = null;
-
-            return this;
-        }
 
         private <T> T send(String accept, HttpResponse.BodyHandler<T> responseBodyHandler) {
             builder.header("Accept", accept);
@@ -103,10 +93,14 @@ public class HttpHandler {
             return send("*/*", HttpResponse.BodyHandlers.ofLines());
         }
 
-        public <T> T sendJson(Type type) {
+        public <T extends JsonDeserializable<T>, O extends JsonSerializable<O>> O sendJson() {
+            return null;
+        }
+
+        /*public <T> T sendJson(Type type) {
             InputStream in = send("application/json", HttpResponse.BodyHandlers.ofInputStream());
             return in == null ? null : GSON.fromJson(new InputStreamReader(in), type);
-        }
+        }*/
     }
 
     public static Result<Request> newGetRequest(String url) {

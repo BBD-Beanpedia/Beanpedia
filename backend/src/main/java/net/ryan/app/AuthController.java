@@ -19,16 +19,9 @@ public class AuthController {
 
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    @PostMapping(value = "/email-login")
-    public AuthResponse login(
-//            @RequestBody @Validated AuthByEmailRequest request,
-            BindingResult bdResult) {
-
-//        if (bdResult.hasErrors()) {
-//            throw new BadRequest(bdResult.getObjectName());
-//        }
-//        return /*this.authService.login(request.getEmail(), request.getPassword());*/
-        throw new BadRequest(bdResult.getObjectName());
+    @PostMapping(value = "/login")
+    public AuthResponse login(BindingResult bdResult) {
+        return null;
     }
 
 

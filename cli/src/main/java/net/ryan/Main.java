@@ -17,7 +17,7 @@ public class Main {
 
         GithubCodeAuthResponse githubCodeAuthResponse = HttpHandler.newPostRequest("https://github.com/login/device/code").get().bodyJson("""
                 { "client_id": "a2a0895678d18622ca6d" }
-                """).sendJson(GithubCodeAuthResponse.class);
+                """).sendJson();
 
         System.out.println(githubCodeAuthResponse.verificationUri());
 
@@ -31,7 +31,7 @@ public class Main {
         executorService.scheduleAtFixedRate(() -> {
             GithubPollAuthResponse githubCodeAuthResponse1 = HttpHandler.newPostRequest("https://github.com/login/device/code").get().bodyJson("""
                     { "client_id": "a2a0895678d18622ca6d" }
-                    """).sendJson(GithubPollAuthResponse.class);
+                    """).sendJson();
         }, 0, githubCodeAuthResponse.interval(), TimeUnit.SECONDS);
 
     }
