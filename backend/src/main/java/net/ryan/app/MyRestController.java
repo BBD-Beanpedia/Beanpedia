@@ -4,7 +4,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/users")
 public class MyRestController {
 
     @GetMapping("/greeting")

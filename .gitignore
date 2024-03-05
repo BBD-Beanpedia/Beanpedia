@@ -30,6 +30,7 @@ out/
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
+!**/CDK/bin/
 
 ### NetBeans ###
 /nbproject/private/
@@ -43,3 +44,14 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+
+####CDK
+*.js
+!jest.config.js
+*.d.ts
+node_modules
+
+# CDK asset staging directory
+.cdk.staging
+cdk.out
