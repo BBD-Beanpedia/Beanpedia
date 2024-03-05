@@ -23,8 +23,13 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install global dependencies
+      - name: Installing CDK
         run: npm install -g aws-cdk
 
+      - name: Installing NPM packages
+        working-directory: CDK
+        run: npm install
+
       - name: Deploy Infrastructure
+        working-directory: CDK
         run: cdk deploy --require-approval never
