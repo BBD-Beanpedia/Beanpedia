@@ -35,6 +35,8 @@ export class BeanStack extends cdk.Stack {
       vpc,
       allowAllOutbound: false,
     });
+    beanDbSG.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(5432));
+    beanDbSG.addEgressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(5432));
 
     beanApiSG.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(22));
 
@@ -97,7 +99,7 @@ export class BeanStack extends cdk.Stack {
       allocatedStorage: 20,
       publiclyAccessible: true,
       deletionProtection: false,
-      credentials: rds.Credentials.fromGeneratedSecret("admin", {
+      credentials: rds.Credentials.fromGeneratedSecret("bean", {
         secretName: secretNames[0],
       }),
       securityGroups: [beanDbSG],
