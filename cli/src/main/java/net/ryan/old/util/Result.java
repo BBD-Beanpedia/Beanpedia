@@ -1,4 +1,4 @@
-package net.ryan.util;
+package net.ryan.old.util;
 
 import java.util.NoSuchElementException;
 import java.util.Objects;

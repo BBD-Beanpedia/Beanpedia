@@ -1,4 +1,4 @@
-package net.ryan.util;
+package net.ryan.old.util;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
