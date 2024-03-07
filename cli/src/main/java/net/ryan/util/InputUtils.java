@@ -84,7 +84,8 @@ public class InputUtils {
             return Result.from(() -> Integer.parseInt(String.valueOf(str)))
                     .mapDirect(i -> notInRangeMapper(i, start, end).ifSuccess(runInt))
                     .map(String::valueOf)
-                    .mapError(_e -> foundInStrings(String.valueOf(str), strings).ifSuccess(x));
+                    .mapError(_e -> foundInStrings(String.valueOf(str), strings).ifSuccess(x))
+                    .mapError(_e -> Result.fail("Notfiund ", _e));
         });
     }
 }
