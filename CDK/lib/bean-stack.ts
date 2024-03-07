@@ -35,6 +35,8 @@ export class BeanStack extends cdk.Stack {
       vpc,
       allowAllOutbound: false,
     });
+    beanDbSG.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(5432));
+    beanDbSG.addEgressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(5432));
 
     beanApiSG.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(22));
 
@@ -82,27 +84,27 @@ export class BeanStack extends cdk.Stack {
       secretName: secretNames[1],
     });
 
-    // const dbInstance = new rds.DatabaseInstance(this, "BeanDbInstance", {
-    //   engine: rds.DatabaseInstanceEngine.postgres({
-    //     version: rds.PostgresEngineVersion.VER_16,
-    //   }),
-    //   instanceType: ec2.InstanceType.of(
-    //     ec2.InstanceClass.T3,
-    //     ec2.InstanceSize.MICRO
-    //   ),
-    //   vpc,
-    //   vpcSubnets: {
-    //     subnetType: ec2.SubnetType.PUBLIC,
-    //   },
-    //   allocatedStorage: 20,
-    //   publiclyAccessible: true,
-    //   deletionProtection: false,
-    //   credentials: rds.Credentials.fromGeneratedSecret("admin", {
-    //     secretName: secretNames[0],
-    //   }),
-    //   securityGroups: [beanDbSG],
-    // });
-    // dbInstance.connections.allowFrom(beanAPI, ec2.Port.tcp(5432));
+    const dbInstance = new rds.DatabaseInstance(this, "BeanDbInstance", {
+      engine: rds.DatabaseInstanceEngine.postgres({
+        version: rds.PostgresEngineVersion.VER_16,
+      }),
+      instanceType: ec2.InstanceType.of(
+        ec2.InstanceClass.T3,
+        ec2.InstanceSize.MICRO
+      ),
+      vpc,
+      vpcSubnets: {
+        subnetType: ec2.SubnetType.PUBLIC,
+      },
+      allocatedStorage: 20,
+      publiclyAccessible: true,
+      deletionProtection: false,
+      credentials: rds.Credentials.fromGeneratedSecret("bean", {
+        secretName: secretNames[0],
+      }),
+      securityGroups: [beanDbSG],
+    });
+    dbInstance.connections.allowFrom(beanAPI, ec2.Port.tcp(5432));
 
     // Create role for github actions to assume
     const githubDomain = "token.actions.githubusercontent.com";
