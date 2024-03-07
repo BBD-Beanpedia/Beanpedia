@@ -1,28 +1,24 @@
 package net.ryan;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import net.ryan.util.InputUtils;
+import net.ryan.util.Result;
+
+import java.util.Arrays;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
+//        System.out.println("Welcome to the Bean Encyclopedia CLI!");
 
         final CliOptionHelper options = CliOptionHelper.register();
         options.show();
-        System.out.println("""
-                Welcome to the Bean Encyclopedia CLI!
-                                
-                Choose an option:
-                1. View All Beans
-                2. Search Beans
-                3. Filter Beans
-                4. Exit
-                """);
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String userInput = br.readLine();
+//        Result<Double> doubleResult = InputUtils.getInstance().readDoubleFromConsole();
+//        doubleResult
+//                .ifSuccess(System.out::println)
+//                .ifError(Throwable::printStackTrace);
 
-
-
+/*        InputUtils.getInstance().readIntRangeFromConsole(0, 15)
+                .ifSuccess(System.out::println)
+                .ifError(Throwable::printStackTrace);*/
 
 
 

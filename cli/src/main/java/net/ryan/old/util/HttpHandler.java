@@ -3,6 +3,7 @@ package net.ryan.old.util;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import net.ryan.util.Result;
 
 import java.io.IOException;
 import java.io.InputStream;
