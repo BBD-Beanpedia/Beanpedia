@@ -44,8 +44,5 @@ public class CliOptionHelper {
                 });
     }
 
-    public int getCliSize() {
-        return cliOptions.size();
-    }
 
 }

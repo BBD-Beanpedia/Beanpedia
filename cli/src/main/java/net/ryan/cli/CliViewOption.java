@@ -30,7 +30,7 @@ public class CliViewOption implements CliOption {
         final Map<Integer, String> optionMap = MapUtils.listToMap(list);
         HttpHandler.newGetRequest("http://localhost:8080/users/greeting")
                 .mapToNew(HttpHandler.Request::sendString)
-                .ifError(stringExceptionPair -> stringExceptionPair.second().printStackTrace())
+                .ifError(stringExceptionPair -> System.out.println("Unable to make http request"))
                 .ifSuccess(System.out::println);
 
 
