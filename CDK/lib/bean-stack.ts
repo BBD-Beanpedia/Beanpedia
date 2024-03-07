@@ -39,15 +39,28 @@ export class BeanStack extends cdk.Stack {
     beanDbSG.addEgressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(5432));
 
     beanApiSG.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(22));
+    beanApiSG.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(8080));
 
     const cfnKeyPair = new ec2.CfnKeyPair(this, "BeanKey", {
       keyName: "BeanKey",
     });
 
     const userData = ec2.UserData.forLinux();
+
+    const nuke = `#!/bin/bash
+    pkill -f 'java -jar'
+    cd ~/API
+    rm -f *.jar
+    rm -f *.log`;
+
     userData.addCommands(
       "yum update -y",
       "yum install -y java-21-amazon-corretto"
+    );
+
+    userData.addCommands(
+      `echo "${nuke}" > /home/ec2-user/nuke.sh`,
+      "chmod +x /home/ec2-user/nuke.sh"
     );
 
     const beanAPI = new ec2.Instance(this, "BeanAPI", {
@@ -160,32 +173,5 @@ export class BeanStack extends cdk.Stack {
     beanDeployRole.addToPolicy(secretManagerPolicy);
     beanDeployRole.addToPolicy(assumeCDKRolePolicy);
     beanDeployRole.addToPolicy(parameterAccessPolicy);
-
-    // new iam.Role(this, "gitHubDeployRole", {
-    //   assumedBy: new iam.WebIdentityPrincipal(
-    //     ghProvider.openIdConnectProviderArn,
-    //     conditions
-    //   ),
-    //   inlinePolicies: {
-    //     allowAssumeCDKRoles: new PolicyDocument({
-    //       statements: [
-    //         new PolicyStatement({
-    //           actions: ["sts:AssumeRole"],
-    //           effect: Effect.ALLOW,
-    //           resources: ["arn:aws:iam::*:role/cdk-*"],
-    //         }),
-    //         new PolicyStatement({
-    //           actions: ["secretsmanager:GetSecretValue"],
-    //           effect: Effect.ALLOW,
-    //           resources: ["*"],
-    //         }),
-    //       ],
-    //     }),
-    //   },
-    //   roleName: "BeanDeployRole",
-    //   description:
-    //     "This role is used via GitHub Actions to deploy with AWS CDK on the target AWS account",
-    //   maxSessionDuration: cdk.Duration.hours(1),
-    // });
   }
 }
