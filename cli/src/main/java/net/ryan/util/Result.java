@@ -33,7 +33,6 @@ public class Result<S> implements Supplier<S> {
     }
 
 
-
     public Result<S> ifSuccess(Consumer<S> consumer) {
         if (isSuccess()) consumer.accept(supplier);
         return this;
@@ -52,10 +51,15 @@ public class Result<S> implements Supplier<S> {
     }
 
     public Result<S> mapDirect(Function<S, Result<S>> f) {
-        // Here we can safely cast as we know that we have an error type.
         if (isError()) return this;
         return f.apply(supplier);
     }
+
+    public <T> Result<T> mapToNew(Function<S, Result<T>> f) {
+        if (isError()) return Result.fail(this.getError());
+        return f.apply(supplier);
+    }
+
     public Result<S> mapError(Function<Exception, Result<S>> f) {
         if (isError()) return f.apply(exception);
         return this;
@@ -81,10 +85,6 @@ public class Result<S> implements Supplier<S> {
         if (!isError())
             throw new NoSuchElementException("Attempted to retrieve error on non-erroneous result");
         return exception;
-    }
-
-    public String getErrorMessage() {
-        return errorMessageDetails;
     }
 
     private boolean isSuccess() {

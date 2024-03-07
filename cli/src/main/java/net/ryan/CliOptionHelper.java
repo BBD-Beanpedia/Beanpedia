@@ -16,6 +16,8 @@ public class CliOptionHelper {
                 new CliViewOption(),
                 new CliSearchOption(),
                 new CliFilterOption(),
+                new CliCreateOption(),
+                new CliUpdateOption(),
                 new CliExitOption()
         );
 
@@ -36,12 +38,10 @@ public class CliOptionHelper {
         InputUtils.getInstance().readIntRangeFromConsole(1, cliOptions.size())
                 .map(num -> num - 1)
                 .ifSuccess(i -> cliOptions.get(i).run())
-                .ifError(_e -> {
-                    System.out.println(_e.getFirst());
+                .ifError(error -> {
+                    System.out.println("Error: Unrecognized command " + error.first());
                     show();
-                    // Print error and try again
                 });
-
     }
 
     public int getCliSize() {

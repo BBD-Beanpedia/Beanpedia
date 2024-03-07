@@ -34,7 +34,7 @@ public class InputUtils {
 
     public Result<Integer> readIntFromConsole() {
         return readFromConsoleToType(Integer::parseInt)
-                .mapError(exception -> Result.fail("Unable to parse string as integer", exception));
+                .mapError(exception -> Result.fail("Unable to parse string to integer.", exception));
     }
 
     public Result<String> readStringFromConsole() {
@@ -81,11 +81,10 @@ public class InputUtils {
         return readStringFromConsole().mapDirect(str -> {
             //First we will try and parse the as int if this fails we will try the strings.
             // We will not talk about this type conversion hackery.
-            return Result.from(() -> Integer.parseInt(String.valueOf(str)))
-                    .mapDirect(i -> notInRangeMapper(i, start, end).ifSuccess(runInt))
+            return Result.from(() -> Integer.parseInt(str))
+                    .mapToNew(i -> notInRangeMapper(i, start, end).ifSuccess(runInt))
                     .map(String::valueOf)
-                    .mapError(_e -> foundInStrings(String.valueOf(str), strings).ifSuccess(x))
-                    .mapError(_e -> Result.fail("Notfiund ", _e));
+                    .mapError(_e -> foundInStrings(String.valueOf(str), strings).ifSuccess(x));
         });
     }
 }

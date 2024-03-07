@@ -1,14 +1,7 @@
-package net.ryan.old.util;
-
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import net.ryan.util.Result;
+package net.ryan.util;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
@@ -18,7 +11,6 @@ import java.util.stream.Stream;
 
 public class HttpHandler {
     private static final HttpClient CLIENT = HttpClient.newHttpClient();
-    private static final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
 
     private enum Method {
         GET, POST
@@ -71,43 +63,44 @@ public class HttpHandler {
             return this;
         }
 
-        public Request bodyJson(Object object) {
+      /*  public Request bodyJson(Object object) {
             builder.header("Content-Type", "application/json");
             builder.method(method.name(), HttpRequest.BodyPublishers.ofString(GSON.toJson(object)));
             method = null;
 
             return this;
-        }
+        }*/
 
-        private <T> T send(String accept, HttpResponse.BodyHandler<T> responseBodyHandler) {
+        private <T> Result<T> send(String accept, HttpResponse.BodyHandler<T> responseBodyHandler) {
             builder.header("Accept", accept);
             if (method != null) builder.method(method.name(), HttpRequest.BodyPublishers.noBody());
 
             try {
-                var res = CLIENT.send(builder.build(), responseBodyHandler);
-                return res.statusCode() == 200 ? res.body() : null;
+                HttpResponse<T> res = CLIENT.send(builder.build(), responseBodyHandler);
+                int statusCode = res.statusCode();
+                if (statusCode == 200) return Result.success(res.body());
+                else return Result.fail("Http Error code " + statusCode, new RuntimeException(""));
             } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
-                return null;
+                return Result.fail(e);
             }
         }
 
-        public InputStream sendInputStream() {
+        public Result<InputStream> sendInputStream() {
             return send("*/*", HttpResponse.BodyHandlers.ofInputStream());
         }
 
-        public String sendString() {
+        public Result<String> sendString() {
             return send("*/*", HttpResponse.BodyHandlers.ofString());
         }
 
-        public Stream<String> sendLines() {
+        public Result<Stream<String>> sendLines() {
             return send("*/*", HttpResponse.BodyHandlers.ofLines());
         }
 
-        public <T> T sendJson(Type type) {
+       /* public <T> T sendJson(Type type) {
             InputStream in = send("application/json", HttpResponse.BodyHandlers.ofInputStream());
             return in == null ? null : GSON.fromJson(new InputStreamReader(in), type);
-        }
+        }*/
     }
 
     public static Result<Request> newGetRequest(String url) {
