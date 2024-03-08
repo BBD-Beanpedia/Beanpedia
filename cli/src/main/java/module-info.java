@@ -1,5 +1,4 @@
 module beanpedia.cli.main {
     requires java.net.http;
-    requires com.google.gson;
-    exports net.ryan.model;
+    exports net.ryan.old.model;
 }
