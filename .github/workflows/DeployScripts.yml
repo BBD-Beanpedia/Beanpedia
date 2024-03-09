@@ -44,7 +44,7 @@ jobs:
           username: "ubuntu"
           key: ${{ env.EC2_SSH_PRIVATE_KEY}}
           port: 22
-          source: "sql/*.jar,changelog.yaml"
+          source: "sql/*.sql,changelog.yaml"
           target: "~/"
 
       - name: Deploy Liquibase Scripts
@@ -55,9 +55,10 @@ jobs:
           key: ${{ env.EC2_SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            echo "changeLogFile= ~/changelog.yaml" >> liquibase.properties
-            echo "url=jdbc:postgresql://${{ env.SMDB_HOST }}:${{ env.SMDB_PORT }}/beandb" >> liquibase.properties
-            echo "username=${{ env.SMDB_USERNAME }}" >> liquibase.properties
-            echo "password=${{ env.SMDB_PASSWORD }}" >> liquibase.properties
+            rm -f *.properties
+            echo "changeLogFile: changelog.yaml" >> liquibase.properties
+            echo "url:jdbc:postgresql://${{ env.SMDB_HOST }}:${{ env.SMDB_PORT }}/postgres" >> liquibase.properties
+            echo "username:${{ env.SMDB_USERNAME }}" >> liquibase.properties
+            echo "password:${{ env.SMDB_PASSWORD }}" >> liquibase.properties
             liquibase update
 

@@ -82,7 +82,7 @@ jobs:
           key: ${{ env.EC2_SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            export DATABASE_URL="jdbc:postgresql://${{ env.SMDB_HOST }}:${{ env.SMDB_PORT }}/test"
+            export DATABASE_URL="jdbc:postgresql://${{ env.SMDB_HOST }}:${{ env.SMDB_PORT }}/postgres"
             export DATABASE_USERNAME="${{ env.SMDB_USERNAME }}"
             export DATABASE_PASSWORD="${{ env.SMDB_PASSWORD }}"
             nohup java -jar ~/API/*.jar > ~/API/app.log 2>&1 & 
