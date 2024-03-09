@@ -5,11 +5,14 @@ import net.ryan.TimoRefactorLater.Service.BeanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class BeanController {
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     BeanService beanService;
 
@@ -17,12 +20,21 @@ public class BeanController {
     BeanController(BeanService beanService){
         this.beanService = beanService;
     }
-
     @GetMapping(value = "/getBeans")
-    List<BeanDTO> test(){
+    List<BeanDTO> getBeans(){
 
         return beanService.getBeans();
 
+    }
+    @GetMapping(value = "/test")
+    public List<Map<String, Object>> test() {
+        try {
+            String sql = "SELECT * FROM clown";
+            return jdbcTemplate.queryForList(sql);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }
