@@ -7,7 +7,6 @@ import {
 } from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { GitHubStackProps } from "./github-stack-props";
-import { Effect, PolicyDocument, PolicyStatement } from "aws-cdk-lib/aws-iam";
 import * as secretsmanager from "aws-cdk-lib/aws-secretsmanager";
 
 export class BeanStack extends cdk.Stack {
@@ -23,6 +22,10 @@ export class BeanStack extends cdk.Stack {
           name: "PublicSubnet",
           subnetType: ec2.SubnetType.PUBLIC,
         },
+        {
+          name: "PrivateSubnet",
+          subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
+        },
       ],
     });
 
@@ -35,8 +38,6 @@ export class BeanStack extends cdk.Stack {
       vpc,
       allowAllOutbound: false,
     });
-    beanDbSG.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(5432));
-    beanDbSG.addEgressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(5432));
 
     beanApiSG.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(22));
     beanApiSG.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(8080));
@@ -54,13 +55,17 @@ export class BeanStack extends cdk.Stack {
     rm -f *.log`;
 
     userData.addCommands(
-      "yum update -y",
-      "yum install -y java-21-amazon-corretto"
+      `wget -O- https://repo.liquibase.com/liquibase.asc | gpg --dearmor > liquibase-keyring.gpg && \
+      cat liquibase-keyring.gpg | sudo tee /usr/share/keyrings/liquibase-keyring.gpg > /dev/null && \
+      echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/liquibase-keyring.gpg] https://repo.liquibase.com stable main' | sudo tee /etc/apt/sources.list.d/liquibase.list`,
+      "apt-get update -y",
+      "apt install -y openjdk-21-jdk",
+      "apt-get install liquibase"
     );
 
     userData.addCommands(
-      `echo "${nuke}" > /home/ec2-user/nuke.sh`,
-      "chmod +x /home/ec2-user/nuke.sh"
+      `echo "${nuke}" > /home/ubuntu/nuke.sh`,
+      "chmod +x /home/ubuntu/nuke.sh"
     );
 
     const beanAPI = new ec2.Instance(this, "BeanAPI", {
@@ -73,8 +78,8 @@ export class BeanStack extends cdk.Stack {
         ec2.InstanceClass.T3,
         ec2.InstanceSize.MICRO
       ),
-      machineImage: new ec2.AmazonLinuxImage({
-        generation: ec2.AmazonLinuxGeneration.AMAZON_LINUX_2023,
+      machineImage: new ec2.GenericLinuxImage({
+        "eu-west-1": "ami-0d940f23d527c3ab1",
       }),
       blockDevices: [
         {
@@ -107,10 +112,10 @@ export class BeanStack extends cdk.Stack {
       ),
       vpc,
       vpcSubnets: {
-        subnetType: ec2.SubnetType.PUBLIC,
+        subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
       },
       allocatedStorage: 20,
-      publiclyAccessible: true,
+      publiclyAccessible: false,
       deletionProtection: false,
       credentials: rds.Credentials.fromGeneratedSecret("bean", {
         secretName: secretNames[0],
