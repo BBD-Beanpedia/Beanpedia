@@ -59,6 +59,15 @@ public class BeanDataHandler {
                           .map(JsonParser::parsePagedBeanList);
     }
 
+    public Result<List<BeanModel>> requestListBeans() {
+        return HttpHandler.newGetRequest("http://34.249.42.139:8080/test"/*BASE_URL + GET_ALL_ENDPOINT*/)
+                          .map(request -> request.bearer(authToken))
+//                          .map(request -> request.bodyJson(String.format("{\"page\":%d}", page)))
+                          .mapToNew(HttpHandler.Request::sendString)
+                          .map(JsonParser::parseBean);
+    }
+
+
     public Result<Pair<Integer, List<ShortBeanModel>>> requestListOfShortBeansPaged(int page) {
         return HttpHandler.newPostRequest(BASE_URL + GET_ALL_ENDPOINT)
                           .map(request -> request.bearer(authToken))
@@ -158,9 +167,8 @@ public class BeanDataHandler {
 
     public void requestAndSaveToken(String token) {
         HttpHandler.newPostRequest(BASE_URL + "/token")
-                          .map(request -> request.bodyJson(""))
-                          .mapToNew(HttpHandler.Request::sendJson);
-
+                   .map(request -> request.bodyJson(""))
+                   .mapToNew(HttpHandler.Request::sendJson);
 
 
     }

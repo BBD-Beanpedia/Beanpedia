@@ -8,6 +8,10 @@ public class Main {
     public static void main(String[] args) {
 
         BeanDataHandler.getInstance()
+                       .requestListBeans()
+                       .ifSuccess(beanModels -> beanModels.forEach(model -> System.out.println(model.toString())));
+
+        BeanDataHandler.getInstance()
                        .readAuthFromFile();
         BeanDataHandler.getInstance()
                        .getWelcome()

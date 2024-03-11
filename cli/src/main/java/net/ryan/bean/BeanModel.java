@@ -8,12 +8,20 @@ public final class BeanModel implements JsonSerializable {
     private String beanName;
     private String scientificName;
     private String content;
+    private final int originId;
+    private final int typeId;
+    private final int shapeId;
+    private final int colourId;
 
-    public BeanModel(int beanId, String beanName, String scientificName, String content) {
+    public BeanModel(int beanId, String beanName, String scientificName, String content, int originId, int typeId, int shapeId, int colourId) {
         this.beanId = beanId;
         this.beanName = beanName;
         this.scientificName = scientificName;
         this.content = content;
+        this.originId = originId;
+        this.typeId = typeId;
+        this.shapeId = shapeId;
+        this.colourId = colourId;
     }
 
     public String toJsonString() {
@@ -70,8 +78,15 @@ public final class BeanModel implements JsonSerializable {
 
     @Override
     public String toString() {
-        return "BeanModel[" + "beanId=" + beanId + ", " + "beanName=" + beanName + ", " + "scientificName=" + scientificName + ", " + "content=" + content + ']';
+        return "BeanModel{" +
+                "beanId=" + beanId +
+                ", beanName='" + beanName + '\'' +
+                ", scientificName='" + scientificName + '\'' +
+                ", content='" + content + '\'' +
+                ", originId=" + originId +
+                ", typeId=" + typeId +
+                ", shapeId=" + shapeId +
+                ", colourId=" + colourId +
+                '}';
     }
-
-
 }

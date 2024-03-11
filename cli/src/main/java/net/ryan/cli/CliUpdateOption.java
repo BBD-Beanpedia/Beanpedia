@@ -27,8 +27,8 @@ public class CliUpdateOption implements CliOption {
         final Map<Integer, UpdateOption> updateOptions = MapUtils.listToMap(Arrays.stream(UpdateOption.values())
                                                                                   .toList());
         updateOptions.forEach(DisplayHelper::displayOption);
-        BeanModel beanModel = new BeanModel(1, "Bean 1", "bean sci", "wow data");
-        getInputFromOptions(updateOptions, beanModel);
+//        BeanModel beanModel = new BeanModel(1, "Bean 1", "bean sci", "wow data", Integer.parseInt(originId), Integer.parseInt(typeId), Integer.parseInt(shapeId), Integer.parseInt(colourId));
+//        getInputFromOptions(updateOptions, beanModel);
 
     }
 
