@@ -1,8 +1,8 @@
 package net.ryan.TimoRefactorLater.Service;
 
-import net.ryan.TimoRefactorLater.DTO.BeanDTO;
-import net.ryan.TimoRefactorLater.Entities.BeanEntity;
-import net.ryan.TimoRefactorLater.Repository.BeanRepository;
+import net.ryan.DTO.BeanDTO;
+import net.ryan.Entities.BeanEntity;
+import net.ryan.Repository.BeanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

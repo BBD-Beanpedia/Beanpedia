@@ -1,6 +1,6 @@
-package net.ryan.TimoRefactorLater.Controller;
+package net.ryan.Controller;
 
-import net.ryan.TimoRefactorLater.DTO.BeanDTO;
+import net.ryan.DTO.BeanDTO;
 import net.ryan.TimoRefactorLater.Service.BeanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

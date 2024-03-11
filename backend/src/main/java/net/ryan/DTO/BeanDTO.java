@@ -1,4 +1,4 @@
-package net.ryan.TimoRefactorLater.DTO;
+package net.ryan.DTO;
 
 public class BeanDTO {
     int bean_id;

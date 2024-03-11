@@ -1,6 +1,6 @@
-package net.ryan.TimoRefactorLater.Repository;
+package net.ryan.Repository;
 
-import net.ryan.TimoRefactorLater.Entities.BeanEntity;
+import net.ryan.Entities.BeanEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

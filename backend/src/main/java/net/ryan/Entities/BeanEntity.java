@@ -1,4 +1,4 @@
-package net.ryan.TimoRefactorLater.Entities;
+package net.ryan.Entities;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
