@@ -1,5 +1,7 @@
 package net.ryan.util;
 
+import net.ryan.bean.JsonSerializable;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -21,15 +23,12 @@ public class HttpHandler {
         private Method method;
 
         private static Result<Request> createRequest(Method method, String url) {
-            try {
-                return Result.success(new Request(method, url));
-            } catch (URISyntaxException e) {
-                return Result.fail(e);
-            }
+            return Result.from(() -> new Request(method, url));
         }
 
         private Request(Method method, String url) throws URISyntaxException {
-            this.builder = HttpRequest.newBuilder().uri(new URI(url));
+            this.builder = HttpRequest.newBuilder()
+                                      .uri(new URI(url));
             this.method = method;
         }
 
@@ -53,6 +52,10 @@ public class HttpHandler {
             method = null;
 
             return this;
+        }
+
+        public <T extends JsonSerializable> Request bodyJson(T jsonClass) {
+            return bodyJson(jsonClass.toJsonString());
         }
 
         public Request bodyJson(String string) {

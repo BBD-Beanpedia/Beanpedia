@@ -1,4 +1,5 @@
 package net.ryan.TimoRefactorLater.Entities;
+
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,8 +22,16 @@ public class BeanEntity {
     private String bean_content;
 
     //I can't get lombok to work :(
-    public Integer getBean_id(){return this.bean_id;}
-    public String getBean_title(){return this.bean_title;}
-    public String getBean_content(){return this.bean_content;}
+    public Integer getBean_id() {
+        return this.bean_id;
+    }
+
+    public String getBean_title() {
+        return this.bean_title;
+    }
+
+    public String getBean_content() {
+        return this.bean_content;
+    }
 
 }

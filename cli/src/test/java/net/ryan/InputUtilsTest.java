@@ -2,6 +2,7 @@ package net.ryan;
 
 import net.ryan.util.InputUtils;
 import net.ryan.util.Result;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -9,6 +10,7 @@ import java.io.ByteArrayInputStream;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class InputUtilsTest {
+
     @Test
     void readIntFromConsole_ValidInput_ReturnsSuccess() {
         ByteArrayInputStream testIn = new ByteArrayInputStream("1".getBytes());
@@ -28,7 +30,6 @@ public class InputUtilsTest {
         assertFalse(result.isError());
         assertEquals(result.get(), "been");
     }
-
 
 
 }

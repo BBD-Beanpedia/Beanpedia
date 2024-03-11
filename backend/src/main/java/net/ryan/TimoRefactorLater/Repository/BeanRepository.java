@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface BeanRepository extends JpaRepository<BeanEntity, Integer> {
 
-    @Query(nativeQuery = true, value="select * from beans;")
+    @Query(nativeQuery = true, value = "select * from beans;")
     List<BeanEntity> getBeans();
 
 }

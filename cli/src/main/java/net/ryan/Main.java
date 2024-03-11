@@ -1,5 +1,7 @@
 package net.ryan;
 
+import net.ryan.bean.BeanDataHandler;
+import net.ryan.bean.BeanModel;
 import net.ryan.util.InputUtils;
 import net.ryan.util.Result;
 
@@ -11,10 +13,6 @@ public class Main {
 
         final CliOptionHelper options = CliOptionHelper.register();
         options.show();
-//        Result<Double> doubleResult = InputUtils.getInstance().readDoubleFromConsole();
-//        doubleResult
-//                .ifSuccess(System.out::println)
-//                .ifError(Throwable::printStackTrace);
 
 /*        InputUtils.getInstance().readIntRangeFromConsole(0, 15)
                 .ifSuccess(System.out::println)

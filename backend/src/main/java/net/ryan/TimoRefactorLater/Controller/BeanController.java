@@ -14,12 +14,12 @@ public class BeanController {
     BeanService beanService;
 
     @Autowired
-    BeanController(BeanService beanService){
+    BeanController(BeanService beanService) {
         this.beanService = beanService;
     }
 
     @GetMapping(value = "/getBeans")
-    List<BeanDTO> test(){
+    List<BeanDTO> test() {
 
         return beanService.getBeans();
 

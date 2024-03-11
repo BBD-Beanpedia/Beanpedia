@@ -6,9 +6,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class BeanJsonMapper {
-   /* public static ShortBeanModel parseStringToShortBeanModel(String inputJson) {
-
-    }*/
 
 
     public static Map<String, String> parseJson(String jsonString) {

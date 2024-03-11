@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BeanService {
@@ -15,17 +16,21 @@ public class BeanService {
     BeanRepository beanRepository;
 
     @Autowired
-    BeanService(BeanRepository beanRepository){
+    BeanService(BeanRepository beanRepository) {
         this.beanRepository = beanRepository;
     }
 
-    public List<BeanDTO> getBeans(){
+    public List<BeanDTO> getBeans() {
 
-        List<BeanEntity> beanEntities = beanRepository.getBeans();
+        return beanRepository.getBeans().stream()
+                .map(this::beanDTOMapper)
+                .collect(Collectors.toList());
+
+   /*     List<BeanEntity> beanEntities = beanRepository.getBeans();
 
         List<BeanDTO> returnBeans = new ArrayList<>();
 
-        for(BeanEntity beanE : beanEntities){
+        for (BeanEntity beanE : beanEntities) {
 
             BeanDTO returnBean = new BeanDTO();
 
@@ -34,9 +39,15 @@ public class BeanService {
             returnBean.setBean_content(beanE.getBean_content());
 
             returnBeans.add(returnBean);
-        }
-
-        return returnBeans;
+        }*/
+//        return returnBeans;
     }
 
+    private BeanDTO beanDTOMapper(BeanEntity beanEntity) {
+        BeanDTO returnBean = new BeanDTO();
+        returnBean.setBean_id(beanEntity.getBean_id());
+        returnBean.setBean_title(beanEntity.getBean_title());
+        returnBean.setBean_content(beanEntity.getBean_content());
+        return returnBean;
+    }
 }
