@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: sql/createScript.sql
+  - include:
+      file: sql/insertScript.sql
