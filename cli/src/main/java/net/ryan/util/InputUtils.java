@@ -37,7 +37,11 @@ public class InputUtils {
                 .mapError(exception -> Result.fail("Unable to parse string to integer.", exception));
     }
 
-    public Result<String> readStringFromConsole() {
+    public Result<String> readStringFromConsoleDirect() {
+        return readFromConsoleToType(String::toString);
+    }
+
+    public Result<String> readStringFromConsoleLowerCase() {
         return readFromConsoleToType(String::toLowerCase);
     }
 
@@ -46,11 +50,11 @@ public class InputUtils {
     }
 
     public Result<String> readStringFromConsoleInArray(List<String> list) {
-        return readStringFromConsole().mapDirect(item -> foundInStrings(item, list));
+        return readStringFromConsoleLowerCase().mapDirect(item -> foundInStrings(item, list));
     }
 
     public Result<String> readStringFromConsoleInArray(int start, int end, List<String> list) {
-        return readStringFromConsole().mapDirect(item -> foundInStrings(item, list));
+        return readStringFromConsoleLowerCase().mapDirect(item -> foundInStrings(item, list));
     }
 
     public Result<Double> readDoubleFromConsole() {
@@ -61,7 +65,7 @@ public class InputUtils {
 
     private Result<Integer> notInRangeMapper(int givenNum, int start, int end) {
         if (givenNum < start || givenNum > end)
-            return Result.fail(String.format("%d is not in the range [%d-%d] \n", givenNum, start, end), new Exception("Number entered must be in Range."));
+            return Result.fail("", new Exception(String.format("%d is not in the range [%d-%d] \n", givenNum, start, end)));
         else return Result.success(givenNum);
     }
 
@@ -78,13 +82,13 @@ public class InputUtils {
     }
 
     public Result<String> runMenuFunction(int start, int end, List<String> strings, Consumer<String> x, Consumer<Integer> runInt) {
-        return readStringFromConsole().mapDirect(str -> {
+        return readStringFromConsoleLowerCase().mapDirect(str -> {
             //First we will try and parse the as int if this fails we will try the strings.
             // We will not talk about this type conversion hackery.
             return Result.from(() -> Integer.parseInt(str))
-                    .mapToNew(i -> notInRangeMapper(i, start, end).ifSuccess(runInt))
-                    .map(String::valueOf)
-                    .mapError(_e -> foundInStrings(String.valueOf(str), strings).ifSuccess(x));
+                         .mapToNew(i -> notInRangeMapper(i, start, end).ifSuccess(runInt))
+                         .map(String::valueOf)
+                         .mapError(_e -> foundInStrings(String.valueOf(str), strings).ifSuccess(x));
         });
     }
 }

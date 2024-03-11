@@ -2,7 +2,6 @@ package net.ryan;
 
 import net.ryan.util.InputUtils;
 import net.ryan.util.Result;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -26,7 +25,7 @@ public class InputUtilsTest {
         ByteArrayInputStream testIn = new ByteArrayInputStream("been".getBytes());
         System.setIn(testIn);
         InputUtils inputUtils = InputUtils.getInstance();
-        Result<String> result = inputUtils.readStringFromConsole();
+        Result<String> result = inputUtils.readStringFromConsoleLowerCase();
         assertFalse(result.isError());
         assertEquals(result.get(), "been");
     }

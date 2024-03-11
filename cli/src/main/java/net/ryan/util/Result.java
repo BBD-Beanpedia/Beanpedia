@@ -38,8 +38,8 @@ public class Result<S> implements Supplier<S> {
         return this;
     }
 
-    public Result<S> ifError(Consumer<Pair<String, Exception>> consumer) {
-        if (isError()) consumer.accept(new Pair<>(errorMessageDetails, exception));
+    public Result<S> ifError(Consumer<Exception> consumer) {
+        if (isError()) consumer.accept(exception);
         return this;
     }
 
@@ -76,14 +76,12 @@ public class Result<S> implements Supplier<S> {
 
     @Override
     public S get() {
-        if (isError())
-            throw new NoSuchElementException("Attempted to retrieve value on erroneous result");
+        if (isError()) throw new NoSuchElementException("Attempted to retrieve value on erroneous result");
         return supplier;
     }
 
     public Exception getError() {
-        if (!isError())
-            throw new NoSuchElementException("Attempted to retrieve error on non-erroneous result");
+        if (!isError()) throw new NoSuchElementException("Attempted to retrieve error on non-erroneous result");
         return exception;
     }
 

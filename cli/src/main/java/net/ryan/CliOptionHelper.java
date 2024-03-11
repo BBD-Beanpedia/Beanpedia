@@ -18,7 +18,8 @@ public class CliOptionHelper {
                 new CliFilterOption(),
                 new CliCreateOption(),
                 new CliUpdateOption(),
-                new CliExitOption()
+                new CliExitOption(),
+                new CliAuthOption()
         );
 
         return new CliOptionHelper(MapUtils.listToMap(options));
@@ -39,7 +40,7 @@ public class CliOptionHelper {
                 .map(num -> num - 1)
                 .ifSuccess(i -> cliOptions.get(i).run())
                 .ifError(error -> {
-                    System.out.println("Error: Unrecognized command " + error.first());
+                    System.out.println("Error: Unrecognized command " + error.getMessage());
                     show();
                 });
     }

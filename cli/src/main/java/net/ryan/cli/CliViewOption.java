@@ -1,6 +1,6 @@
 package net.ryan.cli;
 
-import net.ryan.bean.BeanDataHandler;
+import net.ryan.util.BeanDataHandler;
 import net.ryan.bean.ShortBeanModel;
 import net.ryan.util.*;
 
@@ -10,10 +10,6 @@ import java.util.function.Consumer;
 
 public class CliViewOption implements CliOption {
 
-
-    private static void displayOption(Integer integer, ShortBeanModel cliOption) {
-        System.out.printf("\t%d. %s\n", integer + 1, cliOption);
-    }
 
     @Override
     public String getName() {
@@ -32,6 +28,8 @@ public class CliViewOption implements CliOption {
         BeanDataHandler.getInstance()
                        .requestListOfShortBeansPaged(0)
                        .ifError(e -> {
+                           System.out.printf("Unable to load beans: %s - %s", e.getCause(), e.getMessage());
+                           // TODO: Back to main to show
                        })
                        .ifSuccess(this::showAllBeans);
 
@@ -41,7 +39,7 @@ public class CliViewOption implements CliOption {
 
     private void showAllBeans(Pair<Integer, List<ShortBeanModel>> pagedBeanList) {
         final Map<Integer, ShortBeanModel> indexToBeanMap = MapUtils.listToMap(pagedBeanList.second());
-        indexToBeanMap.forEach(CliViewOption::displayOption);
+        indexToBeanMap.forEach(DisplayHelper::displayOption);
 
 
         Consumer<String> x = (s) -> {

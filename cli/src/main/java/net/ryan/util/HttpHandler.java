@@ -1,6 +1,7 @@
 package net.ryan.util;
 
 import net.ryan.bean.JsonSerializable;
+import net.ryan.exception.Unauthorised;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -82,7 +83,7 @@ public class HttpHandler {
                 HttpResponse<T> res = CLIENT.send(builder.build(), responseBodyHandler);
                 int statusCode = res.statusCode();
                 if (statusCode == 200) return Result.success(res.body());
-                else return Result.fail("Http Error code " + statusCode, new RuntimeException(""));
+                else return Result.fail("Http Error code " + statusCode, new Unauthorised("Please login"));
             } catch (IOException | InterruptedException e) {
                 return Result.fail(e);
             }
@@ -95,6 +96,11 @@ public class HttpHandler {
         public Result<String> sendString() {
             return send("*/*", HttpResponse.BodyHandlers.ofString());
         }
+
+        public Result<String> sendJson() {
+            return send("application/json", HttpResponse.BodyHandlers.ofString());
+        }
+
 
         public Result<Stream<String>> sendLines() {
             return send("*/*", HttpResponse.BodyHandlers.ofLines());

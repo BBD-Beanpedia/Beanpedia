@@ -1,12 +1,11 @@
 package net.ryan.cli;
 
-import net.ryan.bean.*;
+import net.ryan.util.DisplayHelper;
 import net.ryan.util.InputUtils;
 import net.ryan.util.MapUtils;
 import net.ryan.util.Result;
 
 import java.util.List;
-import java.util.function.Function;
 
 public class CliCreateOption implements CliOption {
 
@@ -45,7 +44,7 @@ public class CliCreateOption implements CliOption {
 
     private static String getStringAssured() {
         final Result<String> stringFromConsole = InputUtils.getInstance()
-                                                           .readStringFromConsole();
+                                                           .readStringFromConsoleLowerCase();
         if (stringFromConsole.isError()) {
             //Print the error
             System.out.println(stringFromConsole.getError()
@@ -70,7 +69,7 @@ public class CliCreateOption implements CliOption {
                  })
                  .map(MapUtils::listToMap)
                  .map(data -> {
-                     data.forEach(CliCreateOption::displayOption);
+                     data.forEach(DisplayHelper::displayOption);
                      return InputUtils.getInstance()
                                       .readIntRangeFromConsole(1, data.size())
                                       .ifError(e -> {
@@ -79,12 +78,6 @@ public class CliCreateOption implements CliOption {
                                       .map(data::get);
                  });
         return null;
-    }
-
-
-    // TODO: Generic for this::::->>>>
-    private static <T extends Nameable> void displayOption(Integer integer, T nameable) {
-        System.out.printf("\t%d. %s\n", integer + 1, nameable.getName());
     }
 
 }

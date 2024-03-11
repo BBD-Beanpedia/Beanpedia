@@ -1,6 +1,7 @@
 package net.ryan.cli;
 
-import net.ryan.bean.BeanDataHandler;
+import net.ryan.util.BeanDataHandler;
+import net.ryan.util.DisplayHelper;
 import net.ryan.util.InputUtils;
 import net.ryan.util.MapUtils;
 import net.ryan.util.Result;
@@ -30,19 +31,19 @@ public class CliFilterOption implements CliOption {
 
     @Override
     public String getName() {
-        return "---Filter Beans---";
+        return "Filter Beans";
     }
 
     @Override
     public void run() {
-        System.out.println("Filter");
+        System.out.println("---Filter---");
         System.out.println("What would you like to filter by?");
 
         final Map<Integer, BeanProps> beanPropsMap = MapUtils.listToMap(Arrays.stream(BeanProps.values())
                                                                               .toList());
 
 
-        beanPropsMap.forEach(this::displayOption);
+        beanPropsMap.forEach(DisplayHelper::displayOption);
 
         InputUtils.getInstance()
                   .readIntRangeFromConsole(0, beanPropsMap.size())
@@ -65,7 +66,7 @@ public class CliFilterOption implements CliOption {
                        .map(MapUtils::listToMap)
                        .ifError(e -> failedToMakeNetworkCall(() -> showOptionsAndSearch(requestSupplier, searchFunction)))
                        .ifSuccess(options -> {
-                           options.forEach(this::displayOption);
+                           options.forEach(DisplayHelper::displayOption);
                            InputUtils.getInstance()
                                      .readIntRangeFromConsole(0, options.size())
                                      .map(options::get)
@@ -78,13 +79,8 @@ public class CliFilterOption implements CliOption {
         System.out.println("Failed to make network call, please try again later");
         System.out.println("Press enter to continue");
         InputUtils.getInstance()
-                  .readStringFromConsole();
+                  .readStringFromConsoleLowerCase();
         reRun.run();
     }
 
-
-    // TODO: Generic for this::::->>>>
-    private <T extends Nameable> void displayOption(Integer integer, T nameable) {
-        System.out.printf("\t%d. %s\n", integer + 1, nameable.getName());
-    }
 }

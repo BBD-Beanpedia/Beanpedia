@@ -1,9 +1,6 @@
-package net.ryan.bean;
+package net.ryan.util;
 
-import net.ryan.util.HttpHandler;
-import net.ryan.util.JsonParser;
-import net.ryan.util.Pair;
-import net.ryan.util.Result;
+import net.ryan.bean.*;
 
 import java.util.List;
 import java.util.function.Function;
@@ -32,10 +29,27 @@ public class BeanDataHandler {
             ORIGIN_ENDPOINT = "/origins",
             SHAPE_ENDPOINT = "/shapes",
             TYPE_ENDPOINT = "/types",
-            COLOUR_ENDPOINT = "/colours";
+            COLOUR_ENDPOINT = "/colours",
+            WELCOME="/greeter",
+            GITHUB_AUTH="https://github.com/login/",
+            GITHUB_DEVICE = "/device/code",
+            GITHUB_POLL = "oauth/access_token";
     // @formatter:on
 
-    private static String authToken;
+    private String authToken;
+
+    public void saveAuthFromFile() {
+
+    }
+
+    public void readAuthFromFile() {
+
+    }
+
+    public String getAuthToken() {
+        return authToken;
+    }
+
 
     public Result<Pair<Integer, List<ShortBeanModel>>> searchBean(String beanName, int page) {
         return HttpHandler.newPostRequest(BASE_URL + SEARCH_ENDPOINT)
@@ -97,7 +111,7 @@ public class BeanDataHandler {
 
 
     private <T> Result<T> basicGetQuery(String endpoint, Function<String, T> parseFunction) {
-        return HttpHandler.newGetRequest(endpoint)
+        return HttpHandler.newGetRequest(BASE_URL + endpoint)
                           .map(request -> request.bearer(authToken))
                           .mapToNew(HttpHandler.Request::sendString)
                           .map(parseFunction);
@@ -117,6 +131,37 @@ public class BeanDataHandler {
     }
 
     public void searchBeanByOrigin(String name, int i) {
+
+    }
+
+    public Result<String> getWelcome() {
+        return basicGetQuery(WELCOME, JsonParser::parseWelcome);
+    }
+
+    public Result<GithubAuthDeviceModel> getGithubAuth() {
+        return HttpHandler.newPostRequest(GITHUB_AUTH + GITHUB_DEVICE)
+                          .map(request -> request.bodyJson("{\"client_id\": \"a2a0895678d18622ca6d\"}"))
+                          .mapToNew(HttpHandler.Request::sendJson)
+                          .map(JsonParser::parseGithubAuth);
+    }
+
+    public Result<String> getGithubPoll(String deviceCode) {
+        return HttpHandler.newPostRequest(GITHUB_AUTH + GITHUB_POLL)
+                          .map(request -> request.bodyJson("{\"client_id\": \"a2a0895678d18622ca6d\", \"device_code\": \"" + deviceCode + "\", \"grant_type\": \"urn:ietf:params:oauth:grant-type:device_code\"}"))
+                          .mapToNew(HttpHandler.Request::sendJson)
+                          .map(JsonParser::parseGithubPoll);
+    }
+
+    public void setAuthToken(String token) {
+        this.authToken = token;
+    }
+
+    public void requestAndSaveToken(String token) {
+        HttpHandler.newPostRequest(BASE_URL + "/token")
+                          .map(request -> request.bodyJson(""))
+                          .mapToNew(HttpHandler.Request::sendJson);
+
+
 
     }
 }

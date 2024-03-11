@@ -1,14 +1,29 @@
 package net.ryan;
 
-import net.ryan.bean.BeanDataHandler;
-import net.ryan.bean.BeanModel;
-import net.ryan.util.InputUtils;
+import net.ryan.util.BeanDataHandler;
+import net.ryan.util.HttpHandler;
 import net.ryan.util.Result;
-
-import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
+
+        BeanDataHandler.getInstance()
+                       .readAuthFromFile();
+        BeanDataHandler.getInstance()
+                       .getWelcome()
+                       .ifError(e -> System.out.println("Error: " + e.getMessage()))
+                       .ifSuccess(Main::welcomeUser);
+
+
+        HttpHandler.newGetRequest("http://localhost:8080/greeting")
+                   .mapToNew(HttpHandler.Request::sendString)
+                   .ifError(e ->
+                   {
+                       System.out.printf("Unable to make call %s, %s\n", e.getMessage(), e.getCause());
+                   })
+                   .ifSuccess(System.out::println);
+
+
 //        System.out.println("Welcome to the Bean Encyclopedia CLI!");
 
         final CliOptionHelper options = CliOptionHelper.register();
@@ -41,6 +56,10 @@ public class Main {
                     { "client_id": "a2a0895678d18622ca6d" }
                     """).sendJson(GithubPollAuthResponse.class);
         }, 0, githubCodeAuthResponse.interval(), TimeUnit.SECONDS);*/
+
+    }
+
+    private static void welcomeUser(String string) {
 
     }
 }

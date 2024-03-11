@@ -1,7 +1,8 @@
 package net.ryan.cli;
 
-import net.ryan.bean.BeanDataHandler;
+import net.ryan.util.BeanDataHandler;
 import net.ryan.bean.ShortBeanModel;
+import net.ryan.util.DisplayHelper;
 import net.ryan.util.InputUtils;
 import net.ryan.util.MapUtils;
 import net.ryan.util.Pair;
@@ -20,7 +21,7 @@ public class CliSearchOption implements CliOption {
         System.out.println("---" + getName() + "---");
         System.out.println("Enter bean name to search for, or type back to return to the main menu:");
         InputUtils.getInstance()
-                  .readStringFromConsole()
+                  .readStringFromConsoleLowerCase()
                   .ifSuccess(beanName -> searchForBean(beanName, 0))
                   .ifError(e -> {
                   });
@@ -34,7 +35,7 @@ public class CliSearchOption implements CliOption {
                        .ifError(e -> {
                            System.out.println("Error making request to Api would you like to try again");
                            InputUtils.getInstance()
-                                     .readStringFromConsole();
+                                     .readStringFromConsoleLowerCase();
                            searchForBean(beanName, currentPage);
                        });
     }
@@ -42,13 +43,9 @@ public class CliSearchOption implements CliOption {
     private void showSearchedBeans(Pair<Integer, Map<Integer, ShortBeanModel>> integerListPair, int currentPage) {
         System.out.printf("Showing page %d of %d\n", currentPage, integerListPair.first());
         integerListPair.second()
-                       .forEach(this::displayOption);
+                       .forEach(DisplayHelper::displayOption);
 
     }
 
-    // TODO: Generic for this::::->>>>
-    private <T extends Nameable> void displayOption(Integer integer, T nameable) {
-        System.out.printf("\t%d. %s\n", integer + 1, nameable.getName());
-    }
 
 }
