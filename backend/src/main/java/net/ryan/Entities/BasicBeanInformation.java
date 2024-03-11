@@ -18,7 +18,7 @@ public class BasicBeanInformation {
 
     @Basic
     @Column(name = "\"ScientificName\"")
-    String ScientificNam;
+    String ScientificName;
 
     @Basic
     @Column(name = "\"BeanContent\"")
@@ -30,7 +30,7 @@ public class BasicBeanInformation {
 
     @Basic
     @Column(name = "\"TypeId\"")
-    Integer TypeID;
+    Integer TypeId;
 
     @Basic
     @Column(name = "\"ShapeId\"")
@@ -38,6 +38,6 @@ public class BasicBeanInformation {
 
     @Basic
     @Column(name = "\"ColourId\"")
-    Integer ColourID;
+    Integer ColourId;
 
 }

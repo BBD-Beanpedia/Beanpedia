@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface BeanRepository extends JpaRepository<BasicBeanInformation, Integer> {
+public interface BasicBeanInformationRepository extends JpaRepository<BasicBeanInformation, Integer> {
 
-    @Query(nativeQuery = true, value="select * from \"BasicBeanInformation\";")
-    List<BasicBeanInformation> getAllBeans();
+    @Query(nativeQuery = true, value="select * from \"BasicBeanInformation\" where \"BeanName\" = ?1")
+    List<BasicBeanInformation> searchBeanByName(String name);
 
 }

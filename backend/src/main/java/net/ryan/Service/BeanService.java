@@ -1,44 +1,49 @@
 package net.ryan.Service;
 
-import net.ryan.DTO.BeanDTO;
-import net.ryan.Entities.BasicBeanInformation;
-import net.ryan.Repository.BeanRepository;
+import net.ryan.DTO.SearchBeanDTO;
+import net.ryan.Entities.*;
+import net.ryan.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class BeanService {
 
-    BeanRepository beanRepository;
+    BasicBeanInformationRepository basicBeanInformationRepository;
+    BeanColourRepository beanColourRepository;
+    BeanOriginRepository beanOriginRepository;
+    BeanShapeRepository beanShapeRepository;
+    BeanTypeRepository beanTypeRepository;
 
     @Autowired
-    BeanService(BeanRepository beanRepository){
-        this.beanRepository = beanRepository;
+    BeanService(BasicBeanInformationRepository basicBeanInformationRepository, BeanColourRepository beanColourRepository, BeanOriginRepository beanOriginRepository, BeanShapeRepository beanShapeRepository, BeanTypeRepository beanTypeRepository){
+        this.basicBeanInformationRepository = basicBeanInformationRepository;
+        this.beanColourRepository = beanColourRepository;
+        this.beanOriginRepository = beanOriginRepository;
+        this.beanShapeRepository = beanShapeRepository;
+        this.beanTypeRepository = beanTypeRepository;
     }
 
-    public List<BeanDTO> getBeans(){
+    public SearchBeanDTO searchBeanByName(String name){
 
-        List<BasicBeanInformation> beanEntities = beanRepository.getAllBeans();
+        //need to update this to consider if more than one bean is returned when searching by name
+        BasicBeanInformation searchResult = this.basicBeanInformationRepository.searchBeanByName(name).get(0);
 
-        System.out.println(beanEntities.get(0).getBeanID());
+        SearchBeanDTO returnDTO = new SearchBeanDTO();
 
-        /*List<BeanDTO> returnBeans = new ArrayList<>();
+        BeanType beanType = this.beanTypeRepository.getTypeByID(searchResult.getTypeId());
+        BeanShape beanShape = this.beanShapeRepository.getShapeByID(searchResult.getShapeId());
+        BeanColour beanColour = this.beanColourRepository.getColourByID(searchResult.getColourId());
+        BeanOrigin beanOrigin = this.beanOriginRepository.getOriginByID(searchResult.getOriginId());
 
-        for(BeanEntity beanE : beanEntities){
+        returnDTO.setName(searchResult.getBeanName());
+        returnDTO.setType(beanType.getBeanType());
+        returnDTO.setShape(beanShape.getShape());
+        returnDTO.setColour(beanColour.getColour());
+        returnDTO.setOrigin(beanOrigin.getOrigin());
 
-            BeanDTO returnBean = new BeanDTO();
+        return returnDTO;
 
-            returnBean.setBean_id(beanE.getBean_id());
-            returnBean.setBean_title(beanE.getBean_title());
-            returnBean.setBean_content(beanE.getBean_content());
-
-            returnBeans.add(returnBean);
-        }
-
-        return returnBeans;*/
-        return null;
     }
 
 }
