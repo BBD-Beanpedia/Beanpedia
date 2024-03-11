@@ -9,7 +9,7 @@ import javax.sql.DataSource;
 
 @Configuration
 public class JpaConfig {
-    @Value("${DATABASE_URL:jdbc:postgresql://localhost:5432/beandb}")
+    @Value("${DATABASE_URL:jdbc:postgresql://localhost:5432/postgres}")
     private String databaseUrl;
 
     @Value("${DATABASE_USERNAME:postgres}")
@@ -20,6 +20,7 @@ public class JpaConfig {
 
     @Bean
     public DataSource dataSource() {
+        System.out.println("DATABASE_URL: " + databaseUrl);
         DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.postgresql.Driver");
         dataSourceBuilder.url(databaseUrl);
