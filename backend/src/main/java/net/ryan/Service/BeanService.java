@@ -1,12 +1,11 @@
-package net.ryan.TimoRefactorLater.Service;
+package net.ryan.Service;
 
 import net.ryan.DTO.BeanDTO;
-import net.ryan.Entities.BeanEntity;
+import net.ryan.Entities.BasicBeanInformation;
 import net.ryan.Repository.BeanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,9 +20,11 @@ public class BeanService {
 
     public List<BeanDTO> getBeans(){
 
-        List<BeanEntity> beanEntities = beanRepository.getBeans();
+        List<BasicBeanInformation> beanEntities = beanRepository.getAllBeans();
 
-        List<BeanDTO> returnBeans = new ArrayList<>();
+        System.out.println(beanEntities.get(0).getBeanID());
+
+        /*List<BeanDTO> returnBeans = new ArrayList<>();
 
         for(BeanEntity beanE : beanEntities){
 
@@ -36,7 +37,8 @@ public class BeanService {
             returnBeans.add(returnBean);
         }
 
-        return returnBeans;
+        return returnBeans;*/
+        return null;
     }
 
 }
