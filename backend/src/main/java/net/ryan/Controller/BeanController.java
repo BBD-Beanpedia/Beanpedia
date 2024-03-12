@@ -1,27 +1,50 @@
 package net.ryan.Controller;
 
-import net.ryan.DTO.SearchBeanDTO;
+import net.ryan.DTO.BeanDTO;
 import net.ryan.Service.BeanService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/beans/")
 public class BeanController {
 
-    BeanService beanService;
+    private final BeanService beanService;
 
     @Autowired
-    BeanController(BeanService beanService){
+    public BeanController(BeanService beanService) {
         this.beanService = beanService;
     }
 
-
-    //TODO:Need to check for spaces and capital letters in the name field...
-    @GetMapping(value =  "/search/{name}")
-    public SearchBeanDTO searchBeanByName(@PathVariable("name") String name){
-        return this.beanService.searchBeanByName(name);
+    @GetMapping("/search")
+    public Page<BeanDTO> searchBeans(
+            @RequestParam(value = "name") String name,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "100") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return beanService.searchBeansByName(name, pageable);
     }
 
+    @GetMapping("/all")
+    public Page<BeanDTO> getAllBeans(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "100") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return beanService.findAllBeans(pageable);
+    }
+
+    @GetMapping("/filter")
+    public Page<BeanDTO> getFilteredBeans(
+            @RequestParam(value = "typeId", required = false) Integer typeId,
+            @RequestParam(value = "shapeId", required = false) Integer shapeId,
+            @RequestParam(value = "colourId", required = false) Integer colourId,
+            @RequestParam(value = "originId", required = false) Integer originId,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "100") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return beanService.findBeansByCriteria(typeId, shapeId, colourId, originId, pageable);
+    }
 }

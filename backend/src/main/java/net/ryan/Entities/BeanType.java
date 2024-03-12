@@ -10,13 +10,13 @@ public class BeanType {
 
     @Id
     @Column(name = "\"TypeId\"")
-    Integer TypeID;
+    Integer typeId;
 
     @Basic
     @Column(name = "\"BeanType\"")
-    String BeanType;
+    String beanType;
 
     @Basic
     @Column(name = "\"Description\"")
-    String Description;
+    String description;
 }
