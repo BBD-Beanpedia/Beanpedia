@@ -4,8 +4,8 @@
 CREATE TABLE "BeanType"
 (
   "TypeId" serial PRIMARY KEY,
-  "BeanType" varchar(50) UNIQUE NOT NULL,
-  "Description" varchar(500) NOT NULL
+  "BeanType" varchar(50) UNIQUE,
+  "Description" varchar(500)
 )
 -- rollback DROP TABLE "BeanType"
 
@@ -13,8 +13,8 @@ CREATE TABLE "BeanType"
 CREATE TABLE "BeanShape"
 (
   "ShapeId" serial PRIMARY KEY,
-  "Shape" varchar(50) UNIQUE NOT NULL,
-  "Description" varchar(500) NOT NULL
+  "Shape" varchar(50) UNIQUE,
+  "Description" varchar(500)
 )
 -- rollback DROP TABLE "BeanShape"
 
@@ -22,7 +22,7 @@ CREATE TABLE "BeanShape"
 CREATE TABLE "BeanOrigin"
 (
   "OriginId" serial PRIMARY KEY,
-  "Origin" varchar(20) UNIQUE NOT NULL
+  "Origin" varchar(20) UNIQUE
 )
 -- rollback DROP TABLE "BeanOrigin"
 
@@ -30,8 +30,8 @@ CREATE TABLE "BeanOrigin"
 CREATE TABLE "BeanColour"
 (
   "ColourId" serial PRIMARY KEY,
-  "Colour" varchar(20) UNIQUE NOT NULL,
-  "Description" varchar(500) NOT NULL
+  "Colour" varchar(20) UNIQUE,
+  "Description" varchar(500)
 )
 -- rollback DROP TABLE "BeanColour"
 
@@ -39,9 +39,9 @@ CREATE TABLE "BeanColour"
 CREATE TABLE "BasicBeanInformation"
 (
   "BeanId" serial PRIMARY KEY,
-  "BeanName" varchar(50) UNIQUE NOT NULL,
-  "ScientificName" varchar(50) NOT NULL,
-  "BeanContent" varchar(65535) NOT NULL,
+  "BeanName" varchar(50) UNIQUE,
+  "ScientificName" varchar(50),
+  "BeanContent" varchar(65535),
   "OriginId" integer NOT NULL,
   "TypeId" integer NOT NULL,
   "ShapeId" integer NOT NULL,
