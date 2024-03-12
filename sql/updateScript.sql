@@ -1,9 +1,10 @@
 -- liquibase formatted sql
 
--- changeset lJordaan:alter-table-basicbeaninformation-shape-non-nullable
+-- changeset lJordaan:alter-table-basicbeaninformation-beanname-non-nullable
 ALTER TABLE "BasicBeanInformation"
-ALTER COLUMN "BeanName" varchar(50) NOT NULL;
--- rollback ALTER TABLE "BasicBeanInformation" ALTER COLUMN "BeanName" varchar(50)
+ALTER COLUMN "BeanName" SET DATA TYPE varchar(50),
+ALTER COLUMN "BeanName" SET NOT NULL;
+-- rollback ALTER TABLE "BasicBeanInformation" ALTER COLUMN "BeanName" DROP NOT NULL;
 
 -- changeset lJordaan:alter-table-basicbeaninformation-scientificname-non-nullable
 ALTER TABLE "BasicBeanInformation"
