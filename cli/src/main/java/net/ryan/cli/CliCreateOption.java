@@ -23,6 +23,10 @@ public class CliCreateOption implements CliOption {
         System.out.println("Enter beans scientific name");
         final String sciName = getStringAssured();
         System.out.println("Select Bean Origin:");
+
+
+
+
       /*  // Not to sure if we should always do this call but to keep things dynamic we will
         final BeanOriginModel beanOriginModel = showMenuFor(BeanDataHandler.getInstance()
                                                                            .requestAllOrigins());

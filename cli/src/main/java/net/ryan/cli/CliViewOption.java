@@ -18,8 +18,40 @@ public class CliViewOption implements CliOption {
 
     @Override
     public void run() {
-        pagination(1, 2);
+        // Make a call to get the short bean list as well as page size.
+        System.out.println("---Viewing all beans---");
+        final int page = 0;
+        BeanDataHandler.getInstance()
+                       .requestListOfShortBeansPaged(page)
+                       .ifError(e -> System.out.println("Error -> Cant make call to server: " + e.getMessage()))
+                       .ifError(e -> System.out.println("Error: " + e.getMessage()))
+                       .ifSuccess(givenPage -> displayBeans(page, givenPage));
     }
+
+    private void displayBeans(int givenPage, Pair<Integer, List<ShortBeanModel>> pageBeanList) {
+        System.out.printf("Page %d of %d\n", givenPage, pageBeanList.first());
+        final Map<Integer, ShortBeanModel> beanModelMap = MapUtils.listToMap(pageBeanList.second());
+        beanModelMap.forEach(DisplayHelper::displayOption);
+        promptForInput(beanModelMap);
+    }
+
+    private void promptForInput(Map<Integer, ShortBeanModel> beanModelMap) {
+        Consumer<Integer> runInt = i -> handleIntSelected(i, beanModelMap);
+        Consumer<String> x = s -> System.out.println("STRING");
+        InputUtils.getInstance()
+                  .runMenuFunction(1, 2, List.of("next", "prev", "exit"), x, runInt)
+                  .ifError(s -> System.out.println("Error: " + s.getMessage()))
+                  .ifError(s -> promptForInput(beanModelMap));
+    }
+
+    private void handleIntSelected(int i, Map<Integer, ShortBeanModel> beanModelMap) {
+        BeanDataHandler.getInstance()
+                       .requestBeanDetail(beanModelMap.get(i)
+                                                      .beanId())
+                       .ifError(e -> System.out.println("Error: " + e.getMessage()))
+                       .ifSuccess(s -> System.out.println(s.toJsonString()));
+     }
+
 
     private void pagination(int page, int maxPages) {
         System.out.println("---Viewing all beans---");
