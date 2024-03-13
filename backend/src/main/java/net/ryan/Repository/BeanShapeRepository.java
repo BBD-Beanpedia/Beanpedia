@@ -8,7 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BeanShapeRepository  extends JpaRepository<BeanShape, Integer> {
 
-    @Query(nativeQuery = true, value="select * from \"BeanShape\" where \"ShapeId\" =?1")
-    BeanShape getShapeByID(Integer shapeID);
 
 }

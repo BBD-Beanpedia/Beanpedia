@@ -9,15 +9,15 @@ import lombok.Data;
 public class BeanColour {
 
     @Id
-    @Column(name = "\"ColourID\"")
-    Integer ColourID;
+    @Column(name = "\"ColourId\"")
+    Integer colourId;
 
     @Basic
     @Column(name = "\"Colour\"")
-    String Colour;
+    String colour;
 
     @Basic
     @Column(name = "\"Description\"")
-    String Description;
+    String description;
 
 }
