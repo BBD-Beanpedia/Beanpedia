@@ -1,4 +1,4 @@
-package net.ryan.controller;
+/*package net.ryan.controller;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -10,4 +10,4 @@ public class GreeterController {
 
         return authentication.getName();
     }
-}
+}*/

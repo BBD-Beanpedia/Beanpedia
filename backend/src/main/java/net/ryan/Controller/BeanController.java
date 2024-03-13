@@ -47,4 +47,12 @@ public class BeanController {
         Pageable pageable = PageRequest.of(page, size);
         return beanService.findBeansByCriteria(typeId, shapeId, colourId, originId, pageable);
     }
+
+    @PostMapping("/update")
+    public void updateBean(@RequestBody BeanDTO test){
+
+        System.out.println("Hello world!");
+
+        System.out.println(test);
+    }
 }

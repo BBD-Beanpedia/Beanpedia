@@ -39,6 +39,22 @@ public final class BeanModel implements JsonSerializable {
                 """, beanId, beanName, scientificName, content);
     }
 
+    public String toJsonStringUpdate() {
+
+        return String.format("""
+                    {
+                        "beanName": "%s",
+                        "scientificName": "%s",
+                        "beanContent": "%s",
+                        "origin": "%s",
+                        "type": "%s",
+                        "shape": "%s",
+                        "colour": %s
+                    }
+                """, beanName, scientificName, content, origin, type, shape, colour);
+
+    }
+
 
 
     public int getBeanId() {

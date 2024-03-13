@@ -1,4 +1,4 @@
-package net.ryan.config;
+/*package net.ryan.config;
 
 
 import com.nimbusds.jose.jwk.JWK;
@@ -53,4 +53,4 @@ public class SecurityConfig {
         return new NimbusJwtEncoder(jwkSet);
     }
 
-}
+}*/

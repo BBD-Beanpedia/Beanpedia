@@ -33,6 +33,7 @@ public class CliUpdateOption implements CliOption {
 
         getInputFromOptions(updateOptions, model);
 
+        BeanDataHandler.getInstance().updateBean(model.toJsonStringUpdate()).ifError(e -> System.out.println(e));
     }
 
     private void selectBean(){
