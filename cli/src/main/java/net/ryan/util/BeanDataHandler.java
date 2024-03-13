@@ -20,16 +20,16 @@ public class BeanDataHandler {
 
     // @formatter:off
     private static final String
-            BASE_URL = "http://localhost:8080",
+            BASE_URL = "http://34.249.42.139:8080",
             INSERT_ENDPOINT = "/addBean",
-            GET_ALL_ENDPOINT = "/get",
-            SEARCH_ENDPOINT = "/search",
+            GET_ALL_ENDPOINT = "/beans/all",
+            SEARCH_ENDPOINT = "/beans/search",
             UPDATE_ENDPOINT = "/update",
-            DETAIL_ENDPOINT = "/get",
-            ORIGIN_ENDPOINT = "/origins",
-            SHAPE_ENDPOINT = "/shapes",
-            TYPE_ENDPOINT = "/types",
-            COLOUR_ENDPOINT = "/colours",
+            FILTER = "/beans/filter",
+            ORIGIN_FILTER = "/beans/attributes/origins",
+            SHAPE_ENDPOINT = "/beans/attributes/shapes",
+            TYPE_ENDPOINT = "/beans/attributes/types",
+            COLOUR_ENDPOINT = "/beans/attributes/colours",
             WELCOME="/greeter",
             GITHUB_AUTH="https://github.com/login/",
             GITHUB_DEVICE = "/device/code",
@@ -51,41 +51,21 @@ public class BeanDataHandler {
     }
 
 
-    public Result<Pair<Integer, List<ShortBeanModel>>> searchBean(String beanName, int page) {
-        return HttpHandler.newPostRequest(BASE_URL + SEARCH_ENDPOINT)
+    public Result<BeanModelPage> searchBean(String beanName, int page) {
+        return HttpHandler.newGetRequest(BASE_URL + SEARCH_ENDPOINT + "?name=" + beanName.strip() + "&page=" + page + "&size=5")
                           .map(request -> request.bearer(authToken))
-                          .map(request -> request.bodyJson(String.format("{\"page\":%d, \"beanName\":\"%s\"}", page, beanName)))
                           .mapToNew(HttpHandler.Request::sendString)
                           .map(JsonParser::parsePagedBeanList);
     }
 
-    public Result<List<BeanModel>> requestListBeans() {
-        return HttpHandler.newGetRequest("http://34.249.42.139:8080/test"/*BASE_URL + GET_ALL_ENDPOINT*/)
-                          .map(request -> request.bearer(authToken))
-//                          .map(request -> request.bodyJson(String.format("{\"page\":%d}", page)))
-                          .mapToNew(HttpHandler.Request::sendString)
-                          .map(JsonParser::parseBean);
-    }
-
-
-    public Result<Pair<Integer, List<ShortBeanModel>>> requestListOfShortBeansPaged(int page) {
-        return HttpHandler.newPostRequest(BASE_URL + GET_ALL_ENDPOINT)
-                          .map(request -> request.bearer(authToken))
-                          .map(request -> request.bodyJson(String.format("{\"page\":%d}", page)))
+    public Result<BeanModelPage> requestListOfBeansPaged(int page) {
+        final String url = BASE_URL + GET_ALL_ENDPOINT + "?page=" + page + "&size=5";
+        return HttpHandler.newGetRequest(url)
                           .mapToNew(HttpHandler.Request::sendString)
                           .map(JsonParser::parsePagedBeanList);
     }
 
-    public Result<BeanModel> requestBeanDetail(int beanId) {
-        return HttpHandler.newPostRequest(BASE_URL + DETAIL_ENDPOINT)
-                          .map(request -> request.bearer(authToken))
-                          .map(request -> request.bodyJson(String.format("{\"beanId\":\"%s\"}", beanId)))
-                          .mapToNew(HttpHandler.Request::sendString)
-                          .map(JsonParser::parseBeanDetail);
-    }
 
-
-    // Cant update id so this should be ok
     public Result<BeanModel> updateBean(BeanModel newBeanData) {
         return HttpHandler.newPostRequest(BASE_URL + UPDATE_ENDPOINT)
                           .map(request -> request.bearer(authToken))
@@ -103,7 +83,7 @@ public class BeanDataHandler {
     }
 
     public Result<List<BeanOriginModel>> requestAllOrigins() {
-        return basicGetQuery(ORIGIN_ENDPOINT, JsonParser::parseBeanOriginList);
+        return basicGetQuery(ORIGIN_FILTER, JsonParser::parseBeanOriginList);
     }
 
     public Result<List<BeanShapeModel>> requestAllShapes() {
@@ -126,22 +106,29 @@ public class BeanDataHandler {
                           .map(parseFunction);
     }
 
-
-    public void searchBeanByShape(String name, int i) {
-
+    public Result<BeanModelPage> searchBeanByShape(int shapeId) {
+        return genericSearch("?shapeId=" + shapeId);
     }
 
-    public void searchBeanByType(String name, int i) {
-
+    public Result<BeanModelPage> searchBeanByType(int typeId) {
+        return genericSearch("?typeId=" + typeId);
     }
 
-    public void searchBeanByColour(String name, int i) {
-
+    public Result<BeanModelPage> searchBeanByColour(int colourId) {
+        return genericSearch("?colourId=" + colourId);
     }
 
-    public void searchBeanByOrigin(String name, int i) {
-
+    public Result<BeanModelPage> searchBeanByOrigin(int originId) {
+        return genericSearch("?originId=" + originId);
     }
+
+    private Result<BeanModelPage> genericSearch(String text) {
+        return HttpHandler.newGetRequest(BASE_URL + FILTER + text)
+                          .map(request -> request.bearer(authToken))
+                          .mapToNew(HttpHandler.Request::sendString)
+                          .map(JsonParser::parsePagedBeanList);
+    }
+
 
     public Result<String> getWelcome() {
         return basicGetQuery(WELCOME, JsonParser::parseWelcome);

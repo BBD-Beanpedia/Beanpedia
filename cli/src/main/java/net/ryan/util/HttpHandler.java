@@ -1,7 +1,8 @@
 package net.ryan.util;
 
 import net.ryan.bean.JsonSerializable;
-import net.ryan.exception.Unauthorised;
+import net.ryan.exception.NotFoundException;
+import net.ryan.exception.UnauthorisedException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -80,10 +81,14 @@ public class HttpHandler {
             if (method != null) builder.method(method.name(), HttpRequest.BodyPublishers.noBody());
 
             try {
-                HttpResponse<T> res = CLIENT.send(builder.build(), responseBodyHandler);
+                final HttpRequest request = builder.build();
+                HttpResponse<T> res = CLIENT.send(request, responseBodyHandler);
                 int statusCode = res.statusCode();
                 if (statusCode == 200) return Result.success(res.body());
-                else return Result.fail("Http Error code " + statusCode, new Unauthorised("Please login"));
+                else if (statusCode == 404) {
+                    return Result.fail(new NotFoundException("Http Error code " + statusCode + "Please login"));
+                } else
+                    return Result.fail(new UnauthorisedException("Http Error code: " + statusCode + "\t" + request.uri() + " Not found"));
             } catch (IOException | InterruptedException e) {
                 return Result.fail(e);
             }

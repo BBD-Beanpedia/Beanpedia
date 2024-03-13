@@ -11,8 +11,6 @@ public class Result<S> implements Supplier<S> {
     private final Exception exception;
     private final S supplier;
 
-    private String errorMessageDetails;
-
     private Result(Exception e, S s) {
         this.exception = e;
         this.supplier = s;
@@ -25,13 +23,6 @@ public class Result<S> implements Supplier<S> {
     public static <S> Result<S> fail(Exception e) {
         return new Result<>(Objects.requireNonNull(e), null);
     }
-
-    public static <S> Result<S> fail(String errorMessageDetails, Exception e) {
-        Result<S> result = new Result<>(Objects.requireNonNull(e), null);
-        result.errorMessageDetails = errorMessageDetails;
-        return result;
-    }
-
 
     public Result<S> ifSuccess(Consumer<S> consumer) {
         if (isSuccess()) consumer.accept(supplier);

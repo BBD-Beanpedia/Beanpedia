@@ -28,12 +28,12 @@ public class InputUtils {
             final String line = bufferedReader.readLine();
             return Result.from(() -> conversionFunction.apply(line));
         } catch (IOException e) {
-            return Result.fail("Unable to read input from ", e);
+            return Result.fail(e);
         }
     }
 
     public Result<Integer> readIntFromConsole() {
-        return readFromConsoleToType(Integer::parseInt).mapError(exception -> Result.fail("Unable to parse string to integer.", exception));
+        return readFromConsoleToType(Integer::parseInt).mapError(exception -> Result.fail(exception));
     }
 
     public Result<String> readStringFromConsoleDirect() {
@@ -58,12 +58,12 @@ public class InputUtils {
 
     public Result<Double> readDoubleFromConsole() {
         return readFromConsoleToType(Double::parseDouble).mapDirect(this::nonNumberTypesMapper)
-                                                         .mapError(exception -> Result.fail("Unable to parse string as double", exception));
+                                                         .mapError(exception -> Result.fail(exception));
     }
 
     private Result<Integer> notInRangeMapper(int givenNum, int start, int end) {
         if (givenNum < start || givenNum > end)
-            return Result.fail("", new Exception(String.format("%d is not in the range [%d-%d]", givenNum, start, end)));
+            return Result.fail(new Exception(String.format("%d is not in the range [%d-%d]", givenNum, start, end)));
         else return Result.success(givenNum);
     }
 
@@ -75,7 +75,7 @@ public class InputUtils {
 
     private Result<String> foundInStrings(String input, List<String> list) {
         if (!list.contains(input))
-            return Result.fail(String.format("%s is not found in %s", input, list), new Exception("String not in array"));
+            return Result.fail(new Exception("String not in array"));
         else return Result.success(input);
     }
 

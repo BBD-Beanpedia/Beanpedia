@@ -7,7 +7,7 @@ import net.ryan.util.Result;
 public class Main {
     public static void main(String[] args) {
 
-        BeanDataHandler.getInstance()
+       /* BeanDataHandler.getInstance()
                        .requestListBeans()
                        .ifSuccess(beanModels -> beanModels.forEach(model -> System.out.println(model.toString())));
 
@@ -26,7 +26,7 @@ public class Main {
                        System.out.printf("Unable to make call %s, %s\n", e.getMessage(), e.getCause());
                    })
                    .ifSuccess(System.out::println);
-
+*/
 
 //        System.out.println("Welcome to the Bean Encyclopedia CLI!");
 

@@ -1,5 +1,7 @@
 package net.ryan.cli;
 
+import net.ryan.bean.BeanModelFull;
+import net.ryan.bean.BeanModelPage;
 import net.ryan.util.BeanDataHandler;
 import net.ryan.util.DisplayHelper;
 import net.ryan.util.InputUtils;
@@ -9,7 +11,8 @@ import net.ryan.util.Result;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class CliFilterOption implements CliOption {
@@ -41,8 +44,6 @@ public class CliFilterOption implements CliOption {
 
         final Map<Integer, BeanProps> beanPropsMap = MapUtils.listToMap(Arrays.stream(BeanProps.values())
                                                                               .toList());
-
-
         beanPropsMap.forEach(DisplayHelper::displayOption);
 
         InputUtils.getInstance()
@@ -53,15 +54,16 @@ public class CliFilterOption implements CliOption {
 
     private void showBeanOptionSelection(BeanProps beanProps) {
         final BeanDataHandler dataHandler = BeanDataHandler.getInstance();
+        System.out.println("Please select from the list below to filter by " + beanProps.getName() + ": ");
         switch (beanProps) {
             case ORIGIN -> showOptionsAndSearch(dataHandler::requestAllOrigins, dataHandler::searchBeanByOrigin);
-            case SHAPE -> showOptionsAndSearch(dataHandler::requestAllTypes, dataHandler::searchBeanByShape);
+            case SHAPE -> showOptionsAndSearch(dataHandler::requestAllShapes, dataHandler::searchBeanByShape);
             case TYPE -> showOptionsAndSearch(dataHandler::requestAllTypes, dataHandler::searchBeanByType);
             case COLOUR -> showOptionsAndSearch(dataHandler::requestAllColours, dataHandler::searchBeanByColour);
         }
     }
 
-    private <T extends Nameable> void showOptionsAndSearch(Supplier<Result<List<T>>> requestSupplier, BiConsumer<String, Integer> searchFunction) {
+    private <T extends Nameable & Identifiable> void showOptionsAndSearch(Supplier<Result<List<T>>> requestSupplier, Function<Integer, Result<BeanModelPage>> searchFunction) {
         requestSupplier.get()
                        .map(MapUtils::listToMap)
                        .ifError(e -> failedToMakeNetworkCall(() -> showOptionsAndSearch(requestSupplier, searchFunction)))
@@ -69,11 +71,28 @@ public class CliFilterOption implements CliOption {
                            options.forEach(DisplayHelper::displayOption);
                            InputUtils.getInstance()
                                      .readIntRangeFromConsole(0, options.size())
+                                     .map(x -> x - 1)
                                      .map(options::get)
-                                     .ifSuccess(beanOriginModel -> searchFunction.accept(beanOriginModel.getName(), 0))
+                                     .ifSuccess(x -> searchFilter(x, searchFunction))
                                      .ifError(e -> failedToMakeNetworkCall(() -> showOptionsAndSearch(requestSupplier, searchFunction)));
                        });
     }
+
+    private <T extends Identifiable> void searchFilter(T x, Function<Integer, Result<BeanModelPage>> searchFunction) {
+        searchFunction.apply(x.getId())
+                      .ifSuccess(modelFull -> {
+                          final Map<Integer, BeanModelFull> beanModelMap = modelFull.createBeanModelMap();
+                          beanModelMap.forEach(DisplayHelper::displayOption);
+                          //TODO: handle Input after
+
+                      })
+                      .ifError(e -> {
+                          //TODO: Error
+                          System.out.println("error ");
+                          System.out.println(e.getMessage());
+                      });
+    }
+
 
     private void failedToMakeNetworkCall(Runnable reRun) {
         System.out.println("Failed to make network call, please try again later");
@@ -82,5 +101,6 @@ public class CliFilterOption implements CliOption {
                   .readStringFromConsoleLowerCase();
         reRun.run();
     }
+
 
 }

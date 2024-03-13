@@ -13,6 +13,7 @@ public class JsonParser {
         //"BeanId":(\d+),"BeanName":"(.*?)","ScientificName":"(.*?)","BeanContent":"(.*?)","OriginId":(\d+),"TypeId":(\d+),"ShapeId":(\d+),"ColourId":(\d+)
         String regex = "\"BeanId\":(\\d+),\"BeanName\":\"(.*?)\",\"ScientificName\":\"(.*?)\",\"BeanContent\":\"(.*?)\",\"OriginId\":(\\d+),\"TypeId\":(\\d+),\"ShapeId\":(\\d+),\"ColourId\":(\\d+)";
         final Pattern pattern = Pattern.compile(regex);
+        final Pattern pagePattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(json);
         final List<BeanModel> beanModels = new ArrayList<>();
         while (matcher.find()) {
@@ -36,27 +37,65 @@ public class JsonParser {
         return null;
     }
 
-    public static Pair<Integer, List<ShortBeanModel>> parsePagedBeanList(String string) {
-        return null;
+    public static BeanModelPage parsePagedBeanList(String json) {
+        List<BeanModelFull> list = new ArrayList<>();
+        int totalPages;
+        final Pattern pagePattern = Pattern.compile("\"totalPages\":(\\d+)");
+        final Matcher pageMatcher = pagePattern.matcher(json);
+        if (pageMatcher.find()) {
+            totalPages = Integer.parseInt(pageMatcher.group(1));
+        } else {
+            totalPages = 0;
+        }
+        final Pattern beanPattern = Pattern.compile("\"beanName\":\\s*\"(?<beanName>[^\"]+)\",\\s*" + "\"scientificName\":\\s*\"(?<scientificName>[^\"]+)\",\\s*" + "\"content\":\\s*\"(?<content>[^\"]+)\",\\s*" + "\"origin\":\\s*\"(?<origin>[^\"]+)\",\\s*" + "\"type\":\\s*\"(?<type>[^\"]+)\",\\s*" + "\"shape\":\\s*\"(?<shape>[^\"]+)\",\\s*" + "\"colour\":\\s*\"(?<colour>[^\"]+)\"");
+        final Matcher matcher = beanPattern.matcher(json);
+
+        while (matcher.find()) {
+            list.add(new BeanModelFull(matcher.group("beanName"), matcher.group("scientificName"), matcher.group("content"), matcher.group("origin"), matcher.group("type"), matcher.group("shape"), matcher.group("colour")));
+        }
+
+        return new BeanModelPage(list, totalPages);
     }
 
     public static List<BeanOriginModel> parseBeanOriginList(String json) {
-        return null;
+        final Pattern originPattern = Pattern.compile("\"originId\":\\s*(?<originId>\\d+),\\s*" + "\"origin\":\\s*\"(?<origin>[^\"]+)\"");
+        List<BeanOriginModel> list = new ArrayList<>();
+        final Matcher matcher = originPattern.matcher(json);
+        while (matcher.find()) {
+            list.add(new BeanOriginModel(Integer.parseInt(matcher.group("originId")), matcher.group("origin")));
+        }
+        return list;
     }
 
-    public static List<BeanTypeModel> parseBeanType(String string) {
-        return null;
+    public static List<BeanTypeModel> parseBeanType(String json) {
+        final Pattern originPattern = Pattern.compile("\"typeId\":\\s*(?<typeId>\\d+),\\s*" + "\"beanType\":\\s*\"(?<beanType>[^\"]+)\",\\s*" + "\"description\":\\s*\"(?<description>[^\"]+)\"");
+        List<BeanTypeModel> list = new ArrayList<>();
+        final Matcher matcher = originPattern.matcher(json);
+        while (matcher.find()) {
+            list.add(new BeanTypeModel(Integer.parseInt(matcher.group("typeId")), matcher.group("beanType"), matcher.group("description")));
+        }
+        return list;
     }
 
-    public static List<BeanColourModel> parseBeanColourList(String string) {
-        return null;
+    public static List<BeanColourModel> parseBeanColourList(String json) {
+        final Pattern originPattern = Pattern.compile("\"colourId\":\\s*(?<colourId>\\d+),\\s*" + "\"colour\":\\s*\"(?<colour>[^\"]+)\",\\s*" + "\"description\":\\s*\"(?<description>[^\"]+)\"");
+        List<BeanColourModel> list = new ArrayList<>();
+        final Matcher matcher = originPattern.matcher(json);
+        while (matcher.find()) {
+            list.add(new BeanColourModel(Integer.parseInt(matcher.group("colourId")), matcher.group("colour"), matcher.group("description")));
+        }
+        return list;
     }
 
-    public static List<BeanShapeModel> parseBeanShapeList(String string) {
-        //TODO: Use regex to parse the json { 'a':'b' }
+    public static List<BeanShapeModel> parseBeanShapeList(String json) {
+        final Pattern originPattern = Pattern.compile("\"shapeId\":\\s*(?<shapeId>\\d+),\\s*" + "\"shape\":\\s*\"(?<shape>[^\"]+)\",\\s*" + "\"description\":\\s*\"(?<description>[^\"]+)\"");
+        List<BeanShapeModel> list = new ArrayList<>();
+        final Matcher matcher = originPattern.matcher(json);
+        while (matcher.find()) {
+            list.add(new BeanShapeModel(Integer.parseInt(matcher.group("shapeId")), matcher.group("shape"), matcher.group("description")));
+        }
 
-
-        return null;
+        return list;
     }
 
     public static String parseWelcome(String string) {
