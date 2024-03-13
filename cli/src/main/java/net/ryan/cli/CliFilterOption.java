@@ -85,6 +85,10 @@ public class CliFilterOption implements CliOption {
                       });
     }
 
+    private void handleDisplayData() {
+
+    }
+
 
     private void failedToMakeNetworkCall(Runnable reRun) {
         System.out.println("Failed to make network call, please try again later");
