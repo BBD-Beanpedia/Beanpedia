@@ -47,8 +47,7 @@ public class CliFilterOption implements CliOption {
         beanPropsMap.forEach(DisplayHelper::displayOption);
 
         InputUtils.getInstance()
-                  .readIntRangeFromConsole(0, beanPropsMap.size())
-                  .map(choice -> beanPropsMap.get(choice - 1))
+                  .readMapChoiceRangeFromConsole(beanPropsMap)
                   .ifSuccess(this::showBeanOptionSelection);
     }
 
@@ -70,9 +69,7 @@ public class CliFilterOption implements CliOption {
                        .ifSuccess(options -> {
                            options.forEach(DisplayHelper::displayOption);
                            InputUtils.getInstance()
-                                     .readIntRangeFromConsole(0, options.size())
-                                     .map(x -> x - 1)
-                                     .map(options::get)
+                                     .readMapChoiceRangeFromConsole(options)
                                      .ifSuccess(x -> searchFilter(x, searchFunction))
                                      .ifError(e -> failedToMakeNetworkCall(() -> showOptionsAndSearch(requestSupplier, searchFunction)));
                        });

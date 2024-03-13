@@ -31,12 +31,6 @@ public class JsonParser {
         return beanModels;
     }
 
-    public static BeanModel parseBeanDetail(String json) {
-        //Use regex to parse the json {}
-
-        return null;
-    }
-
     public static BeanModelPage parsePagedBeanList(String json) {
         List<BeanModelFull> list = new ArrayList<>();
         int totalPages;

@@ -19,6 +19,7 @@ public class CliUpdateOption implements CliOption {
 
     @Override
     public void run() {
+
         System.out.println("---Update existing bean---");
         // TODO: pass in a bean to update
         ShortBeanModel model = new ShortBeanModel(1, "");
@@ -27,15 +28,12 @@ public class CliUpdateOption implements CliOption {
         final Map<Integer, UpdateOption> updateOptions = MapUtils.listToMap(Arrays.stream(UpdateOption.values())
                                                                                   .toList());
         updateOptions.forEach(DisplayHelper::displayOption);
-//        BeanModel beanModel = new BeanModel(1, "Bean 1", "bean sci", "wow data", Integer.parseInt(originId), Integer.parseInt(typeId), Integer.parseInt(shapeId), Integer.parseInt(colourId));
-//        getInputFromOptions(updateOptions, beanModel);
 
     }
 
     private void getInputFromOptions(Map<Integer, UpdateOption> updateOptions, BeanModel beanModel) {
         InputUtils.getInstance()
-                  .readIntRangeFromConsole(0, updateOptions.size())
-                  .map(choice -> updateOptions.get(choice - 1))
+                  .readMapChoiceRangeFromConsole(updateOptions)
                   .ifSuccess(updateOptionSelected -> handleSelection(updateOptions, updateOptionSelected, beanModel))
                   .ifError(e -> {
                       System.out.println("Error: Unable to read int from console, " + e.getMessage());
@@ -74,6 +72,12 @@ public class CliUpdateOption implements CliOption {
                           .ifSuccess(beanModel::setContent);
             }
             case ORIGIN -> {
+                System.out.println("Current Bean Origin: " + beanModel.getContent());
+        /*        InputUtils.getInstance()
+                          .readStringFromConsoleDirect()
+                          .ifError(e -> System.out.println("Unable to read string from console"))
+                          .ifSuccess(beanModel::setOrigin);*/
+
             }
             case TYPE -> {
 
@@ -84,12 +88,13 @@ public class CliUpdateOption implements CliOption {
             case COLOUR -> {
 
             }
-            case FINISH -> BeanDataHandler.getInstance()
+            case FINISH -> {
+            }/* BeanDataHandler.getInstance()
                                           .updateBean(beanModel)
                                           .ifError(e -> {
                                               System.out.printf("Error updating bean type: %s message: %s\n", e.getCause(), e.getMessage());
                                           })
-                                          .ifSuccess(s -> System.out.println("Bean Updated Successfully"));
+                                          .ifSuccess(s -> System.out.println("Bean Updated Successfully"));*/
         }
 
     }

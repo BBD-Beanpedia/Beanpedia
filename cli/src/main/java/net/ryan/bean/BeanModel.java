@@ -35,6 +35,8 @@ public final class BeanModel implements JsonSerializable {
                 """, beanId, beanName, scientificName, content);
     }
 
+
+
     public int getBeanId() {
         return beanId;
     }

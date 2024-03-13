@@ -37,8 +37,7 @@ public class CliOptionHelper {
 
     public void getInputInRange() {
         InputUtils.getInstance()
-                  .readIntRangeFromConsole(1, cliOptions.size())
-                  .map(num -> cliOptions.get(num - 1))
+                  .readMapChoiceRangeFromConsole(cliOptions)
                   .ifSuccess(CliOption::run)
                   .ifError(error -> {
                       System.out.println("Error: Unrecognized command " + error.getMessage());

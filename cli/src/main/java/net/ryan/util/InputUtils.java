@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -33,7 +34,7 @@ public class InputUtils {
     }
 
     public Result<Integer> readIntFromConsole() {
-        return readFromConsoleToType(Integer::parseInt).mapError(exception -> Result.fail(exception));
+        return readFromConsoleToType(Integer::parseInt).mapError(Result::fail);
     }
 
     public Result<String> readStringFromConsoleDirect() {
@@ -48,17 +49,9 @@ public class InputUtils {
         return readIntFromConsole().mapDirect(num -> notInRangeMapper(num, start, end));
     }
 
-    public Result<String> readStringFromConsoleInArray(List<String> list) {
-        return readStringFromConsoleLowerCase().mapDirect(item -> foundInStrings(item, list));
-    }
-
-    public Result<String> readStringFromConsoleInArray(int start, int end, List<String> list) {
-        return readStringFromConsoleLowerCase().mapDirect(item -> foundInStrings(item, list));
-    }
-
-    public Result<Double> readDoubleFromConsole() {
-        return readFromConsoleToType(Double::parseDouble).mapDirect(this::nonNumberTypesMapper)
-                                                         .mapError(exception -> Result.fail(exception));
+    public <T> Result<T> readMapChoiceRangeFromConsole(Map<Integer, T> inputMap) {
+        return readIntRangeFromConsole(1, inputMap.size()).map(i -> i - 1)
+                                                          .map(inputMap::get);
     }
 
     private Result<Integer> notInRangeMapper(int givenNum, int start, int end) {
@@ -74,8 +67,7 @@ public class InputUtils {
     }
 
     private Result<String> foundInStrings(String input, List<String> list) {
-        if (!list.contains(input))
-            return Result.fail(new Exception("String not in array"));
+        if (!list.contains(input)) return Result.fail(new Exception("String not in array"));
         else return Result.success(input);
     }
 

@@ -75,11 +75,10 @@ public class CliCreateOption implements CliOption {
                  .map(data -> {
                      data.forEach(DisplayHelper::displayOption);
                      return InputUtils.getInstance()
-                                      .readIntRangeFromConsole(1, data.size())
+                                      .readMapChoiceRangeFromConsole(data)
                                       .ifError(e -> {
                                           // TODO: Error not in range somehow prompt
-                                      })
-                                      .map(data::get);
+                                      });
                  });
         return null;
     }

@@ -66,13 +66,13 @@ public class BeanDataHandler {
     }
 
 
-    public Result<BeanModel> updateBean(BeanModel newBeanData) {
+/*    public Result<BeanModel> updateBean(BeanModel newBeanData) {
         return HttpHandler.newPostRequest(BASE_URL + UPDATE_ENDPOINT)
                           .map(request -> request.bearer(authToken))
                           .map(request -> request.bodyJson(String.format("{\"beanData\":\"%s\"}", newBeanData.toJsonString())))
                           .mapToNew(HttpHandler.Request::sendString)
                           .map(JsonParser::parseBeanDetail);
-    }
+    }*/
 
     public final Result<Boolean> insertBean(BeanModel model) {
         return HttpHandler.newPostRequest(BASE_URL + INSERT_ENDPOINT)
