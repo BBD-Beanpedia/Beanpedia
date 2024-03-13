@@ -1,7 +1,9 @@
-package net.ryan.cli;
+package net.ryan.cli.options;
 
 import net.ryan.bean.BeanModelFull;
 import net.ryan.bean.BeanModelPage;
+import net.ryan.cli.Identifiable;
+import net.ryan.cli.Nameable;
 import net.ryan.util.*;
 
 import java.util.Arrays;

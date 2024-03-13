@@ -1,7 +1,8 @@
-package net.ryan.cli;
+package net.ryan.cli.options;
 
 import net.ryan.bean.BeanModelFull;
 import net.ryan.bean.BeanModelPage;
+import net.ryan.cli.UpdateBeanDisplay;
 import net.ryan.util.BeanDataHandler;
 import net.ryan.util.DisplayHelper;
 import net.ryan.util.InputUtils;
@@ -89,6 +90,19 @@ public class CliViewOption implements CliOption {
 
         InputUtils.getInstance()
                   .readIntFromConsole();
+        System.out.println("Enter 'edit' to update bean or 'menu' to return to main menu");
+        InputUtils.getInstance()
+                  .readStringFromConsoleLowerCase()
+                  .ifSuccess(s -> {
+                      if (s.equals("edit")) {
+                          // TODO: update bean
+                          UpdateBeanDisplay.show(modelFull);
+                      } else if (s.equals("menu")) {
+                          // TODO: back to cli
+
+                      }
+                  });
+
 
     }
 

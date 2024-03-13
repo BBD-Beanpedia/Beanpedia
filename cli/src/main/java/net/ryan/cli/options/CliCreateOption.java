@@ -1,5 +1,6 @@
-package net.ryan.cli;
+package net.ryan.cli.options;
 
+import net.ryan.cli.Nameable;
 import net.ryan.util.DisplayHelper;
 import net.ryan.util.InputUtils;
 import net.ryan.util.MapUtils;

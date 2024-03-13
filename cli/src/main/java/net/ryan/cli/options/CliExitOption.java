@@ -1,4 +1,4 @@
-package net.ryan.cli;
+package net.ryan.cli.options;
 
 public class CliExitOption implements CliOption {
 

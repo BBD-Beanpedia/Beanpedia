@@ -1,6 +1,6 @@
 package net.ryan;
 
-import net.ryan.cli.*;
+import net.ryan.cli.options.*;
 import net.ryan.util.InputUtils;
 import net.ryan.util.MapUtils;
 

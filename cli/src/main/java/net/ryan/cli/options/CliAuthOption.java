@@ -1,4 +1,4 @@
-package net.ryan.cli;
+package net.ryan.cli.options;
 
 import net.ryan.bean.GithubAuthDeviceModel;
 import net.ryan.util.BeanDataHandler;
