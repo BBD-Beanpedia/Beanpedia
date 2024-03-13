@@ -24,14 +24,11 @@ public class UpdateBeanDisplay {
     }
 
     private static void getMapInput(BeanModelFull modelFull, Map<Integer, UpdateField> updateFieldMap) {
-        //TODO:
-        /*   InputUtils.getInstance()
-                  .readMapChoiceRangeFromConsole(updateFieldMap)
-                  .ifSuccess(handleSelection(modelFull))
-                  .ifError((e) -> {
-                      System.out.println("Error: " + e.getMessage() + " please try again.");
-                      getMapInput(modelFull, updateFieldMap);
-                  });*/
+
+        InputUtils.getInstance()
+                  .runMenuFunction(updateFieldMap, List.of(PaginationField.MENU), handleSelection(modelFull), (s) -> {
+                      //TODO: menu
+                  });
     }
 
     private static Consumer<UpdateField> handleSelection(BeanModelFull beanModel) {
@@ -86,11 +83,11 @@ public class UpdateBeanDisplay {
             //TODO:
             System.out.println("Select from the following options: ");
             input.forEach(DisplayHelper::displayOption);
-         /*   InputUtils.getInstance()
+            InputUtils.getInstance()
                       .readMapChoiceRangeFromConsole(input)
                       .map(Nameable::getName)
                       .ifSuccess(updateFunction)
-                      .ifError(e -> System.out.println("Error:" + e.getMessage()));*/
+                      .ifError(e -> System.out.println("Error:" + e.getMessage()));
         };
     }
 }
