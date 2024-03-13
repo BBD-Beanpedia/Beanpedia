@@ -17,7 +17,7 @@ public class InputUtils {
     }
 
     public static InputUtils getInstance() {
-
+        //noinspection StatementWithEmptyBody
         if (inputUtils == null) inputUtils = new InputUtils(new BufferedReader(new InputStreamReader(System.in)));
         else { /* NO-OPP */}
         return inputUtils;

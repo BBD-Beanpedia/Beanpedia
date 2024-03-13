@@ -5,11 +5,14 @@ import net.ryan.bean.*;
 import java.util.List;
 import java.util.function.Function;
 
+// Cool somehow IntelliJ sees lombok being used even though it is not in gradle project.
+@SuppressWarnings("LombokGetterMayBeUsed")
 public class BeanDataHandler {
 
     private static BeanDataHandler instance;
 
     public static BeanDataHandler getInstance() {
+        //noinspection StatementWithEmptyBody
         if (instance == null) instance = new BeanDataHandler();
         else {/*NO-OPP*/}
         return instance;

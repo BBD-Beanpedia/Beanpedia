@@ -1,6 +1,5 @@
 package net.ryan.cli;
 
-import net.ryan.util.BeanDataHandler;
 import net.ryan.bean.BeanModel;
 import net.ryan.bean.ShortBeanModel;
 import net.ryan.util.DisplayHelper;

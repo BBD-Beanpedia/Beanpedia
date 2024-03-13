@@ -1,9 +1,5 @@
 package net.ryan;
 
-import net.ryan.util.BeanDataHandler;
-import net.ryan.util.HttpHandler;
-import net.ryan.util.Result;
-
 public class Main {
     public static void main(String[] args) {
 

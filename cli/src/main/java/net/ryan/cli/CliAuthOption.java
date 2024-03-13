@@ -3,7 +3,6 @@ package net.ryan.cli;
 import net.ryan.bean.GithubAuthDeviceModel;
 import net.ryan.util.BeanDataHandler;
 
-import java.io.Console;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;

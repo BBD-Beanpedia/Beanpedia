@@ -3,11 +3,9 @@ package net.ryan.cli;
 import net.ryan.bean.BeanModelFull;
 import net.ryan.bean.BeanModelPage;
 import net.ryan.util.BeanDataHandler;
-import net.ryan.bean.ShortBeanModel;
 import net.ryan.util.DisplayHelper;
 import net.ryan.util.InputUtils;
 import net.ryan.util.MapUtils;
-import net.ryan.util.Pair;
 
 import java.util.Map;
 

@@ -2,16 +2,11 @@ package net.ryan.cli;
 
 import net.ryan.bean.BeanModelFull;
 import net.ryan.bean.BeanModelPage;
-import net.ryan.util.BeanDataHandler;
-import net.ryan.util.DisplayHelper;
-import net.ryan.util.InputUtils;
-import net.ryan.util.MapUtils;
-import net.ryan.util.Result;
+import net.ryan.util.*;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 

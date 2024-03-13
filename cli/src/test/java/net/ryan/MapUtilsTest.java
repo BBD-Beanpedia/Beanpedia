@@ -2,11 +2,11 @@ package net.ryan.util;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MapUtilsTest {
 
