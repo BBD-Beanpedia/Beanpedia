@@ -109,20 +109,20 @@ public class BeanDataHandler {
                           .map(parseFunction);
     }
 
-    public Result<BeanModelPage> searchBeanByShape(int shapeId) {
-        return genericSearch("?shapeId=" + shapeId);
+    public Result<BeanModelPage> searchBeanByShape(FilterPageModel filterPageModel) {
+        return genericSearch("?shapeId=%d&page=%d".formatted(filterPageModel.id(), filterPageModel.page()));
     }
 
-    public Result<BeanModelPage> searchBeanByType(int typeId) {
-        return genericSearch("?typeId=" + typeId);
+    public Result<BeanModelPage> searchBeanByType(FilterPageModel filterPageModel) {
+        return genericSearch("?typeId=%d&page=%d".formatted(filterPageModel.id(), filterPageModel.page()));
     }
 
-    public Result<BeanModelPage> searchBeanByColour(int colourId) {
-        return genericSearch("?colourId=" + colourId);
+    public Result<BeanModelPage> searchBeanByColour(FilterPageModel filterPageModel) {
+        return genericSearch("?colourId=%d&page=%d".formatted(filterPageModel.id(), filterPageModel.page()));
     }
 
-    public Result<BeanModelPage> searchBeanByOrigin(int originId) {
-        return genericSearch("?originId=" + originId);
+    public Result<BeanModelPage> searchBeanByOrigin(FilterPageModel filterPageModel) {
+        return genericSearch("?originId=%d&page=%d".formatted(filterPageModel.id(), filterPageModel.page()));
     }
 
     private Result<BeanModelPage> genericSearch(String text) {
@@ -161,5 +161,12 @@ public class BeanDataHandler {
                    .mapToNew(HttpHandler.Request::sendJson);
 
 
+    }
+
+    public Result<Void> updateBean(BeanModelFull beanModel) {
+        return HttpHandler.newPostRequest(GITHUB_AUTH + GITHUB_POLL)
+                          .map(request -> request.bearer(authToken))
+                          .mapToNew(HttpHandler.Request::sendString)
+                          .map(_r -> null);
     }
 }

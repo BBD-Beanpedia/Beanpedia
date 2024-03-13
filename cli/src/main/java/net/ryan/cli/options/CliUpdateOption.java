@@ -1,3 +1,4 @@
+/*
 package net.ryan.cli.options;
 
 import net.ryan.bean.BeanModel;
@@ -73,10 +74,12 @@ public class CliUpdateOption implements CliOption {
             }
             case ORIGIN -> {
                 System.out.println("Current Bean Origin: " + beanModel.getContent());
-        /*        InputUtils.getInstance()
+        */
+/*        InputUtils.getInstance()
                           .readStringFromConsoleDirect()
                           .ifError(e -> System.out.println("Unable to read string from console"))
-                          .ifSuccess(beanModel::setOrigin);*/
+                          .ifSuccess(beanModel::setOrigin);*//*
+
 
             }
             case TYPE -> {
@@ -89,12 +92,14 @@ public class CliUpdateOption implements CliOption {
 
             }
             case FINISH -> {
-            }/* BeanDataHandler.getInstance()
+            }*/
+/* BeanDataHandler.getInstance()
                                           .updateBean(beanModel)
                                           .ifError(e -> {
                                               System.out.printf("Error updating bean type: %s message: %s\n", e.getCause(), e.getMessage());
                                           })
-                                          .ifSuccess(s -> System.out.println("Bean Updated Successfully"));*/
+                                          .ifSuccess(s -> System.out.println("Bean Updated Successfully"));*//*
+
         }
 
     }
@@ -115,4 +120,4 @@ public class CliUpdateOption implements CliOption {
         }
     }
 
-}
+}*/

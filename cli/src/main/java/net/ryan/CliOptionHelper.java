@@ -17,7 +17,6 @@ public class CliOptionHelper {
                 new CliSearchOption(),
                 new CliFilterOption(),
                 new CliCreateOption(),
-                new CliUpdateOption(),
                 new CliAuthOption(),
                 new CliExitOption());
         return new CliOptionHelper(MapUtils.listToMap(options));

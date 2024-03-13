@@ -2,8 +2,11 @@ package net.ryan.cli.options;
 
 import net.ryan.bean.BeanModelFull;
 import net.ryan.bean.BeanModelPage;
+import net.ryan.bean.FilterPageModel;
+import net.ryan.cli.BeanDisplay;
 import net.ryan.cli.Identifiable;
 import net.ryan.cli.Nameable;
+import net.ryan.cli.PaginationField;
 import net.ryan.util.*;
 
 import java.util.Arrays;
@@ -39,47 +42,49 @@ public class CliFilterOption implements CliOption {
         System.out.println("---Filter---");
         System.out.println("What would you like to filter by?");
 
-        final Map<Integer, BeanProps> beanPropsMap = MapUtils.listToMap(Arrays.stream(BeanProps.values())
-                                                                              .toList());
+        final List<BeanProps> list = Arrays.stream(BeanProps.values())
+                                           .toList();
+        final Map<Integer, BeanProps> beanPropsMap = MapUtils.listToMap(list);
         beanPropsMap.forEach(DisplayHelper::displayOption);
 
+        System.out.println("Enter number in range or enter 'menu' to return to main menu.");
         InputUtils.getInstance()
-                  .readMapChoiceRangeFromConsole(beanPropsMap)
-                  .ifSuccess(this::showBeanOptionSelection);
+                  .runMenuFunction(beanPropsMap, List.of(PaginationField.MENU), this::showBeanOptionSelection, this::menu);
+    }
+
+    private void menu(PaginationField paginationField) {
+        System.out.println("Returning to main menu...");
     }
 
     private void showBeanOptionSelection(BeanProps beanProps) {
         final BeanDataHandler dataHandler = BeanDataHandler.getInstance();
         System.out.println("Please select from the list below to filter by " + beanProps.getName() + ": ");
         switch (beanProps) {
-            case ORIGIN -> showOptionsAndSearch(dataHandler::requestAllOrigins, dataHandler::searchBeanByOrigin);
-            case SHAPE -> showOptionsAndSearch(dataHandler::requestAllShapes, dataHandler::searchBeanByShape);
-            case TYPE -> showOptionsAndSearch(dataHandler::requestAllTypes, dataHandler::searchBeanByType);
-            case COLOUR -> showOptionsAndSearch(dataHandler::requestAllColours, dataHandler::searchBeanByColour);
+            case ORIGIN -> showOptionsAndSearch(0, dataHandler::requestAllOrigins, dataHandler::searchBeanByOrigin);
+            case SHAPE -> showOptionsAndSearch(0, dataHandler::requestAllShapes, dataHandler::searchBeanByShape);
+            case TYPE -> showOptionsAndSearch(0, dataHandler::requestAllTypes, dataHandler::searchBeanByType);
+            case COLOUR -> showOptionsAndSearch(0, dataHandler::requestAllColours, dataHandler::searchBeanByColour);
         }
     }
 
-    private <T extends Nameable & Identifiable> void showOptionsAndSearch(Supplier<Result<List<T>>> requestSupplier, Function<Integer, Result<BeanModelPage>> searchFunction) {
+    private <T extends Nameable & Identifiable> void showOptionsAndSearch(int pageNum, Supplier<Result<List<T>>> requestSupplier, Function<FilterPageModel, Result<BeanModelPage>> searchFunction) {
+        //TODO:
+
         requestSupplier.get()
                        .map(MapUtils::listToMap)
-                       .ifError(e -> failedToMakeNetworkCall(() -> showOptionsAndSearch(requestSupplier, searchFunction)))
+                       .ifError(e -> failedToMakeNetworkCall(() -> showOptionsAndSearch(pageNum, requestSupplier, searchFunction)))
                        .ifSuccess(options -> {
                            options.forEach(DisplayHelper::displayOption);
                            InputUtils.getInstance()
                                      .readMapChoiceRangeFromConsole(options)
-                                     .ifSuccess(x -> searchFilter(x, searchFunction))
-                                     .ifError(e -> failedToMakeNetworkCall(() -> showOptionsAndSearch(requestSupplier, searchFunction)));
+                                     .ifSuccess(beanFilterModel -> searchFilter(pageNum, beanFilterModel, searchFunction))
+                                     .ifError(e -> failedToMakeNetworkCall(() -> showOptionsAndSearch(pageNum, requestSupplier, searchFunction)));
                        });
     }
 
-    private <T extends Identifiable> void searchFilter(T x, Function<Integer, Result<BeanModelPage>> searchFunction) {
-        searchFunction.apply(x.getId())
-                      .ifSuccess(modelFull -> {
-                          final Map<Integer, BeanModelFull> beanModelMap = modelFull.createBeanModelMap();
-                          beanModelMap.forEach(DisplayHelper::displayOption);
-                          //TODO: handle Input after
-
-                      })
+    private <T extends Identifiable> void searchFilter(int pageNum, T beanFilterModel, Function<FilterPageModel, Result<BeanModelPage>> searchFunction) {
+        searchFunction.apply(new FilterPageModel(beanFilterModel.getId(), pageNum))
+                      .ifSuccess(page -> displayBeans(pageNum, beanFilterModel, searchFunction, page))
                       .ifError(e -> {
                           //TODO: Error
                           System.out.println("error ");
@@ -87,7 +92,17 @@ public class CliFilterOption implements CliOption {
                       });
     }
 
-    private void handleDisplayData() {
+    private <T extends Identifiable> void displayBeans(int givenPage, T beanFilterModel, Function<FilterPageModel, Result<BeanModelPage>> searchFunction, BeanModelPage pageBeanList) {
+        BeanDisplay.handleDisplayBeansPaginated(givenPage, pageBeanList, (f) -> handlePage(f, beanFilterModel, searchFunction, givenPage), BeanDisplay::showBean);
+    }
+
+    private <T extends Identifiable> void handlePage(PaginationField f, T beanFilterModel, Function<FilterPageModel, Result<BeanModelPage>> searchFunction, int givenPage) {
+        switch (f) {
+            case NEXT -> searchFilter(givenPage + 1, beanFilterModel, searchFunction);
+            case PREVIOUS -> searchFilter(givenPage - 1, beanFilterModel, searchFunction);
+            case MENU -> System.out.println("Returning to main menu...");
+        }
+
 
     }
 

@@ -50,6 +50,9 @@ public class CliSearchOption implements CliOption {
         System.out.printf("Page %d of %d\n", givenPage + 1, totalPages);
         final Map<Integer, BeanModelFull> beanModelMap = MapUtils.listToMap(pageBeanList.beanList());
         beanModelMap.forEach(DisplayHelper::displayOption);
+
+
+
 //        promptForInput(givenPage, beanModelMap, totalPages);
     }
 
