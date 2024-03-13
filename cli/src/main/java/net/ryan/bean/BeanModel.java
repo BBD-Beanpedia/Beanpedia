@@ -9,9 +9,13 @@ public final class BeanModel implements JsonSerializable {
     private String scientificName;
     private String content;
     private final int originId;
+    private String origin;
     private final int typeId;
+    private String type;
     private final int shapeId;
+    private String shape;
     private final int colourId;
+    private  String colour;
 
     public BeanModel(int beanId, String beanName, String scientificName, String content, int originId, int typeId, int shapeId, int colourId) {
         this.beanId = beanId;
@@ -64,6 +68,23 @@ public final class BeanModel implements JsonSerializable {
     public void setContent(String content) {
         this.content = content;
     }
+
+    public String getOrigin(){return this.origin;}
+
+    public void setOrigin(String origin){this.origin = origin;}
+
+    public String getType(){return this.type;}
+
+    public void setType(String type){this.type = type;}
+
+    public String getShape(){return this.shape;}
+
+    public void setShape(String shape){this.shape = shape;}
+
+    public String getColour(){return this.colour;}
+
+    public void setColour(String colour){this.colour = colour;}
+
 
     @Override
     public boolean equals(Object obj) {
