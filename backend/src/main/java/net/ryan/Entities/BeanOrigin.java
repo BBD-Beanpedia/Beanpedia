@@ -10,10 +10,10 @@ public class BeanOrigin {
 
     @Id
     @Column(name = "\"OriginId\"")
-    Integer OriginId;
+    Integer originId;
 
     @Basic
     @Column(name = "\"Origin\"")
-    String Origin;
+    String origin;
 
 }

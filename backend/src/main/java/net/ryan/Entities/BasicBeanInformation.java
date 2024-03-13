@@ -10,34 +10,34 @@ public class BasicBeanInformation {
 
     @Id
     @Column(name = "\"BeanId\"")
-    Integer BeanID;
+    Integer beanId;
 
     @Basic
     @Column(name = "\"BeanName\"")
-    String BeanName;
+    String beanName;
 
     @Basic
     @Column(name = "\"ScientificName\"")
-    String ScientificName;
+    String scientificName;
 
     @Basic
     @Column(name = "\"BeanContent\"")
-    String BeanContent;
+    String beanContent;
 
     @Basic
     @Column(name = "\"OriginId\"")
-    Integer OriginId;
+    Integer originId;
 
     @Basic
     @Column(name = "\"TypeId\"")
-    Integer TypeId;
+    Integer typeId;
 
     @Basic
     @Column(name = "\"ShapeId\"")
-    Integer ShapeId;
+    Integer shapeId;
 
     @Basic
     @Column(name = "\"ColourId\"")
-    Integer ColourId;
+    Integer colourId;
 
 }

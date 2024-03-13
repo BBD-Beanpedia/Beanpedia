@@ -3,3 +3,5 @@ databaseChangeLog:
       file: sql/createScript.sql
   - include:
       file: sql/insertScript.sql
+  - include:
+      file: sql/updateScript.sql

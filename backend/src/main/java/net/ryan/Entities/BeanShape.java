@@ -9,14 +9,14 @@ import lombok.Data;
 public class BeanShape {
 
     @Id
-    @Column(name = "\"ShapeID\"")
-    Integer ShapeID;
+    @Column(name = "\"ShapeId\"")
+    Integer shapeId;
 
     @Basic
     @Column(name = "\"Shape\"")
-    String Shape;
+    String shape;
 
     @Basic
     @Column(name = "\"Description\"")
-    String Description;
+    String description;
 }
