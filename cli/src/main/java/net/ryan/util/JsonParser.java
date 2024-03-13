@@ -9,28 +9,6 @@ import java.util.regex.Pattern;
 
 public class JsonParser {
 
-    public static List<BeanModel> parseBean(String json) {
-        //"BeanId":(\d+),"BeanName":"(.*?)","ScientificName":"(.*?)","BeanContent":"(.*?)","OriginId":(\d+),"TypeId":(\d+),"ShapeId":(\d+),"ColourId":(\d+)
-        String regex = "\"BeanId\":(\\d+),\"BeanName\":\"(.*?)\",\"ScientificName\":\"(.*?)\",\"BeanContent\":\"(.*?)\",\"OriginId\":(\\d+),\"TypeId\":(\\d+),\"ShapeId\":(\\d+),\"ColourId\":(\\d+)";
-        final Pattern pattern = Pattern.compile(regex);
-        final Pattern pagePattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(json);
-        final List<BeanModel> beanModels = new ArrayList<>();
-        while (matcher.find()) {
-            final String beanId = matcher.group(1);
-            final String beanName = matcher.group(2);
-            final String beanContent = matcher.group(3);
-            final String beanScientificName = matcher.group(4);
-            final String originId = matcher.group(5);
-            final String typeId = matcher.group(6);
-            final String shapeId = matcher.group(7);
-            final String colourId = matcher.group(8);
-            beanModels.add(new BeanModel(Integer.parseInt(beanId), beanName, beanContent, beanScientificName, Integer.parseInt(originId), Integer.parseInt(typeId), Integer.parseInt(shapeId), Integer.parseInt(colourId)));
-        }
-
-        return beanModels;
-    }
-
     public static BeanModelPage parsePagedBeanList(String json) {
         List<BeanModelFull> list = new ArrayList<>();
         int totalPages;
