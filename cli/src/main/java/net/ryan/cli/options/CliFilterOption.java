@@ -102,8 +102,6 @@ public class CliFilterOption implements CliOption {
             case PREVIOUS -> searchFilter(givenPage - 1, beanFilterModel, searchFunction);
             case MENU -> System.out.println("Returning to main menu...");
         }
-
-
     }
 
 
