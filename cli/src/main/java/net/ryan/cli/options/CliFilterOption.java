@@ -55,7 +55,8 @@ public class CliFilterOption implements CliOption {
 
     private void menu(PaginationField paginationField) {
         System.out.println("Returning to main menu...");
-        CliOptionHelper.getInstance().show();
+        CliOptionHelper.getInstance()
+                       .show();
     }
 
     private void showBeanOptionSelection(BeanProps beanProps) {
@@ -72,7 +73,10 @@ public class CliFilterOption implements CliOption {
     private <T extends Nameable & Identifiable> void showOptionsAndSearch(int pageNum, Supplier<Result<List<T>>> requestSupplier, Function<FilterPageModel, Result<BeanModelPage>> searchFunction) {
         requestSupplier.get()
                        .map(MapUtils::listToMap)
-                       .ifError(e -> failedToMakeNetworkCall(() -> showOptionsAndSearch(pageNum, requestSupplier, searchFunction)))
+                       .ifError(e -> {
+                           e.printStackTrace();
+                           failedToMakeNetworkCall(() -> showOptionsAndSearch(pageNum, requestSupplier, searchFunction));
+                       })
                        .ifSuccess(options -> {
                            options.forEach(DisplayHelper::displayOption);
                            InputUtils.getInstance()

@@ -37,7 +37,8 @@ public class CliViewOption implements CliOption {
         switch (paginationField) {
             case NEXT -> showBeanPage(givenPage + 1);
             case PREVIOUS -> showBeanPage(givenPage - 1);
-            case MENU -> CliOptionHelper.getInstance().show();
+            case MENU -> CliOptionHelper.getInstance()
+                                        .show();
         }
     }
 

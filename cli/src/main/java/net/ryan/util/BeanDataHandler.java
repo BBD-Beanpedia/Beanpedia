@@ -146,7 +146,7 @@ public class BeanDataHandler {
         return HttpHandler.newPostRequest(GITHUB_AUTH + GITHUB_DEVICE)
                           .map(request -> request.bodyJsonReal("{\"client_id\": \"2f4dc8cbcebf01a1ae88\"}"))
                           .mapToNew(HttpHandler.Request::sendJson)
-                          .map(JsonParser::parseGithubAuth).ifError(e -> e.printStackTrace());
+                          .map(JsonParser::parseGithubAuth);
     }
 
     public Result<String> getGithubPoll(String deviceCode) {

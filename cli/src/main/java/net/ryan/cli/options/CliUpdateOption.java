@@ -13,7 +13,7 @@ import java.util.Map;
 public class CliUpdateOption implements CliOption {
 
     private BeanModel model;
-    private  Integer selection;
+    private Integer selection;
 
     @Override
     public String getName() {
@@ -39,15 +39,16 @@ public class CliUpdateOption implements CliOption {
 
         model.setSelection(Integer.toString(this.selection + 1));
 
-        if(BeanDataHandler.getInstance().updateBean(model.toJsonStringUpdate()).get()){
+        if (BeanDataHandler.getInstance()
+                           .updateBean(model.toJsonStringUpdate())
+                           .get()) {
             System.out.println("\n--Bean updated successfully!---");
             System.out.println("---Redirecting to Main Menu---\n");
 
             CliOptionHelper options = CliOptionHelper.getInstance();
             options.show();
 
-        }
-        else{
+        } else {
             System.out.println("\n--Bean update failed!---");
             System.out.println("--Please try again---");
             this.run();
@@ -58,34 +59,36 @@ public class CliUpdateOption implements CliOption {
     private void selectBean() {
         InputUtils.getInstance()
 
-                .readStringFromConsoleDirect()
-                .ifSuccess(searchTerm -> {
-                    if(searchTerm.equalsIgnoreCase("back")){
-                        System.out.println();
-                        CliOptionHelper options = CliOptionHelper.getInstance();
-                        options.show();
-                    }
-                    constructBeanModel(searchTerm);
-                })
-                .ifError(e -> {
-                    System.out.println("Error: Unable to read input from console, " + e.getMessage());
-                });
+                  .readStringFromConsoleDirect()
+                  .ifSuccess(searchTerm -> {
+                      if (searchTerm.equalsIgnoreCase("back")) {
+                          System.out.println();
+                          CliOptionHelper options = CliOptionHelper.getInstance();
+                          options.show();
+                      }
+                      constructBeanModel(searchTerm);
+                  })
+                  .ifError(e -> {
+                      System.out.println("Error: Unable to read input from console, " + e.getMessage());
+                  });
 
     }
 
     private void constructBeanModel(String searchTerm) {
 
         //Get the first bean that most closely matches the search term
-        List<BeanModelFull> modelFullList = BeanDataHandler.getInstance().searchBean(searchTerm, 0).get().beanList();
+        List<BeanModelFull> modelFullList = BeanDataHandler.getInstance()
+                                                           .searchBean(searchTerm, 0)
+                                                           .get()
+                                                           .beanList();
 
         BeanModelFull modelFull = null;
 
-        if(modelFullList.size() < 1){
+        if (modelFullList.size() < 1) {
             System.out.println("\n--The requested bean was not found!---");
             System.out.println("--Please try again---");
             this.run();
-        }
-        else {
+        } else {
             modelFull = modelFullList.getFirst();
         }
 
@@ -103,7 +106,7 @@ public class CliUpdateOption implements CliOption {
                   .readMapChoiceRangeFromConsole(updateOptions)
                   .ifSuccess(updateOptionSelected -> {
                       handleSelection(updateOptions, updateOptionSelected, beanModel);
-                      if(updateOptionSelected.ordinal() != 7){
+                      if (updateOptionSelected.ordinal() != 7) {
                           this.selection = updateOptionSelected.ordinal();
                       }
                   })
@@ -173,9 +176,9 @@ public class CliUpdateOption implements CliOption {
                 System.out.println("Current Bean Colour: " + beanModel.getColour());
                 System.out.println("Enter new bean colour");
                 InputUtils.getInstance()
-                        .readStringFromConsoleDirect()
-                        .ifError(e -> System.out.println("Unable to read string from console"))
-                        .ifSuccess(beanModel::setColour);
+                          .readStringFromConsoleDirect()
+                          .ifError(e -> System.out.println("Unable to read string from console"))
+                          .ifSuccess(beanModel::setColour);
             }
             case FINISH -> {
                 CliOptionHelper options = CliOptionHelper.getInstance();

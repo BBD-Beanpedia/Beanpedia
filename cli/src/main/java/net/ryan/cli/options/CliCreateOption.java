@@ -24,9 +24,9 @@ public class CliCreateOption implements CliOption {
 
         System.out.println("\n---Create new bean---");
 
-        System.out.println("Enter the name of the bean. Or type back to return to the main menu");
+        System.out.println("Enter the name of the bean.");
         final String beanName = getStringAssured();
-        if(beanName.equalsIgnoreCase("back")){
+        if (beanName.equalsIgnoreCase("back")) {
             System.out.println();
             CliOptionHelper options = CliOptionHelper.getInstance();
             options.show();
@@ -53,15 +53,16 @@ public class CliCreateOption implements CliOption {
         System.out.println("Enter the colour of the bean");
         model.setColour(getStringAssured());
 
-        Result<String> response = BeanDataHandler.getInstance().createBean(model.toJsonStringUpdate());
+        Result<String> response = BeanDataHandler.getInstance()
+                                                 .createBean(model.toJsonStringUpdate());
 
         System.out.println(model.toJsonStringUpdate());
 
-        if(!response.get().equalsIgnoreCase("Bean saved successfully!")){
+        if (!response.get()
+                     .equalsIgnoreCase("Bean saved successfully!")) {
             System.out.println("\n---" + response.get() + "---");
             this.run();
-        }
-        else{
+        } else {
             System.out.println("\n---" + response.get() + "---\n");
             System.out.println("---Redirecting to Main Menu---\n");
 

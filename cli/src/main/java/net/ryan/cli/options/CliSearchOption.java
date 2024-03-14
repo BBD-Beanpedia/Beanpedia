@@ -28,7 +28,8 @@ public class CliSearchOption implements CliOption {
                   .readStringFromConsoleDirect()
                   .ifSuccess(s -> {
                       if (s.equals("menu"))
-                          CliOptionHelper.getInstance().show();
+                          CliOptionHelper.getInstance()
+                                         .show();
                       searchForBean(0, s);
                   })
                   .ifError(s -> System.out.println("Error: " + s.getMessage()));
