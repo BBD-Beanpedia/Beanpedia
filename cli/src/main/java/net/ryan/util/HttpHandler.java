@@ -62,8 +62,13 @@ public class HttpHandler {
 
         public Request bodyJson(String string) {
             builder.header("Content-Type", "application/json");
-            builder.method(method.name(), HttpRequest.BodyPublishers.ofString(string));
-            method = null;
+            //builder.method(method.name(), HttpRequest.BodyPublishers.ofString(string));
+            //method = null;
+            //builder.
+
+            //System.out.println(builder);
+
+            builder.POST(HttpRequest.BodyPublishers.ofString(string));
 
             return this;
         }
@@ -82,6 +87,7 @@ public class HttpHandler {
 
             try {
                 final HttpRequest request = builder.build();
+//                System.out.println(request);
                 HttpResponse<T> res = CLIENT.send(request, responseBodyHandler);
                 int statusCode = res.statusCode();
                 if (statusCode == 200) return Result.success(res.body());

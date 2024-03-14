@@ -64,7 +64,7 @@ public class BeanDisplay {
                   .ifSuccess(s -> {
                       if (s.equals("edit")) {
                           // TODO: update bean
-                          UpdateBeanDisplay.show(modelFull);
+                          UpdateBeanDisplay.showUpdate(modelFull);
                       } else if (s.equals("menu")) {
                           // TODO: back to cli
 

@@ -1,5 +1,6 @@
 package net.ryan.cli;
 
+import net.ryan.CliOptionHelper;
 import net.ryan.bean.BeanModelFull;
 import net.ryan.util.*;
 
@@ -10,8 +11,13 @@ import java.util.function.Supplier;
 
 public class UpdateBeanDisplay {
 
+    public static void showInsert() {
+        System.out.println("Insert a new bean: ");
 
-    public static void show(BeanModelFull modelFull) {
+    }
+
+
+    public static void showUpdate(BeanModelFull modelFull) {
 
         //TODO: check for auth before we make a request.
 
@@ -27,26 +33,40 @@ public class UpdateBeanDisplay {
 
         InputUtils.getInstance()
                   .runMenuFunction(updateFieldMap, List.of(PaginationField.MENU), handleSelection(modelFull), (s) -> {
-                      //TODO: menu
-                  });
+                      CliOptionHelper.getInstance()
+                                     .show();
+                  })
+                  .ifError(e -> getMapInput(modelFull, updateFieldMap));
     }
+
+
+/*    private static Consumer<UpdateField> handleInsert() {
+        final BeanDataHandler dataHandler = BeanDataHandler.getInstance();
+        BeanModelFull beanModelFull = new BeanModelFull();
+        UpdateField.createMap()
+                   .forEach((integer, updateField) -> {
+                       updateField.getName()
+                   });
+
+
+    }*/
 
     private static Consumer<UpdateField> handleSelection(BeanModelFull beanModel) {
         return (updateField) -> {
             final BeanDataHandler dataHandler = BeanDataHandler.getInstance();
             switch (updateField) {
-                case NAME -> showDataSimple(updateField, beanModel::getName, beanModel::setName);
-                case CONTENT -> showDataSimple(updateField, beanModel::getContent, beanModel::setContent);
+                case NAME -> showUpdateDataSimple(updateField, beanModel::getName, beanModel::setName);
+                case CONTENT -> showUpdateDataSimple(updateField, beanModel::getContent, beanModel::setContent);
                 case SCIENTIFIC_NAME ->
-                        showDataSimple(updateField, beanModel::getScientificName, beanModel::setScientificName);
+                        showUpdateDataSimple(updateField, beanModel::getScientificName, beanModel::setScientificName);
                 case ORIGIN ->
-                        showData(updateField, dataHandler::requestAllOrigins, beanModel::getOrigin, beanModel::setOrigin);
+                        showUpdateData(updateField, dataHandler::requestAllOrigins, beanModel::getOrigin, beanModel::setOrigin);
                 case TYPE ->
-                        showData(updateField, dataHandler::requestAllShapes, beanModel::getType, beanModel::setType);
+                        showUpdateData(updateField, dataHandler::requestAllTypes, beanModel::getType, beanModel::setType);
                 case SHAPE ->
-                        showData(updateField, dataHandler::requestAllShapes, beanModel::getShape, beanModel::setShape);
+                        showUpdateData(updateField, dataHandler::requestAllShapes, beanModel::getShape, beanModel::setShape);
                 case COLOUR ->
-                        showData(updateField, dataHandler::requestAllColours, beanModel::getColour, beanModel::setColour);
+                        showUpdateData(updateField, dataHandler::requestAllColours, beanModel::getColour, beanModel::setColour);
                 case FINISH -> dataHandler.updateBean(beanModel)
                                           .ifSuccess(_s -> System.out.println("Bean Updated."))
                                           .ifError(e -> System.out.println("Error:" + e.getMessage()));
@@ -55,17 +75,33 @@ public class UpdateBeanDisplay {
     }
 
 
-    private static <T extends Nameable> void showDataSimple(UpdateField updateField, Supplier<String> originalData, Consumer<String> updateFunction) {
+    private static void showUpdateDataSimple(UpdateField updateField, Supplier<String> originalData, Consumer<String> updateFunction) {
         System.out.printf("Current Bean %s: %s%n", updateField.getName(), originalData.get());
+        showDataSimple(updateField, updateFunction);
+    }
+
+    private static void showDataSimple(UpdateField updateField, Consumer<String> updateFunction) {
+
         System.out.printf("Enter new Bean %s:\n", updateField.getName());
+        readStringFromConsole(updateFunction);
+    }
+
+    private static void readStringFromConsole(Consumer<String> updateFunction) {
         InputUtils.getInstance()
                   .readStringFromConsoleDirect()
                   .ifSuccess(updateFunction)
-                  .ifError(e -> System.out.println("Error:" + e.getMessage()));
+                  .ifError(e -> {
+                      System.out.println("Error:" + e.getMessage());
+                      readStringFromConsole(updateFunction);
+                  });
     }
 
-    private static <T extends Nameable> void showData(UpdateField updateField, Supplier<Result<List<T>>> requestSupplier, Supplier<String> originalData, Consumer<String> updateFunction) {
+    private static <T extends Nameable> void showUpdateData(UpdateField updateField, Supplier<Result<List<T>>> requestSupplier, Supplier<String> originalData, Consumer<String> updateFunction) {
         System.out.printf("Current Bean %s: %s%n", updateField.getName(), originalData.get());
+        showData(updateField, requestSupplier, updateFunction);
+    }
+
+    private static <T extends Nameable> void showData(UpdateField updateField, Supplier<Result<List<T>>> requestSupplier, Consumer<String> updateFunction) {
         System.out.printf("Enter new Bean %s:\n", updateField.getName());
         requestData(requestSupplier, updateFunction);
     }
@@ -83,11 +119,19 @@ public class UpdateBeanDisplay {
             //TODO:
             System.out.println("Select from the following options: ");
             input.forEach(DisplayHelper::displayOption);
-            InputUtils.getInstance()
-                      .readMapChoiceRangeFromConsole(input)
-                      .map(Nameable::getName)
-                      .ifSuccess(updateFunction)
-                      .ifError(e -> System.out.println("Error:" + e.getMessage()));
+            readInputFromOptions(updateFunction, input);
         };
+    }
+
+    private static <T extends Nameable> void readInputFromOptions(Consumer<String> updateFunction, Map<Integer, T> input) {
+        InputUtils.getInstance()
+                  .readMapChoiceRangeFromConsole(input)
+                  .map(Nameable::getName)
+                  .ifSuccess(updateFunction.andThen(string -> {
+                  }))
+                  .ifError(e -> {
+                      System.out.println("Error:" + e.getMessage());
+                      readInputFromOptions(updateFunction, input);
+                  });
     }
 }

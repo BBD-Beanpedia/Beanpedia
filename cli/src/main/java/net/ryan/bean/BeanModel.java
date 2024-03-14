@@ -13,6 +13,7 @@ public final class BeanModel implements JsonSerializable {
     private final int shapeId;
     private final int colourId;
 
+
     public BeanModel(int beanId, String beanName, String scientificName, String content, int originId, int typeId, int shapeId, int colourId) {
         this.beanId = beanId;
         this.beanName = beanName;

@@ -1,5 +1,6 @@
 package net.ryan.cli.options;
 
+import net.ryan.CliOptionHelper;
 import net.ryan.bean.BeanModelFull;
 import net.ryan.bean.BeanModelPage;
 import net.ryan.bean.FilterPageModel;
@@ -100,7 +101,11 @@ public class CliFilterOption implements CliOption {
         switch (f) {
             case NEXT -> searchFilter(givenPage + 1, beanFilterModel, searchFunction);
             case PREVIOUS -> searchFilter(givenPage - 1, beanFilterModel, searchFunction);
-            case MENU -> System.out.println("Returning to main menu...");
+            case MENU -> {
+                System.out.println("Returning to main menu...");
+                CliOptionHelper.getInstance()
+                               .show();
+            }
         }
     }
 

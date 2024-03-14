@@ -13,6 +13,10 @@ public final class BeanModelFull implements JsonSerializable, Nameable {
     private String shape;
     private String colour;
 
+    public BeanModelFull() {
+        this.beanId = -1;
+    }
+
     public BeanModelFull(String beanName, String scientificName, String content, String origin, String type, String shape, String colour) {
         this.beanId = -1;
         this.beanName = beanName;

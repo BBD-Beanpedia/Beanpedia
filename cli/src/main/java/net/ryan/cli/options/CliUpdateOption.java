@@ -2,16 +2,17 @@
 package net.ryan.cli.options;
 
 import net.ryan.bean.BeanModel;
-import net.ryan.bean.ShortBeanModel;
+import net.ryan.bean.BeanModelFull;
 import net.ryan.cli.Nameable;
-import net.ryan.util.DisplayHelper;
-import net.ryan.util.InputUtils;
-import net.ryan.util.MapUtils;
+import net.ryan.util.*;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class CliUpdateOption implements CliOption {
+
+    private BeanModel model;
 
     @Override
     public String getName() {
@@ -22,14 +23,48 @@ public class CliUpdateOption implements CliOption {
     public void run() {
 
         System.out.println("---Update existing bean---");
-        // TODO: pass in a bean to update
-        ShortBeanModel model = new ShortBeanModel(1, "");
-        System.out.printf("Selected Beam: %s\n", model);
+
+        System.out.println("Enter the name of the bean you would like to update");
+        selectBean();
+        System.out.println("Updating bean: " + model.getBeanName());
 
         final Map<Integer, UpdateOption> updateOptions = MapUtils.listToMap(Arrays.stream(UpdateOption.values())
                                                                                   .toList());
+
         updateOptions.forEach(DisplayHelper::displayOption);
 
+        getInputFromOptions(updateOptions, model);
+
+        BeanDataHandler.getInstance()
+                       .updateBean(model.toJsonStringUpdate())
+                       .ifError(e -> System.out.println(e));
+    }
+
+    private void selectBean() {
+        InputUtils.getInstance()
+                  .readStringFromConsoleDirect()
+                  .ifSuccess(this::constructBeanModel)
+                  .ifError(e -> {
+                      System.out.println("Error: Unable to read input from console, " + e.getMessage());
+                  });
+    }
+
+    private void constructBeanModel(String searchTerm) {
+
+        //Get the first bean that most closely matches the search term
+        BeanModelFull modelFull = BeanDataHandler.getInstance()
+                                                 .searchBean(searchTerm, 0)
+                                                 .get()
+                                                 .beanList()
+                                                 .getFirst();
+
+        BeanModel model = new BeanModel(-1, modelFull.getName(), modelFull.getScientificName(), modelFull.getContent(), -1, -1, -1, -1);
+        model.setOrigin(modelFull.getOrigin());
+        model.setType(modelFull.getType());
+        model.setShape(modelFull.getShape());
+        model.setColour(modelFull.getColour());
+
+        this.model = model;
     }
 
     private void getInputFromOptions(Map<Integer, UpdateOption> updateOptions, BeanModel beanModel) {
@@ -73,23 +108,36 @@ public class CliUpdateOption implements CliOption {
                           .ifSuccess(beanModel::setContent);
             }
             case ORIGIN -> {
-                System.out.println("Current Bean Origin: " + beanModel.getContent());
-        */
-/*        InputUtils.getInstance()
+                System.out.println("Current Bean Origin: " + beanModel.getOrigin());
+                System.out.println("Enter new bean origin");
+                InputUtils.getInstance()
                           .readStringFromConsoleDirect()
                           .ifError(e -> System.out.println("Unable to read string from console"))
-                          .ifSuccess(beanModel::setOrigin);*//*
-
-
+                          .ifSuccess(beanModel::setOrigin);
             }
             case TYPE -> {
-
+                System.out.println("Current Bean Type: " + beanModel.getType());
+                System.out.println("Enter new bean type");
+                InputUtils.getInstance()
+                          .readStringFromConsoleDirect()
+                          .ifError(e -> System.out.println("Unable to read string from console"))
+                          .ifSuccess(beanModel::setType);
             }
             case SHAPE -> {
-
+                System.out.println("Current Bean Shape: " + beanModel.getShape());
+                System.out.println("Enter new bean shape");
+                InputUtils.getInstance()
+                          .readStringFromConsoleDirect()
+                          .ifError(e -> System.out.println("Unable to read string from console"))
+                          .ifSuccess(beanModel::setShape);
             }
             case COLOUR -> {
-
+                System.out.println("Current Bean Colour: " + beanModel.getColour());
+                System.out.println("Enter new bean colour");
+                InputUtils.getInstance()
+                          .readStringFromConsoleDirect()
+                          .ifError(e -> System.out.println("Unable to read string from console"))
+                          .ifSuccess(beanModel::setColour);
             }
             case FINISH -> {
             }*/
