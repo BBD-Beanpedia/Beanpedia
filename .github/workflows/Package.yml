@@ -1,10 +1,10 @@
 on:
   push:
-    branches: [ feature/action_time  ]
+    branches: [ feature/action_time ]
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }} }
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ ubuntu-latest, macOS-latest, windows-latest ]
