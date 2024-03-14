@@ -1,6 +1,6 @@
 on:
   push:
-    branches: [ feature/action_time ]
+    branches: [ master ]
 
 jobs:
   build:
