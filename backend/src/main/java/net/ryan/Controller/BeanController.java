@@ -1,7 +1,7 @@
-package net.ryan.Controller;
+package net.ryan.controller;
 
-import net.ryan.DTO.BeanDTO;
-import net.ryan.Service.BeanService;
+import net.ryan.dto.BeanDTO;
+import net.ryan.service.BeanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -46,5 +46,26 @@ public class BeanController {
             @RequestParam(value = "size", defaultValue = "100") int size) {
         Pageable pageable = PageRequest.of(page, size);
         return beanService.findBeansByCriteria(typeId, shapeId, colourId, originId, pageable);
+    }
+
+    /*
+    1 = name
+    2 = scientific name
+    3 = content
+    4 = origin
+    5 = type
+    6 = shape
+    7 = colour
+     */
+    @PostMapping("/update")
+    public void updateBean(@RequestBody BeanDTO beanDTO){
+        this.beanService.updateBean(beanDTO);
+    }
+
+
+    @PostMapping("/addBean")
+    public String insertBean(@RequestBody BeanDTO beanDTO) {
+        return this.beanService.createBean(beanDTO);
+
     }
 }

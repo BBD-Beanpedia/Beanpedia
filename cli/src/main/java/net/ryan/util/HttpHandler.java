@@ -1,13 +1,11 @@
 package net.ryan.util;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import net.ryan.bean.JsonSerializable;
+import net.ryan.exception.NotFoundException;
+import net.ryan.exception.UnauthorisedException;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
@@ -17,7 +15,6 @@ import java.util.stream.Stream;
 
 public class HttpHandler {
     private static final HttpClient CLIENT = HttpClient.newHttpClient();
-    private static final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
 
     private enum Method {
         GET, POST
@@ -28,15 +25,12 @@ public class HttpHandler {
         private Method method;
 
         private static Result<Request> createRequest(Method method, String url) {
-            try {
-                return Result.success(new Request(method, url));
-            } catch (URISyntaxException e) {
-                return Result.fail(e);
-            }
+            return Result.from(() -> new Request(method, url));
         }
 
         private Request(Method method, String url) throws URISyntaxException {
-            this.builder = HttpRequest.newBuilder().uri(new URI(url));
+            this.builder = HttpRequest.newBuilder()
+                                      .uri(new URI(url));
             this.method = method;
         }
 
@@ -62,51 +56,71 @@ public class HttpHandler {
             return this;
         }
 
+        public <T extends JsonSerializable> Request bodyJson(T jsonClass) {
+            return bodyJson(jsonClass.toJsonString());
+        }
+
         public Request bodyJson(String string) {
             builder.header("Content-Type", "application/json");
-            builder.method(method.name(), HttpRequest.BodyPublishers.ofString(string));
-            method = null;
+            //builder.method(method.name(), HttpRequest.BodyPublishers.ofString(string));
+            //method = null;
+            //builder.
+
+            //System.out.println(builder);
+
+            builder.POST(HttpRequest.BodyPublishers.ofString(string));
 
             return this;
         }
 
-        public Request bodyJson(Object object) {
+      /*  public Request bodyJson(Object object) {
             builder.header("Content-Type", "application/json");
             builder.method(method.name(), HttpRequest.BodyPublishers.ofString(GSON.toJson(object)));
             method = null;
 
             return this;
-        }
+        }*/
 
-        private <T> T send(String accept, HttpResponse.BodyHandler<T> responseBodyHandler) {
+        private <T> Result<T> send(String accept, HttpResponse.BodyHandler<T> responseBodyHandler) {
             builder.header("Accept", accept);
             if (method != null) builder.method(method.name(), HttpRequest.BodyPublishers.noBody());
 
             try {
-                var res = CLIENT.send(builder.build(), responseBodyHandler);
-                return res.statusCode() == 200 ? res.body() : null;
+                final HttpRequest request = builder.build();
+//                System.out.println(request);
+                HttpResponse<T> res = CLIENT.send(request, responseBodyHandler);
+                int statusCode = res.statusCode();
+                if (statusCode == 200) return Result.success(res.body());
+                else if (statusCode == 404) {
+                    return Result.fail(new NotFoundException("Http Error code " + statusCode + "Please login"));
+                } else
+                    return Result.fail(new UnauthorisedException("Http Error code: " + statusCode + "\t" + request.uri() + " Not found"));
             } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
-                return null;
+                return Result.fail(e);
             }
         }
 
-        public InputStream sendInputStream() {
+        public Result<InputStream> sendInputStream() {
             return send("*/*", HttpResponse.BodyHandlers.ofInputStream());
         }
 
-        public String sendString() {
+        public Result<String> sendString() {
             return send("*/*", HttpResponse.BodyHandlers.ofString());
         }
 
-        public Stream<String> sendLines() {
+        public Result<String> sendJson() {
+            return send("application/json", HttpResponse.BodyHandlers.ofString());
+        }
+
+
+        public Result<Stream<String>> sendLines() {
             return send("*/*", HttpResponse.BodyHandlers.ofLines());
         }
 
-        public <T> T sendJson(Type type) {
+       /* public <T> T sendJson(Type type) {
             InputStream in = send("application/json", HttpResponse.BodyHandlers.ofInputStream());
             return in == null ? null : GSON.fromJson(new InputStreamReader(in), type);
-        }
+        }*/
     }
 
     public static Result<Request> newGetRequest(String url) {
