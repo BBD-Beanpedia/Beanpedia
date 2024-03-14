@@ -1,4 +1,4 @@
-package net.ryan.controller;
+package net.ryan.Controller;
 
 import net.ryan.dto.BeanColourDTO;
 import net.ryan.dto.BeanOriginDTO;
