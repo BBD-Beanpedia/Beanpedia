@@ -9,17 +9,17 @@ import java.util.Map;
 
 public class CliOptionHelper {
 
+    private static CliOptionHelper instance;
+
+    public static CliOptionHelper getInstance() {
+        if (instance == null) instance = register();
+        return instance;
+    }
+
     private final Map<Integer, CliOption> cliOptions;
 
-    public static CliOptionHelper register() {
-        List<CliOption> options = List.of(
-                new CliViewOption(),
-                new CliSearchOption(),
-                new CliFilterOption(),
-                new CliCreateOption(),
-                new CliUpdateOption(),
-                new CliAuthOption(),
-                new CliExitOption());
+    private static CliOptionHelper register() {
+        List<CliOption> options = List.of(new CliViewOption(), new CliSearchOption(), new CliFilterOption(), new CliCreateOption(), new CliAuthOption(), new CliExitOption());
         return new CliOptionHelper(MapUtils.listToMap(options));
     }
 
@@ -31,7 +31,7 @@ public class CliOptionHelper {
     public void show() {
         System.out.println("Select an option\n");
         cliOptions.forEach((integer, cliOption) -> System.out.printf("\t%d. %s\n", integer + 1, cliOption.getName()));
-        System.out.println("\nEnter a number to select an option: ");
+        System.out.println("\nEnter a number to run an option: ");
         getInputInRange();
     }
 
@@ -41,7 +41,7 @@ public class CliOptionHelper {
                   .ifSuccess(CliOption::run)
                   .ifError(error -> {
                       System.out.println("Error: Unrecognized command " + error.getMessage());
-                      getInputInRange();
+                      show();
                   });
     }
 

@@ -24,35 +24,34 @@ jobs:
       - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
-          java-version: '21'
-          distribution: 'temurin'
-          
+          java-version: "21"
+          distribution: "temurin"
 
       - name: Run Tests
         run: |
-          echo Testing
+          chmod +x ./gradlew
+          ./gradlew test
 
       - name: Build Backend API JAR
         run: |
           chmod +x ./gradlew
           ./gradlew :backend:build
-          
 
       - name: Get secrets from AWS Secrets Manager
         uses: aws-actions/aws-secretsmanager-get-secrets@v2.0.1
         with:
-          secret-ids: | 
+          secret-ids: |
             SM, ${{ vars.AWS_SECRET_NAME_API }}
             SMDB, ${{ vars.AWS_SECRET_NAME_DB }}
           parse-json-secrets: true
 
       - name: Fetch Parameter from AWS Parameter Store
         run: |
-            {
-              echo 'EC2_SSH_PRIVATE_KEY<<EOF'
-              aws ssm get-parameter --name '${{ env.SM_KEYID }}' --with-decryption --query 'Parameter.Value' --output text
-              echo EOF
-            } >> "$GITHUB_ENV"
+          {
+            echo 'EC2_SSH_PRIVATE_KEY<<EOF'
+            aws ssm get-parameter --name '${{ env.SM_KEYID }}' --with-decryption --query 'Parameter.Value' --output text
+            echo EOF
+          } >> "$GITHUB_ENV"
 
       - name: Stop Old Server
         uses: appleboy/ssh-action@master
@@ -85,4 +84,4 @@ jobs:
             export DATABASE_URL="jdbc:postgresql://${{ env.SMDB_HOST }}:${{ env.SMDB_PORT }}/postgres"
             export DATABASE_USERNAME="${{ env.SMDB_USERNAME }}"
             export DATABASE_PASSWORD="${{ env.SMDB_PASSWORD }}"
-            nohup java -jar ~/API/*.jar > ~/API/app.log 2>&1 & 
+            nohup java -jar ~/API/*.jar > ~/API/app.log 2>&1 &

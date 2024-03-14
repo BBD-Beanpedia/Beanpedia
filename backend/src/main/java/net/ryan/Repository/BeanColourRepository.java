@@ -1,7 +1,6 @@
 package net.ryan.Repository;
 
-import net.ryan.Entities.BeanColour;
-import net.ryan.Entities.BeanShape;
+import net.ryan.entities.BeanColour;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

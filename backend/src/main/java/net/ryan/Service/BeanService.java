@@ -1,7 +1,7 @@
 package net.ryan.Service;
 
-import net.ryan.DTO.BeanDTO;
-import net.ryan.Entities.*;
+import net.ryan.dto.BeanDTO;
+import net.ryan.entities.*;
 import net.ryan.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+
 
 @Service
 public class BeanService {
@@ -56,6 +57,7 @@ public class BeanService {
     public boolean updateBean(BeanDTO beanDTO){
 
         AtomicBoolean updateDone = new AtomicBoolean(false);
+
 
         switch (beanDTO.getSelection()){
             case "1":

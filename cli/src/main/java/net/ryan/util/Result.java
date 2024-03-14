@@ -51,8 +51,8 @@ public class Result<S> implements Supplier<S> {
         return f.apply(supplier);
     }
 
-    public Result<S> mapError(Function<Exception, Result<S>> f) {
-        if (isError()) return f.apply(exception);
+    public Result<S> mapError(Function<Exception, Exception> f) {
+        if (isError()) return Result.fail(f.apply(exception));
         return this;
     }
 
@@ -76,7 +76,7 @@ public class Result<S> implements Supplier<S> {
         return exception;
     }
 
-    private boolean isSuccess() {
+    public boolean isSuccess() {
         return supplier != null;
     }
 
