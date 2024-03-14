@@ -23,7 +23,6 @@ public class BeanDataHandler {
 
     // @formatter:off
     private static final String
-<<<<<<< HEAD
             //BASE_URL = "http://34.249.42.139:8080",
             BASE_URL = "http://localhost:8080",
             INSERT_ENDPOINT = "/beans/addBean",
@@ -31,13 +30,7 @@ public class BeanDataHandler {
             GET_ALL_ENDPOINT = "/beans/all",
             SEARCH_ENDPOINT = "/beans/search",
             UPDATE_ENDPOINT = "/beans/update",
-=======
-            BASE_URL = "http://34.249.42.139:8080",
-            INSERT_ENDPOINT = "/beans/addBean",
-            GET_ALL_ENDPOINT = "/beans/all",
-            SEARCH_ENDPOINT = "/beans/search",
-            UPDATE_ENDPOINT = "/update",
->>>>>>> a029ed6cba954c5fe974782a5febffe0613b2832
+
             FILTER = "/beans/filter",
             ORIGIN_FILTER = "/beans/attributes/origins",
             SHAPE_ENDPOINT = "/beans/attributes/shapes",
@@ -79,7 +72,6 @@ public class BeanDataHandler {
     }
 
 
-<<<<<<< HEAD
     //public Result<BeanModel> updateBean(BeanModel newBeanData) {
     public Result<Boolean> updateBean(String newBeanData) {
          return HttpHandler.newPostRequest(BASE_URL + UPDATE_ENDPOINT)
@@ -88,15 +80,7 @@ public class BeanDataHandler {
                           .mapToNew(HttpHandler.Request::sendJson)
                           .map(Boolean::parseBoolean);
     }
-=======
-/*    public Result<BeanModel> updateBean(BeanModel newBeanData) {
-        return HttpHandler.newPostRequest(BASE_URL + UPDATE_ENDPOINT)
-                          .map(request -> request.bearer(authToken))
-                          .map(request -> request.bodyJson(String.format("{\"beanData\":\"%s\"}", newBeanData.toJsonString())))
-                          .mapToNew(HttpHandler.Request::sendString)
-                          .map(JsonParser::parseBeanDetail);
-    }*/
->>>>>>> a029ed6cba954c5fe974782a5febffe0613b2832
+
 
 
     public Result<String> createBean(String newBeanData) {

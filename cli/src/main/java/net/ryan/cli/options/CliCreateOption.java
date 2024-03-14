@@ -1,11 +1,8 @@
 package net.ryan.cli.options;
 
-<<<<<<< HEAD
+
 import net.ryan.CliOptionHelper;
-=======
->>>>>>> a029ed6cba954c5fe974782a5febffe0613b2832
 import net.ryan.bean.BeanModel;
-import net.ryan.cli.Nameable;
 import net.ryan.util.*;
 
 import java.util.List;
@@ -24,7 +21,7 @@ public class CliCreateOption implements CliOption {
 
         model = new BeanModel(-1, "", "", "", -1, -1, -1, -1);
 
-<<<<<<< HEAD
+
         System.out.println("\n---Create new bean---");
 
         System.out.println("Enter the name of the bean. Or type back to return to the main menu");
@@ -34,12 +31,7 @@ public class CliCreateOption implements CliOption {
             CliOptionHelper options = CliOptionHelper.register();
             options.show();
         }
-=======
-        System.out.println("---Create new bean---");
 
-        System.out.println("Enter the name of the bean");
-        final String beanName = getStringAssured();
->>>>>>> a029ed6cba954c5fe974782a5febffe0613b2832
         model.setBeanName(beanName);
         model.setNewBeanName(beanName);
 
@@ -63,7 +55,6 @@ public class CliCreateOption implements CliOption {
 
         Result<String> response = BeanDataHandler.getInstance().createBean(model.toJsonStringUpdate());
 
-<<<<<<< HEAD
         System.out.println(model.toJsonStringUpdate());
 
         if(!response.get().equalsIgnoreCase("Bean saved successfully!")){
@@ -77,10 +68,6 @@ public class CliCreateOption implements CliOption {
             CliOptionHelper options = CliOptionHelper.register();
             options.show();
         }
-=======
-        System.out.println(response.get());
->>>>>>> a029ed6cba954c5fe974782a5febffe0613b2832
-
 
     }
 
@@ -103,22 +90,5 @@ public class CliCreateOption implements CliOption {
             return getDataAssured(result);
         } else return result.get();
     }
-
-
-/*    private <T extends Nameable> Result<T> showMenuFor(Result<List<T>> dataInput) {
-        dataInput.ifError(stringExceptionPair -> {
-                     // TODO: Unable to make request/ parse the data show the error here
-                 })
-                 .map(MapUtils::listToMap)
-                 .map(data -> {
-                     data.forEach(DisplayHelper::displayOption);
-                     return InputUtils.getInstance()
-                                      .readMapChoiceRangeFromConsole(data)
-                                      .ifError(e -> {
-                                          // TODO: Error not in range somehow prompt
-                                      });
-                 });
-        return null;
-    }*/
 
 }
