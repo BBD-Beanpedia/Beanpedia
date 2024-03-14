@@ -1,6 +1,6 @@
 package net.ryan.Repository;
 
-import net.ryan.Entities.BasicBeanInformation;
+import net.ryan.entities.BasicBeanInformation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

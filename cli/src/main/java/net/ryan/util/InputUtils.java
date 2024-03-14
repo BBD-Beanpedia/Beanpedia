@@ -1,19 +1,24 @@
 package net.ryan.util;
 
+import net.ryan.bean.BeanModelFull;
+import net.ryan.cli.Nameable;
+
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class InputUtils {
-    private final BufferedReader bufferedReader;
     private static InputUtils inputUtils;
 
+    private final Supplier<Result<String>> readLineSupplier;
+
     private InputUtils(BufferedReader bufferedReader) {
-        this.bufferedReader = bufferedReader;
+        this.readLineSupplier = () -> Result.from(bufferedReader::readLine);
     }
 
     public static InputUtils getInstance() {
@@ -23,62 +28,79 @@ public class InputUtils {
         return inputUtils;
     }
 
-    private <T> Result<T> readFromConsoleToType(Function<String, T> conversionFunction) {
-        try {
-            // Read a line from the console and apply the given function
-            final String line = bufferedReader.readLine();
-            return Result.from(() -> conversionFunction.apply(line));
-        } catch (IOException e) {
-            return Result.fail(e);
-        }
+    private <T> Result<T> readFromConsoleToType(Supplier<Result<String>> lineSupplier, Function<String, T> conversionFunction) {
+        return lineSupplier.get()
+                           .mapToNew(s -> Result.from(() -> conversionFunction.apply(s)));
     }
 
     public Result<Integer> readIntFromConsole() {
-        return readFromConsoleToType(Integer::parseInt).mapError(Result::fail);
+        return readFromConsoleToType(readLineSupplier, Integer::parseInt);
     }
 
+
     public Result<String> readStringFromConsoleDirect() {
-        return readFromConsoleToType(String::toString);
+        return readLineSupplier.get();
     }
 
     public Result<String> readStringFromConsoleLowerCase() {
-        return readFromConsoleToType(String::toLowerCase);
+        return readFromConsoleToType(readLineSupplier, String::toLowerCase);
     }
 
-    public Result<Integer> readIntRangeFromConsole(int start, int end) {
-        return readIntFromConsole().mapDirect(num -> notInRangeMapper(num, start, end));
+    public Result<Integer> readIntRangeFromConsole(Supplier<Result<String>> readLineSupplier, int start, int end) {
+        return notInRangeMapper(readFromConsoleToType(readLineSupplier, Integer::parseInt).mapError((r) -> new RuntimeException("Unable to parse string to int " + r.getMessage())), start, end);
     }
 
     public <T> Result<T> readMapChoiceRangeFromConsole(Map<Integer, T> inputMap) {
-        return readIntRangeFromConsole(1, inputMap.size()).map(i -> i - 1)
-                                                          .map(inputMap::get);
+        return readIntRangeFromConsole(readLineSupplier, 1, inputMap.size()).map(i -> i - 1)
+                                                                            .map(inputMap::get);
     }
 
-    private Result<Integer> notInRangeMapper(int givenNum, int start, int end) {
+    public <T> Result<T> readMapChoiceRangeFromConsole(Supplier<Result<String>> readLineSupplier, Map<Integer, T> inputMap) {
+        return readIntRangeFromConsole(readLineSupplier, 1, inputMap.size()).map(i -> i - 1)
+                                                                            .map(inputMap::get);
+    }
+
+    private Result<Integer> notInRangeMapper(Result<Integer> givenNum, int start, int end) {
+        return givenNum.mapDirect(num -> Result.from(() -> notInRangeMapper(num, start, end)));
+    }
+
+    private Integer notInRangeMapper(int givenNum, int start, int end) throws Exception {
         if (givenNum < start || givenNum > end)
-            return Result.fail(new Exception(String.format("%d is not in the range [%d-%d]", givenNum, start, end)));
-        else return Result.success(givenNum);
+            throw new Exception(String.format("%d is not in the range [%d-%d]", givenNum, start, end));
+        else return givenNum;
     }
 
-    private Result<Double> nonNumberTypesMapper(Double input) {
-        if (input.isNaN() || input.isInfinite())
-            return Result.fail(new Exception("Number entered must not be NaN or Infinite."));
-        else return Result.success(input);
+    private <T extends Nameable> Result<T> foundInNameable(String input, List<T> list) {
+        Optional<T> foundItem = list.stream()
+                                    .filter(t -> t.getName()
+                                                  .equalsIgnoreCase(input))
+                                    .findFirst();
+
+        return foundItem.map(Result::success)
+                        .orElseGet(() -> Result.fail(new Exception("String not in array")));
     }
 
-    private Result<String> foundInStrings(String input, List<String> list) {
-        if (!list.contains(input)) return Result.fail(new Exception("String not in array"));
-        else return Result.success(input);
-    }
+    public <T extends Nameable, M> Result<Boolean> runMenuFunction(Map<Integer, M> inputMap, List<T> strings, Consumer<M> runSuccessForMap, Consumer<T> runSuccessForString) {
 
-    public Result<String> runMenuFunction(int start, int end, List<String> strings, Consumer<String> runSuccessForString, Consumer<Integer> runSuccessForInt) {
-        return readStringFromConsoleLowerCase().mapDirect(str -> {
-            //First we will try and parse the as int if this fails we will try the strings.
-            //We will not talk about this type conversion hackery.
-            return Result.from(() -> Integer.parseInt(str))
-                         .mapToNew(i -> notInRangeMapper(i, start, end).ifSuccess(runSuccessForInt))
-                         .map(String::valueOf)
-                         .mapError(_e -> foundInStrings(str, strings).ifSuccess(runSuccessForString));
+        return readStringFromConsoleLowerCase().mapToNew(str -> {
+            final Result<T> stringResult = foundInNameable(str, strings).ifSuccess(runSuccessForString);
+            final Result<M> mappedResult = stringKeyToValue(str, inputMap).ifSuccess(runSuccessForMap);
+
+            stringResult.ifError(e -> {
+                if (mappedResult.isError()) System.out.println(e.getMessage());
+            });
+            mappedResult.ifError(e -> {
+                if (stringResult.isError()) System.out.println(e.getMessage());
+            });
+
+            if (stringResult.isError() && mappedResult.isError()) return Result.fail(new Exception("Both failed"));
+            else return Result.success(true);
         });
     }
+
+    private <M> Result<M> stringKeyToValue(String str, Map<Integer, M> inputMap) {
+        return readIntRangeFromConsole(() -> Result.success(str), 1, inputMap.size()).map(i -> i - 1)
+                                                                                     .map(inputMap::get);
+    }
+
 }

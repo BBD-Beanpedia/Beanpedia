@@ -1,4 +1,4 @@
-package net.ryan.Entities;
+package net.ryan.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
