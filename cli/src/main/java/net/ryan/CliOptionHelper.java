@@ -18,7 +18,7 @@ public class CliOptionHelper {
 
     private final Map<Integer, CliOption> cliOptions;
 
-    private static CliOptionHelper register() {
+    public static CliOptionHelper register() {
         List<CliOption> options = List.of(new CliViewOption(), new CliSearchOption(), new CliFilterOption(), new CliCreateOption(), new CliAuthOption(), new CliExitOption());
         return new CliOptionHelper(MapUtils.listToMap(options));
     }
@@ -29,9 +29,9 @@ public class CliOptionHelper {
     }
 
     public void show() {
-        System.out.println("Choose an option:");
+        System.out.println("Select an option\n");
         cliOptions.forEach((integer, cliOption) -> System.out.printf("\t%d. %s\n", integer + 1, cliOption.getName()));
-        System.out.print("Enter a number to run an option: ");
+        System.out.println("\nEnter a number to run an option: ");
         getInputInRange();
     }
 

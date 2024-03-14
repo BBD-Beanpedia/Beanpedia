@@ -1,7 +1,7 @@
-package net.ryan.controller;
+package net.ryan.Controller;
 
 import net.ryan.dto.BeanDTO;
-import net.ryan.service.BeanService;
+import net.ryan.Service.BeanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -58,8 +58,8 @@ public class BeanController {
     7 = colour
      */
     @PostMapping("/update")
-    public void updateBean(@RequestBody BeanDTO beanDTO){
-        this.beanService.updateBean(beanDTO);
+    public boolean updateBean(@RequestBody BeanDTO beanDTO){
+        return this.beanService.updateBean(beanDTO);
     }
 
 

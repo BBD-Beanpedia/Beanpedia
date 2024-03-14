@@ -1,18 +1,19 @@
-/*
 package net.ryan.cli.options;
 
+import net.ryan.CliOptionHelper;
 import net.ryan.bean.BeanModel;
 import net.ryan.bean.BeanModelFull;
 import net.ryan.cli.Nameable;
 import net.ryan.util.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class CliUpdateOption implements CliOption {
 
     private BeanModel model;
+    private  Integer selection;
 
     @Override
     public String getName() {
@@ -22,11 +23,12 @@ public class CliUpdateOption implements CliOption {
     @Override
     public void run() {
 
-        System.out.println("---Update existing bean---");
+        System.out.println("\n---Update existing bean---");
 
-        System.out.println("Enter the name of the bean you would like to update");
+        System.out.println("Enter the name of the bean you would like to update! Or type back to return to the main menu");
+
         selectBean();
-        System.out.println("Updating bean: " + model.getBeanName());
+        System.out.println("\nUpdating bean: " + model.getBeanName());
 
         final Map<Integer, UpdateOption> updateOptions = MapUtils.listToMap(Arrays.stream(UpdateOption.values())
                                                                                   .toList());
@@ -35,28 +37,57 @@ public class CliUpdateOption implements CliOption {
 
         getInputFromOptions(updateOptions, model);
 
-        BeanDataHandler.getInstance()
-                       .updateBean(model.toJsonStringUpdate())
-                       .ifError(e -> System.out.println(e));
+        model.setSelection(Integer.toString(this.selection + 1));
+
+        if(BeanDataHandler.getInstance().updateBean(model.toJsonStringUpdate()).get()){
+            System.out.println("\n--Bean updated successfully!---");
+            System.out.println("---Redirecting to Main Menu---\n");
+
+            CliOptionHelper options = CliOptionHelper.register();
+            options.show();
+
+        }
+        else{
+            System.out.println("\n--Bean update failed!---");
+            System.out.println("--Please try again---");
+            this.run();
+        }
+
     }
 
     private void selectBean() {
         InputUtils.getInstance()
-                  .readStringFromConsoleDirect()
-                  .ifSuccess(this::constructBeanModel)
-                  .ifError(e -> {
-                      System.out.println("Error: Unable to read input from console, " + e.getMessage());
-                  });
+
+                .readStringFromConsoleDirect()
+                .ifSuccess(searchTerm -> {
+                    if(searchTerm.equalsIgnoreCase("back")){
+                        System.out.println();
+                        CliOptionHelper options = CliOptionHelper.register();
+                        options.show();
+                    }
+                    constructBeanModel(searchTerm);
+                })
+                .ifError(e -> {
+                    System.out.println("Error: Unable to read input from console, " + e.getMessage());
+                });
+
     }
 
     private void constructBeanModel(String searchTerm) {
 
         //Get the first bean that most closely matches the search term
-        BeanModelFull modelFull = BeanDataHandler.getInstance()
-                                                 .searchBean(searchTerm, 0)
-                                                 .get()
-                                                 .beanList()
-                                                 .getFirst();
+        List<BeanModelFull> modelFullList = BeanDataHandler.getInstance().searchBean(searchTerm, 0).get().beanList();
+
+        BeanModelFull modelFull = null;
+
+        if(modelFullList.size() < 1){
+            System.out.println("\n--The requested bean was not found!---");
+            System.out.println("--Please try again---");
+            this.run();
+        }
+        else {
+            modelFull = modelFullList.getFirst();
+        }
 
         BeanModel model = new BeanModel(-1, modelFull.getName(), modelFull.getScientificName(), modelFull.getContent(), -1, -1, -1, -1);
         model.setOrigin(modelFull.getOrigin());
@@ -70,7 +101,12 @@ public class CliUpdateOption implements CliOption {
     private void getInputFromOptions(Map<Integer, UpdateOption> updateOptions, BeanModel beanModel) {
         InputUtils.getInstance()
                   .readMapChoiceRangeFromConsole(updateOptions)
-                  .ifSuccess(updateOptionSelected -> handleSelection(updateOptions, updateOptionSelected, beanModel))
+                  .ifSuccess(updateOptionSelected -> {
+                      handleSelection(updateOptions, updateOptionSelected, beanModel);
+                      if(updateOptionSelected.ordinal() != 7){
+                          this.selection = updateOptionSelected.ordinal();
+                      }
+                  })
                   .ifError(e -> {
                       System.out.println("Error: Unable to read int from console, " + e.getMessage());
                       getInputFromOptions(updateOptions, beanModel);
@@ -79,6 +115,7 @@ public class CliUpdateOption implements CliOption {
 
 
     private void handleSelection(Map<Integer, UpdateOption> updateOptions, UpdateOption selectedOption, BeanModel beanModel) {
+        System.out.println();
         switch (selectedOption) {
             case NAME -> {
                 System.out.println("Current Bean Name: " + beanModel.getBeanName());
@@ -86,7 +123,8 @@ public class CliUpdateOption implements CliOption {
                 InputUtils.getInstance()
                           .readStringFromConsoleDirect()
                           .ifError(e -> System.out.println("Unable to read string from console"))
-                          .ifSuccess(beanModel::setBeanName);
+                          .ifSuccess(beanModel::setNewBeanName);
+
                 System.out.println("Updated Bean Name: " + beanModel.getBeanName());
                 System.out.println("Select a number to continue editing or the number of " + UpdateOption.FINISH.getName() + " to finish");
                 getInputFromOptions(updateOptions, beanModel);
@@ -135,18 +173,18 @@ public class CliUpdateOption implements CliOption {
                 System.out.println("Current Bean Colour: " + beanModel.getColour());
                 System.out.println("Enter new bean colour");
                 InputUtils.getInstance()
-                          .readStringFromConsoleDirect()
-                          .ifError(e -> System.out.println("Unable to read string from console"))
-                          .ifSuccess(beanModel::setColour);
+                        .readStringFromConsoleDirect()
+                        .ifError(e -> System.out.println("Unable to read string from console"))
+                        .ifSuccess(beanModel::setColour);
             }
             case FINISH -> {
-            }*/
-/* BeanDataHandler.getInstance()
-                                          .updateBean(beanModel)
-                                          .ifError(e -> {
-                                              System.out.printf("Error updating bean type: %s message: %s\n", e.getCause(), e.getMessage());
-                                          })
-                                          .ifSuccess(s -> System.out.println("Bean Updated Successfully"));*//*
+                CliOptionHelper options = CliOptionHelper.register();
+                options.show();
+            }
+            default -> {
+                System.out.println("\n Invalid selection!---");
+                this.run();
+            }
 
         }
 
@@ -168,4 +206,4 @@ public class CliUpdateOption implements CliOption {
         }
     }
 
-}*/
+}
