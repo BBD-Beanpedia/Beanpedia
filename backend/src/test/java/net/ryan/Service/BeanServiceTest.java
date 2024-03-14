@@ -3,9 +3,10 @@ package net.ryan.Service;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import net.ryan.DTO.BeanDTO;
-import net.ryan.Entities.BasicBeanInformation;
+import net.ryan.dto.BeanDTO;
+import net.ryan.entities.BasicBeanInformation;
 import net.ryan.Repository.*;
+import net.ryan.service.BeanService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
