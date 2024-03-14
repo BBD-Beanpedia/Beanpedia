@@ -1,7 +1,7 @@
-package net.ryan.controller;
+package net.ryan.Controller;
 
 import net.ryan.dto.BeanDTO;
-import net.ryan.service.BeanService;
+import net.ryan.Service.BeanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
