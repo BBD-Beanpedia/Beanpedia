@@ -18,6 +18,7 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -33,7 +34,7 @@ public class SecurityConfig {
         return security
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/auth/token").permitAll()
+                        .requestMatchers("/auth/token", "/beans/search/*", "/beans/all/*", "/beans/filter/*", "/beans/attributes/*").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(ses -> ses.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(jwt -> jwt.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())))

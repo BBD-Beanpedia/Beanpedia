@@ -1,7 +1,7 @@
-package net.ryan.Service;
+package net.ryan.service;
 
-import net.ryan.DTO.BeanDTO;
-import net.ryan.Entities.*;
+import net.ryan.dto.BeanDTO;
+import net.ryan.entities.*;
 import net.ryan.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 public class BeanService {
-
+//
     BasicBeanInformationRepository basicBeanInformationRepository;
     BeanColourRepository beanColourRepository;
     BeanOriginRepository beanOriginRepository;
@@ -54,7 +54,7 @@ public class BeanService {
      */
     public void updateBean(BeanDTO beanDTO){
 
-        System.out.println(beanDTO);
+//        System.out.println(beanDTO);
 
         switch (beanDTO.getSelection()){
             case "1":

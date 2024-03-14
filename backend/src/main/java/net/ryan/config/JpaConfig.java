@@ -1,4 +1,4 @@
-package net.ryan.Config;
+package net.ryan.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

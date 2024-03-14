@@ -92,7 +92,7 @@ public class CliCreateOption implements CliOption {
     }
 
 
-    private <T extends Nameable> Result<T> showMenuFor(Result<List<T>> dataInput) {
+/*    private <T extends Nameable> Result<T> showMenuFor(Result<List<T>> dataInput) {
         dataInput.ifError(stringExceptionPair -> {
                      // TODO: Unable to make request/ parse the data show the error here
                  })
@@ -106,6 +106,6 @@ public class CliCreateOption implements CliOption {
                                       });
                  });
         return null;
-    }
+    }*/
 
 }
