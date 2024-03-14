@@ -58,8 +58,8 @@ public class BeanController {
     7 = colour
      */
     @PostMapping("/update")
-    public void updateBean(@RequestBody BeanDTO beanDTO){
-        this.beanService.updateBean(beanDTO);
+    public boolean updateBean(@RequestBody BeanDTO beanDTO){
+        return this.beanService.updateBean(beanDTO);
     }
 
 

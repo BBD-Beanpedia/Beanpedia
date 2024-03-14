@@ -1,4 +1,4 @@
-package net.ryan.service;
+package net.ryan.Service;
 
 import net.ryan.model.GithubDataResp;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;

@@ -1,7 +1,8 @@
 package net.ryan.cli.options;
 
+
+import net.ryan.CliOptionHelper;
 import net.ryan.bean.BeanModel;
-import net.ryan.cli.Nameable;
 import net.ryan.util.*;
 
 import java.util.List;
@@ -20,10 +21,17 @@ public class CliCreateOption implements CliOption {
 
         model = new BeanModel(-1, "", "", "", -1, -1, -1, -1);
 
-        System.out.println("---Create new bean---");
 
-        System.out.println("Enter the name of the bean");
+        System.out.println("\n---Create new bean---");
+
+        System.out.println("Enter the name of the bean. Or type back to return to the main menu");
         final String beanName = getStringAssured();
+        if(beanName.equalsIgnoreCase("back")){
+            System.out.println();
+            CliOptionHelper options = CliOptionHelper.register();
+            options.show();
+        }
+
         model.setBeanName(beanName);
         model.setNewBeanName(beanName);
 
@@ -47,28 +55,20 @@ public class CliCreateOption implements CliOption {
 
         Result<String> response = BeanDataHandler.getInstance().createBean(model.toJsonStringUpdate());
 
-        System.out.println(response.get());
+        System.out.println(model.toJsonStringUpdate());
 
+        if(!response.get().equalsIgnoreCase("Bean saved successfully!")){
+            System.out.println("\n---" + response.get() + "---");
+            this.run();
+        }
+        else{
+            System.out.println("\n---" + response.get() + "---\n");
+            System.out.println("---Redirecting to Main Menu---\n");
 
+            CliOptionHelper options = CliOptionHelper.register();
+            options.show();
+        }
 
-
-      /*  // Not to sure if we should always do this call but to keep things dynamic we will
-        final BeanOriginModel beanOriginModel = showMenuFor(BeanDataHandler.getInstance()
-                                                                           .requestAllOrigins());
-        System.out.println("Select Bean Shape:");
-        final BeanShapeModel beanShapeModel = showMenuFor(BeanDataHandler.getInstance()
-                                                                         .requestAllShapes());
-        System.out.println("Select Bean Type:");
-        final BeanTypeModel beanTypeModel = showMenuFor(BeanDataHandler.getInstance()
-                                                                       .requestAllTypes());
-        System.out.println("Select Bean Colour:");
-        final BeanColourModel beanColourModel = showMenuFor(BeanDataHandler.getInstance()
-                                                                           .requestAllColours());*/
-
-//        new BeanModel()
-
-//        BeanDataHandler.getInstance()
-//                       .insertBean();
     }
 
     private static String getStringAssured() {
@@ -90,22 +90,5 @@ public class CliCreateOption implements CliOption {
             return getDataAssured(result);
         } else return result.get();
     }
-
-
-/*    private <T extends Nameable> Result<T> showMenuFor(Result<List<T>> dataInput) {
-        dataInput.ifError(stringExceptionPair -> {
-                     // TODO: Unable to make request/ parse the data show the error here
-                 })
-                 .map(MapUtils::listToMap)
-                 .map(data -> {
-                     data.forEach(DisplayHelper::displayOption);
-                     return InputUtils.getInstance()
-                                      .readMapChoiceRangeFromConsole(data)
-                                      .ifError(e -> {
-                                          // TODO: Error not in range somehow prompt
-                                      });
-                 });
-        return null;
-    }*/
 
 }
