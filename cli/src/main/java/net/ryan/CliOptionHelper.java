@@ -29,9 +29,9 @@ public class CliOptionHelper {
     }
 
     public void show() {
-        System.out.println("Chose an option");
+        System.out.println("Select an option\n");
         cliOptions.forEach((integer, cliOption) -> System.out.printf("\t%d. %s\n", integer + 1, cliOption.getName()));
-        System.out.println("Enter a number to chose an option: ");
+        System.out.println("\nEnter a number to select an option: ");
         getInputInRange();
     }
 

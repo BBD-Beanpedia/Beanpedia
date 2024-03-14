@@ -1,9 +1,11 @@
 package net.ryan.Repository;
 
+import jakarta.transaction.Transactional;
 import net.ryan.Entities.BasicBeanInformation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -27,24 +29,38 @@ public interface BasicBeanInformationRepository extends JpaRepository<BasicBeanI
                                                            Pageable pageable);
 
     @Query(nativeQuery = true, value="update \"BasicBeanInformation\" set \"BeanName\" = ?1 where \"BeanName\"=?2")
-    Integer updateBeanName(String newBeanName, String currentBeanName);
+    @Modifying
+    @Transactional
+    void updateBeanName(String newBeanName, String currentBeanName);
 
     @Query(nativeQuery = true, value="update \"BasicBeanInformation\" set \"ScientificName\" = ?1 where \"BeanName\"=?2")
-    Integer updateScientificName(String newScientificName, String currentBeanName);
+    @Modifying
+    @Transactional
+    void updateScientificName(String newScientificName, String currentBeanName);
 
     @Query(nativeQuery = true, value="update \"BasicBeanInformation\" set \"BeanContent\" = ?1 where \"BeanName\"=?2")
-    Integer updateBeanContent(String newBeanContent, String currentBeanName);
+    @Modifying
+    @Transactional
+    void updateBeanContent(String newBeanContent, String currentBeanName);
 
     @Query(nativeQuery = true, value="update \"BasicBeanInformation\" set \"OriginId\" = ?1 where \"BeanName\"=?2")
-    Integer updateOriginId(Integer newOriginId, String currentBeanName);
+    @Modifying
+    @Transactional
+    void updateOriginId(Integer newOriginId, String currentBeanName);
 
     @Query(nativeQuery = true, value="update \"BasicBeanInformation\" set \"TypeId\" = ?1 where \"BeanName\"=?2")
-    Integer updateTypeId(Integer newTypeId, String currentBeanName);
+    @Modifying
+    @Transactional
+    void updateTypeId(Integer newTypeId, String currentBeanName);
 
     @Query(nativeQuery = true, value="update \"BasicBeanInformation\" set \"ShapeId\" = ?1 where \"BeanName\"=?2")
-    Integer updateShapeId(Integer newShapeId, String currentBeanName);
+    @Modifying
+    @Transactional
+    void updateShapeId(Integer newShapeId, String currentBeanName);
 
     @Query(nativeQuery = true, value="update \"BasicBeanInformation\" set \"ColourId\" = ?1 where \"BeanName\"=?2")
-    Integer updateColourId(Integer newColourId, String currentBeanName);
+    @Modifying
+    @Transactional
+    void updateColourId(Integer newColourId, String currentBeanName);
 
 }

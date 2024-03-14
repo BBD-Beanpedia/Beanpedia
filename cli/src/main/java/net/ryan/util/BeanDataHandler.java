@@ -23,8 +23,8 @@ public class BeanDataHandler {
 
     // @formatter:off
     private static final String
-            BASE_URL = "http://34.249.42.139:8080",
-            //BASE_URL = "http://localhost:8080",
+            //BASE_URL = "http://34.249.42.139:8080",
+            BASE_URL = "http://localhost:8080",
             INSERT_ENDPOINT = "/beans/addBean",
 
             GET_ALL_ENDPOINT = "/beans/all",
@@ -77,7 +77,7 @@ public class BeanDataHandler {
                           .map(request -> request.bearer(authToken))
                           .map(request -> request.bodyJson(newBeanData))
                           .mapToNew(HttpHandler.Request::sendJson)
-                          .map(_s -> true);
+                          .map(Boolean::parseBoolean);
     }
 
 

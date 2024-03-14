@@ -1,4 +1,4 @@
-package net.ryan.controller;
+/*package net.ryan.controller;
 
 import net.ryan.model.GithubAuthToken;
 import net.ryan.model.GithubDataResp;
@@ -40,4 +40,4 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid GitHub token");
         }
     }
-}
+}*/
