@@ -23,6 +23,7 @@ public class JpaConfig {
         System.out.println("DATABASE_URL: " + databaseUrl);
         DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.postgresql.Driver");
+        //dataSourceBuilder
         dataSourceBuilder.url(databaseUrl);
         dataSourceBuilder.username(databaseUsername);
         dataSourceBuilder.password(databasePassword);
