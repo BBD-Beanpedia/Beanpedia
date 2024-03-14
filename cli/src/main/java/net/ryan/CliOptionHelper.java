@@ -18,8 +18,8 @@ public class CliOptionHelper {
 
     private final Map<Integer, CliOption> cliOptions;
 
-    public static CliOptionHelper register() {
-        List<CliOption> options = List.of(new CliViewOption(), new CliSearchOption(), new CliFilterOption(), new CliCreateOption(), new CliAuthOption(), new CliExitOption());
+    private static CliOptionHelper register() {
+        List<CliOption> options = List.of(new CliViewOption(), new CliSearchOption(), new CliFilterOption(), new CliUpdateOption(), new CliCreateOption(), new CliExitOption());
         return new CliOptionHelper(MapUtils.listToMap(options));
     }
 
@@ -29,13 +29,13 @@ public class CliOptionHelper {
     }
 
     public void show() {
-        System.out.println("Select an option\n");
+        System.out.println("Select an option:\n");
         cliOptions.forEach((integer, cliOption) -> System.out.printf("\t%d. %s\n", integer + 1, cliOption.getName()));
-        System.out.println("\nEnter a number to run an option: ");
+        System.out.println("\nEnter a number to select an option: ");
         getInputInRange();
     }
 
-    public void getInputInRange() {
+    private void getInputInRange() {
         InputUtils.getInstance()
                   .readMapChoiceRangeFromConsole(cliOptions)
                   .ifSuccess(CliOption::run)

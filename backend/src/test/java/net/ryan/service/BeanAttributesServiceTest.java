@@ -4,6 +4,7 @@ package net.ryan.service;
 import net.ryan.dto.*;
 import net.ryan.entities.*;
 import net.ryan.repository.*;
+import net.ryan.service.BeanAttributesService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

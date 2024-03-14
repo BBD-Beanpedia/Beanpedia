@@ -1,5 +1,6 @@
 package net.ryan.cli.options;
 
+import net.ryan.CliOptionHelper;
 import net.ryan.bean.BeanModelPage;
 import net.ryan.cli.BeanDisplay;
 import net.ryan.cli.PaginationField;
@@ -16,7 +17,7 @@ public class CliViewOption implements CliOption {
     @Override
     public void run() {
         // Make a call to get the short bean list as well as page size.
-        System.out.println("---Viewing all beans---");
+        System.out.println("\n---Viewing all beans---");
         final int page = 0;
         showBeanPage(page);
     }
@@ -25,7 +26,7 @@ public class CliViewOption implements CliOption {
         BeanDataHandler.getInstance()
                        .requestListOfBeansPaged(page)
                        .ifSuccess(givenPage -> displayBeans(page, givenPage))
-                       .ifError(e -> System.out.println("Error -> Cant make call to server: " + e.getMessage()));
+                       .ifError(e -> e.printStackTrace());
     }
 
     private void displayBeans(int givenPage, BeanModelPage pageBeanList) {
@@ -36,9 +37,8 @@ public class CliViewOption implements CliOption {
         switch (paginationField) {
             case NEXT -> showBeanPage(givenPage + 1);
             case PREVIOUS -> showBeanPage(givenPage - 1);
-            case MENU -> {
-                //TODO: back to cli
-            }
+            case MENU -> CliOptionHelper.getInstance()
+                                        .show();
         }
     }
 

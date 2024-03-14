@@ -40,26 +40,28 @@ public class CliFilterOption implements CliOption {
 
     @Override
     public void run() {
-        System.out.println("---Filter---");
-        System.out.println("What would you like to filter by?");
+        System.out.println("\n---Filter---");
+        System.out.println("What would you like to filter by?\n");
 
         final List<BeanProps> list = Arrays.stream(BeanProps.values())
                                            .toList();
         final Map<Integer, BeanProps> beanPropsMap = MapUtils.listToMap(list);
         beanPropsMap.forEach(DisplayHelper::displayOption);
 
-        System.out.println("Enter number in range or enter 'menu' to return to main menu.");
+        System.out.println("\nEnter a number to select or enter 'menu' to return to main menu.");
         InputUtils.getInstance()
                   .runMenuFunction(beanPropsMap, List.of(PaginationField.MENU), this::showBeanOptionSelection, this::menu);
     }
 
     private void menu(PaginationField paginationField) {
         System.out.println("Returning to main menu...");
+        CliOptionHelper.getInstance()
+                       .show();
     }
 
     private void showBeanOptionSelection(BeanProps beanProps) {
         final BeanDataHandler dataHandler = BeanDataHandler.getInstance();
-        System.out.println("Please select from the list below to filter by " + beanProps.getName() + ": ");
+        System.out.println("Enter a number to select an option to filter by " + beanProps.getName() + ": ");
         switch (beanProps) {
             case ORIGIN -> showOptionsAndSearch(0, dataHandler::requestAllOrigins, dataHandler::searchBeanByOrigin);
             case SHAPE -> showOptionsAndSearch(0, dataHandler::requestAllShapes, dataHandler::searchBeanByShape);
@@ -69,11 +71,12 @@ public class CliFilterOption implements CliOption {
     }
 
     private <T extends Nameable & Identifiable> void showOptionsAndSearch(int pageNum, Supplier<Result<List<T>>> requestSupplier, Function<FilterPageModel, Result<BeanModelPage>> searchFunction) {
-        //TODO:
-
         requestSupplier.get()
                        .map(MapUtils::listToMap)
-                       .ifError(e -> failedToMakeNetworkCall(() -> showOptionsAndSearch(pageNum, requestSupplier, searchFunction)))
+                       .ifError(e -> {
+                           e.printStackTrace();
+                           failedToMakeNetworkCall(() -> showOptionsAndSearch(pageNum, requestSupplier, searchFunction));
+                       })
                        .ifSuccess(options -> {
                            options.forEach(DisplayHelper::displayOption);
                            InputUtils.getInstance()

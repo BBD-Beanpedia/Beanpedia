@@ -62,14 +62,16 @@ public class HttpHandler {
 
         public Request bodyJson(String string) {
             builder.header("Content-Type", "application/json");
-            //builder.method(method.name(), HttpRequest.BodyPublishers.ofString(string));
-            //method = null;
-            //builder.
-
-            //System.out.println(builder);
 
             builder.POST(HttpRequest.BodyPublishers.ofString(string));
 
+            return this;
+        }
+
+        public Request bodyJsonReal(String string) {
+            builder.header("Content-Type", "application/json");
+            builder.method(method.name(), HttpRequest.BodyPublishers.ofString(string));
+            method = null;
             return this;
         }
 
@@ -91,10 +93,12 @@ public class HttpHandler {
                 HttpResponse<T> res = CLIENT.send(request, responseBodyHandler);
                 int statusCode = res.statusCode();
                 if (statusCode == 200) return Result.success(res.body());
-                else if (statusCode == 404) {
-                    return Result.fail(new NotFoundException("Http Error code " + statusCode + "Please login"));
-                } else
+                else if (statusCode == 401) {
+                    return Result.fail(new NotFoundException("Http Error code " + statusCode + " please login"));
+                } else if (statusCode == 404)
                     return Result.fail(new UnauthorisedException("Http Error code: " + statusCode + "\t" + request.uri() + " Not found"));
+                else
+                    return Result.fail(new UnauthorisedException("Http Error code: " + statusCode + "\t" + request.uri()));
             } catch (IOException | InterruptedException e) {
                 return Result.fail(e);
             }
