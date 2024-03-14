@@ -1,4 +1,4 @@
-package net.ryan.Config;
+package net.ryan.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +23,6 @@ public class JpaConfig {
         System.out.println("DATABASE_URL: " + databaseUrl);
         DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.postgresql.Driver");
-        //dataSourceBuilder
         dataSourceBuilder.url(databaseUrl);
         dataSourceBuilder.username(databaseUsername);
         dataSourceBuilder.password(databasePassword);

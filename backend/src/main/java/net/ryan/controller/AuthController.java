@@ -1,8 +1,8 @@
-/*package net.ryan.controller;
+package net.ryan.Controller;
 
 import net.ryan.model.GithubAuthToken;
 import net.ryan.model.GithubDataResp;
-import net.ryan.service.TokenService;
+import net.ryan.Service.TokenService;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,4 +40,4 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid GitHub token");
         }
     }
-}*/
+}

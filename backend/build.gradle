@@ -20,7 +20,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     // Needed for token auth
-    //implementation 'org.springframework.boot:spring-boot-starter-oauth2-authorization-server'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-authorization-server'
     testImplementation 'org.springframework.security:spring-security-test'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
