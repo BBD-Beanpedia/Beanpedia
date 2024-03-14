@@ -11,15 +11,15 @@ public class CliOptionHelper {
 
     private final Map<Integer, CliOption> cliOptions;
 
-    public static CliOptionHelper register() {
-        List<CliOption> options = List.of(
-                new CliViewOption(),
-                new CliSearchOption(),
-                new CliFilterOption(),
-                new CliCreateOption(),
-                new CliUpdateOption(),
-                new CliAuthOption(),
-                new CliExitOption());
+    private static CliOptionHelper instance;
+
+    public static CliOptionHelper getInstance() {
+        if (instance == null) instance = register();
+        return instance;
+    }
+
+    private static CliOptionHelper register() {
+        List<CliOption> options = List.of(new CliViewOption(), new CliSearchOption(), new CliFilterOption(), new CliCreateOption(), new CliUpdateOption(), new CliAuthOption(), new CliExitOption());
         return new CliOptionHelper(MapUtils.listToMap(options));
     }
 
@@ -41,8 +41,9 @@ public class CliOptionHelper {
                   .ifSuccess(CliOption::run)
                   .ifError(error -> {
                       System.out.println("Error: Unrecognized command " + error.getMessage());
-                      getInputInRange();
+                      show();
                   });
+
     }
 
 

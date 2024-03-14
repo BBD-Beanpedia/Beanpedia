@@ -61,4 +61,33 @@ public final class BeanModelFull implements JsonSerializable, Nameable {
     public String getScientificName() {
         return this.scientificName;
     }
+
+
+    public void setBeanName(String beanName) {
+        this.beanName = beanName;
+    }
+
+    public void setScientificName(String scientificName) {
+        this.scientificName = scientificName;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setShape(String shape) {
+        this.shape = shape;
+    }
+
+    public void setColour(String colour) {
+        this.colour = colour;
+    }
 }

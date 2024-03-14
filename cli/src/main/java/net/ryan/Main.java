@@ -26,8 +26,7 @@ public class Main {
 
 //        System.out.println("Welcome to the Bean Encyclopedia CLI!");
 
-        final CliOptionHelper options = CliOptionHelper.register();
-        options.show();
+        CliOptionHelper.getInstance().show();
 
 /*        InputUtils.getInstance().readIntRangeFromConsole(0, 15)
                 .ifSuccess(System.out::println)

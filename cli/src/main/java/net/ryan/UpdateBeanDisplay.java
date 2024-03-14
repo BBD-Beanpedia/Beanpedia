@@ -1,7 +1,10 @@
-package net.ryan.cli;
+package net.ryan;
 
 import net.ryan.CliOptionHelper;
 import net.ryan.bean.BeanModelFull;
+import net.ryan.cli.Nameable;
+import net.ryan.cli.PaginationField;
+import net.ryan.cli.UpdateField;
 import net.ryan.util.*;
 
 import java.util.List;

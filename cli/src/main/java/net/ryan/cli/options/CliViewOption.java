@@ -1,7 +1,10 @@
+/*
 package net.ryan.cli.options;
 
+import net.ryan.CliOptionHelper;
 import net.ryan.bean.BeanModelFull;
 import net.ryan.bean.BeanModelPage;
+import net.ryan.cli.PaginationField;
 import net.ryan.cli.UpdateBeanDisplay;
 import net.ryan.util.BeanDataHandler;
 import net.ryan.util.DisplayHelper;
@@ -46,15 +49,15 @@ public class CliViewOption implements CliOption {
 
     private void promptForInput(int givenPage, Map<Integer, BeanModelFull> beanModelMap, Integer totalPages) {
         Consumer<Integer> runInt = i -> handleBean(beanModelMap.get(i));
-        Consumer<String> x = s -> handleStringSelected(s, givenPage);
+        Consumer<PaginationField> x = s -> handleStringSelected(s.getName(), givenPage);
 
-        final List<String> options = new ArrayList<>();
-        options.add("exit");
+        final List<PaginationField> options = new ArrayList<>();
+        options.add(PaginationField.MENU);
         if (givenPage > 0) {
-            options.addFirst("prev");
+            options.addFirst(PaginationField.NEXT);
         }
         if (givenPage < totalPages - 1) {
-            options.addFirst("next");
+            options.addFirst(PaginationField.PREV);
         }
 
         //TODO: better message
@@ -62,8 +65,11 @@ public class CliViewOption implements CliOption {
 
 
         InputUtils.getInstance()
-                  .runMenuFunction(1, beanModelMap.size(), options, x, runInt)
-                  .ifError(s -> System.out.println("Error: " + s.getMessage()))
+                  .runMenuFunction(beanModelMap, options, x, runInt)
+                  .ifError(s -> {
+                      System.out.println("Error: " + s.getMessage());
+                      showBeanPage(0);
+                  })
                   .ifError(s -> promptForInput(givenPage, beanModelMap, totalPages));
     }
 
@@ -88,33 +94,35 @@ public class CliViewOption implements CliOption {
         System.out.println("- Origin: " + modelFull.getOrigin());
         System.out.println("- Bean Content: " + modelFull.getContent());
 
-        InputUtils.getInstance()
-                  .readIntFromConsole();
         System.out.println("Enter 'edit' to update bean or 'menu' to return to main menu");
         InputUtils.getInstance()
                   .readStringFromConsoleLowerCase()
                   .ifSuccess(s -> {
                       if (s.equals("edit")) {
                           // TODO: update bean
-                          UpdateBeanDisplay.show(modelFull);
+                          UpdateBeanDisplay.showUpdate(modelFull);
                       } else if (s.equals("menu")) {
                           // TODO: back to cli
-
+                          CliOptionHelper.getInstance()
+                                         .show();
                       }
                   });
 
 
     }
 
-     /*   BeanDataHandler.getInstance()
+     */
+/*   BeanDataHandler.getInstance()
                        .requestBeanDetail(beanId)
                        .ifError(e -> {
 
                        })
                        .ifSuccess(s -> {
                            System.out.println(s.toJsonString());
-                       });*/
+                       });*//*
 
+
+ */
 /*    private void showBeanData(Map<Integer, ShortBeanModel> beanMap) {
         // Show options for the user to select e.g. 1. String Bean
         beanMap.forEach((integer, cliOption) -> System.out.printf("\t%d. %s\n", integer + 1, cliOption));
@@ -145,7 +153,54 @@ public class CliViewOption implements CliOption {
                       pagination(1, 2);
                   });
 
-    }*/
+    }*//*
 
+
+
+}*/
+package net.ryan.cli.options;
+
+import net.ryan.bean.BeanModelPage;
+import net.ryan.cli.BeanDisplay;
+import net.ryan.cli.UpdateBeanDisplay;
+import net.ryan.cli.PaginationField;
+import net.ryan.util.BeanDataHandler;
+
+public class CliViewOption implements CliOption {
+
+
+    @Override
+    public String getName() {
+        return "View All Beans";
+    }
+
+    @Override
+    public void run() {
+        // Make a call to get the short bean list as well as page size.
+        System.out.println("---Viewing all beans---");
+        final int page = 0;
+        showBeanPage(page);
+    }
+
+    private void showBeanPage(int page) {
+        BeanDataHandler.getInstance()
+                       .requestListOfBeansPaged(page)
+                       .ifSuccess(givenPage -> displayBeans(page, givenPage))
+                       .ifError(e -> System.out.println("Error -> Cant make call to server: " + e.getMessage()));
+    }
+
+    private void displayBeans(int givenPage, BeanModelPage pageBeanList) {
+        BeanDisplay.handleDisplayBeansPaginated(givenPage, pageBeanList, (f) -> handlePage(f, givenPage), BeanDisplay::showBean);
+    }
+
+    private void handlePage(PaginationField paginationField, int givenPage) {
+        switch (paginationField) {
+            case NEXT -> showBeanPage(givenPage + 1);
+            case PREV -> showBeanPage(givenPage - 1);
+            case MENU -> {
+                //TODO: back to cli
+            }
+        }
+    }
 
 }
