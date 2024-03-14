@@ -25,11 +25,8 @@ public class BeanDataHandler {
     private static final String
             BASE_URL = "http://34.249.42.139:8080",
             //BASE_URL = "http://localhost:8080",
-<<<<<<< HEAD
             INSERT_ENDPOINT = "/beans/addBean",
-=======
-            INSERT_ENDPOINT = "/addBean",
->>>>>>> 33ff2803f412121d27fa18455766039f03ab1e48
+
             GET_ALL_ENDPOINT = "/beans/all",
             SEARCH_ENDPOINT = "/beans/search",
             UPDATE_ENDPOINT = "/beans/update",
@@ -83,7 +80,7 @@ public class BeanDataHandler {
                           .map(_s -> true);
     }
 
-<<<<<<< HEAD
+
     public Result<String> createBean(String newBeanData) {
         return HttpHandler.newPostRequest(BASE_URL + INSERT_ENDPOINT)
                 .map(request -> request.bearer(authToken))
@@ -91,21 +88,6 @@ public class BeanDataHandler {
                 .mapToNew(HttpHandler.Request::sendJson);
                 //.map(r -> System.out.println(r));
     }
-
-    /*public final Result<Boolean> insertBean(BeanModel model) {
-=======
-    public final Result<Boolean> insertBean(BeanModel model) {
->>>>>>> 33ff2803f412121d27fa18455766039f03ab1e48
-        return HttpHandler.newPostRequest(BASE_URL + INSERT_ENDPOINT)
-                          .map(request -> request.bearer(authToken))
-                          .map(request -> request.bodyJson(model))
-                          .mapToNew(HttpHandler.Request::sendString)
-                          .map(_s -> true);
-<<<<<<< HEAD
-    }*/
-=======
-    }
->>>>>>> 33ff2803f412121d27fa18455766039f03ab1e48
 
     public Result<List<BeanOriginModel>> requestAllOrigins() {
         return basicGetQuery(ORIGIN_FILTER, JsonParser::parseBeanOriginList);

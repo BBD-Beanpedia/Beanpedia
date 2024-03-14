@@ -62,15 +62,10 @@ public class BeanController {
         this.beanService.updateBean(beanDTO);
     }
 
-<<<<<<< HEAD
+
     @PostMapping("/addBean")
-    public String insertBean(@RequestBody BeanDTO beanDTO){
+    public String insertBean(@RequestBody BeanDTO beanDTO) {
         return this.beanService.createBean(beanDTO);
-=======
-    @PostMapping("/insert")
-    public void insertBean(@RequestBody BeanDTO beanDTO){
 
->>>>>>> 33ff2803f412121d27fa18455766039f03ab1e48
     }
-
 }

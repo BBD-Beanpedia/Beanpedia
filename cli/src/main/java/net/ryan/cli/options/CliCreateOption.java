@@ -1,26 +1,15 @@
 package net.ryan.cli.options;
 
-<<<<<<< HEAD
 import net.ryan.bean.BeanModel;
 import net.ryan.cli.Nameable;
 import net.ryan.util.*;
-=======
-import net.ryan.cli.Nameable;
-import net.ryan.util.DisplayHelper;
-import net.ryan.util.InputUtils;
-import net.ryan.util.MapUtils;
-import net.ryan.util.Result;
->>>>>>> 33ff2803f412121d27fa18455766039f03ab1e48
 
 import java.util.List;
 
 public class CliCreateOption implements CliOption {
 
-<<<<<<< HEAD
     private BeanModel model;
 
-=======
->>>>>>> 33ff2803f412121d27fa18455766039f03ab1e48
     @Override
     public String getName() {
         return "Create New Bean";
@@ -29,7 +18,6 @@ public class CliCreateOption implements CliOption {
     @Override
     public void run() {
 
-<<<<<<< HEAD
         model = new BeanModel(-1, "", "", "", -1, -1, -1, -1);
 
         System.out.println("---Create new bean---");
@@ -60,14 +48,6 @@ public class CliCreateOption implements CliOption {
         Result<String> response = BeanDataHandler.getInstance().createBean(model.toJsonStringUpdate());
 
         System.out.println(response.get());
-=======
-        System.out.println("---Create new bean---");
-        System.out.println("Enter beans name");
-        final String name = getStringAssured();
-        System.out.println("Enter beans scientific name");
-        final String sciName = getStringAssured();
-        System.out.println("Select Bean Origin:");
->>>>>>> 33ff2803f412121d27fa18455766039f03ab1e48
 
 
 
