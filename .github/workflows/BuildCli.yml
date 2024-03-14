@@ -1,0 +1,74 @@
+on:
+  push:
+    branches: [ feature/action_time ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macOS-latest, windows-latest ]
+        java: [ '21.0.2' ]
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: 21
+
+      - name: Echo JAVA_HOME
+        run: echo $JAVA_HOME
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Execute build
+        run: ./gradlew --info --stacktrace build
+
+      - name: Execute jlink
+        run: ./gradlew --info --stacktrace jlink
+
+      - name: Execute jpackage
+        run: ./gradlew --info --stacktrace jpackage
+
+      - name: Upload DMG as an artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: beanpedia${{ matrix.java }}-${{ matrix.os }}-dmg
+          path: cli/build/jpackage/*.dmg
+
+      - name: Upload EXE as an artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: beanpedia${{ matrix.java }}-${{ matrix.os }}-exe
+          path: cli/build/jpackage/*.exe
+
+      - name: Upload MSI as an artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: beanpedia${{ matrix.java }}-${{ matrix.os }}-msi
+          path: cli/build/jpackage/*.msi
+
+      - name: Upload DEB as an artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: beanpedia${{ matrix.java }}-${{ matrix.os }}-deb
+          path: cli/build/jpackage/*.deb
+
+      - name: Upload RPM as an artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: beanpedia${{ matrix.java }}-${{ matrix.os }}-rpm
+          path: cli/build/jpackage/*.rpm
+
+      - name: Upload Runnable
+        uses: actions/upload-artifact@v4
+        with:
+          name: runnable-cli-beanpedia${{ matrix.java }}-${{ matrix.os }}
+          path: cli/build/jpackage/ClI/*
