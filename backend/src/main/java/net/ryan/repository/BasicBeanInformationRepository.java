@@ -1,4 +1,4 @@
-package net.ryan.Repository;
+package net.ryan.repository;
 
 import net.ryan.entities.BasicBeanInformation;
 import org.springframework.data.domain.Page;

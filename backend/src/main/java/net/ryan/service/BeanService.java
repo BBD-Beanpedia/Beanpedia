@@ -2,7 +2,7 @@ package net.ryan.service;
 
 import net.ryan.dto.BeanDTO;
 import net.ryan.entities.*;
-import net.ryan.Repository.*;
+import net.ryan.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +12,6 @@ import java.util.List;
 
 @Service
 public class BeanService {
-//
     BasicBeanInformationRepository basicBeanInformationRepository;
     BeanColourRepository beanColourRepository;
     BeanOriginRepository beanOriginRepository;
