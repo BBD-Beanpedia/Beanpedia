@@ -72,7 +72,7 @@ public class BeanDataHandler {
 
     //public Result<BeanModel> updateBean(BeanModel newBeanData) {
     public Result<Boolean> updateBean(String newBeanData) {
-         return HttpHandler.newPostRequest(BASE_URL + UPDATE_ENDPOINT)
+        return HttpHandler.newPostRequest(BASE_URL + UPDATE_ENDPOINT)
                           .map(request -> request.bearer(authToken))
                           .map(request -> request.bodyJson(newBeanData))
                           .mapToNew(HttpHandler.Request::sendJson)
@@ -158,9 +158,12 @@ public class BeanDataHandler {
     }
 
     public void requestAndSaveToken(String token) {
-        HttpHandler.newPostRequest(BASE_URL + "/token")
-                   .map(request -> request.bodyJson(""))
-                   .mapToNew(HttpHandler.Request::sendJson);
+        HttpHandler.newPostRequest(BASE_URL + "/auth/token")
+                   .map(request -> request.bodyJson("{\"githubToken\":\"" + token + "\"}"))
+                   .mapToNew(HttpHandler.Request::sendJson)
+                   .ifError(Throwable::printStackTrace)
+                   .ifSuccess(System.out::println)
+        ;
 
 
     }

@@ -8,18 +8,17 @@ import java.util.List;
 import java.util.Map;
 
 public class CliOptionHelper {
+    private static CliOptionHelper instance;
+
+    public static CliOptionHelper getInstance() {
+        if (instance == null) instance = register();
+        return instance;
+    }
 
     private final Map<Integer, CliOption> cliOptions;
 
-    public static CliOptionHelper register() {
-        List<CliOption> options = List.of(
-                new CliViewOption(),
-                new CliSearchOption(),
-                new CliFilterOption(),
-                new CliCreateOption(),
-                new CliUpdateOption(),
-                new CliAuthOption(),
-                new CliExitOption());
+    private static CliOptionHelper register() {
+        List<CliOption> options = List.of(new CliViewOption(), new CliSearchOption(), new CliFilterOption(), new CliCreateOption(), new CliUpdateOption(), new CliAuthOption(), new CliExitOption());
         return new CliOptionHelper(MapUtils.listToMap(options));
     }
 

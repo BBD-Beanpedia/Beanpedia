@@ -25,7 +25,7 @@ public class CliAuthOption implements CliOption {
 
     private void navigateToGithub(GithubAuthDeviceModel githubAuthDeviceModel) {
         System.out.printf("Please Navigate to %s and enter this code %s\n", githubAuthDeviceModel.verificationUri(), githubAuthDeviceModel.userCode());
-        try(ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1))
+        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
         {
 
             final Runnable pollForToken = () -> BeanDataHandler.getInstance()
@@ -40,8 +40,8 @@ public class CliAuthOption implements CliOption {
                        .requestAndSaveToken(token)
         ;
         executorService.shutdownNow();
-
         //TODO: Navigate to home screen again
+
     }
 
 
