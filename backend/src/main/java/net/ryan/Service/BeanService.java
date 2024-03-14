@@ -140,6 +140,77 @@ public class BeanService {
 
     }
 
+    public String createBean(BeanDTO beanDTO){
+
+        BasicBeanInformation basicBeanInformation = new BasicBeanInformation();
+
+        basicBeanInformation.setBeanName(beanDTO.getBeanName());
+        basicBeanInformation.setScientificName(beanDTO.getScientificName());
+        basicBeanInformation.setBeanContent(beanDTO.getContent());
+
+        ////////////////////////////////////////////
+
+        List<BeanOrigin> beanOrigins = beanOriginRepository.getAllBeans();
+
+        beanOrigins.stream().forEach(beanOrigin -> {
+            if(beanOrigin.getOrigin().toLowerCase().replaceAll("\\s+", "").equals(beanDTO.getOrigin().toLowerCase().replaceAll("\\s+", ""))){
+                basicBeanInformation.setOriginId(beanOrigin.getOriginId());
+            }
+        });
+
+        if(basicBeanInformation.getOriginId() == null){
+            return "The origin is not recognised. Please try again.";
+        }
+
+
+        ///////////////////////////////////////
+
+        List<BeanType> beanTypes = beanTypeRepository.getAllBeans();
+
+        beanTypes.stream().forEach(beanType -> {
+            if(beanType.getBeanType().toLowerCase().replaceAll("\\s+", "").equals(beanDTO.getType().toLowerCase().replaceAll("\\s+", ""))){
+                basicBeanInformation.setTypeId(beanType.getTypeId());
+            }
+        });
+
+        if(basicBeanInformation.getTypeId() == null){
+            return "The bean type is not recognised. Please try again.";
+        }
+
+        ///////////////////////////////////////
+
+        List<BeanShape> beanShapes = beanShapeRepository.getAllBeans();
+
+        beanShapes.stream().forEach(beanShape -> {
+            if(beanShape.getShape().toLowerCase().replaceAll("\\s+", "").equals(beanDTO.getShape().toLowerCase().replaceAll("\\s+", ""))){
+                basicBeanInformation.setShapeId(beanShape.getShapeId());
+            }
+        });
+
+        if(basicBeanInformation.getShapeId() == null){
+            return "The bean shape is not recognised. Please try again.";
+        }
+
+        ///////////////////////////////////////
+
+        List<BeanColour> beanColours = beanColourRepository.getAllBeans();
+
+        beanColours.stream().forEach(beanColour -> {
+            if(beanColour.getColour().toLowerCase().replaceAll("\\s+", "").equals(beanDTO.getColour().toLowerCase().replaceAll("\\s+", ""))){
+                basicBeanInformation.setColourId(beanColour.getColourId());
+            }
+        });
+
+        if(basicBeanInformation.getColourId() == null){
+            return "The bean colour is not recognised. Please try again.";
+        }
+
+        basicBeanInformationRepository.save(basicBeanInformation);
+
+        return "Bean saved successfully!";
+
+    }
+
     private BeanDTO convertToDto(BasicBeanInformation bean) {
         BeanDTO dto = new BeanDTO();
         dto.setBeanName(bean.getBeanName());

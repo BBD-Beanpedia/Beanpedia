@@ -4,12 +4,13 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name = "\"BasicBeanInformation\"")
+@Table(name = "\"BasicBeanInformation\"", schema = "\"public\"")
 @Data
 public class BasicBeanInformation {
 
     @Id
     @Column(name = "\"BeanId\"")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer beanId;
 
     @Basic

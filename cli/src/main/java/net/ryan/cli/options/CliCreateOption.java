@@ -1,14 +1,14 @@
 package net.ryan.cli.options;
 
+import net.ryan.bean.BeanModel;
 import net.ryan.cli.Nameable;
-import net.ryan.util.DisplayHelper;
-import net.ryan.util.InputUtils;
-import net.ryan.util.MapUtils;
-import net.ryan.util.Result;
+import net.ryan.util.*;
 
 import java.util.List;
 
 public class CliCreateOption implements CliOption {
+
+    private BeanModel model;
 
     @Override
     public String getName() {
@@ -18,12 +18,36 @@ public class CliCreateOption implements CliOption {
     @Override
     public void run() {
 
+        model = new BeanModel(-1, "", "", "", -1, -1, -1, -1);
+
         System.out.println("---Create new bean---");
-        System.out.println("Enter beans name");
-        final String name = getStringAssured();
-        System.out.println("Enter beans scientific name");
-        final String sciName = getStringAssured();
-        System.out.println("Select Bean Origin:");
+
+        System.out.println("Enter the name of the bean");
+        final String beanName = getStringAssured();
+        model.setBeanName(beanName);
+        model.setNewBeanName(beanName);
+
+        System.out.println("Enter the scientific name of the bean");
+        model.setScientificName(getStringAssured());
+
+        System.out.println("Provide a description for the bean");
+        model.setContent(getStringAssured());
+
+        System.out.println("Enter the originating continent of the bean");
+        model.setOrigin(getStringAssured());
+
+        System.out.println("Enter the type of the bean");
+        model.setType(getStringAssured());
+
+        System.out.println("Enter the shape of the bean");
+        model.setShape(getStringAssured());
+
+        System.out.println("Enter the colour of the bean");
+        model.setColour(getStringAssured());
+
+        Result<String> response = BeanDataHandler.getInstance().createBean(model.toJsonStringUpdate());
+
+        System.out.println(response.get());
 
 
 

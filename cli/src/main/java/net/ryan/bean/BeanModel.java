@@ -47,7 +47,7 @@ public final class BeanModel implements JsonSerializable {
                     {
                         "beanName": "%s",
                         "scientificName": "%s",
-                        "beanContent": "%s",
+                        "content": "%s",
                         "origin": "%s",
                         "type": "%s",
                         "shape": "%s",
