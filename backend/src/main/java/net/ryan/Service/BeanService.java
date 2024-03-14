@@ -140,6 +140,7 @@ public class BeanService {
 
     }
 
+<<<<<<< HEAD
     public String createBean(BeanDTO beanDTO){
 
         BasicBeanInformation basicBeanInformation = new BasicBeanInformation();
@@ -211,6 +212,8 @@ public class BeanService {
 
     }
 
+=======
+>>>>>>> 33ff2803f412121d27fa18455766039f03ab1e48
     private BeanDTO convertToDto(BasicBeanInformation bean) {
         BeanDTO dto = new BeanDTO();
         dto.setBeanName(bean.getBeanName());
