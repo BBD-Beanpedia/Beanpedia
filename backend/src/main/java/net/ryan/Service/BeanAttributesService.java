@@ -1,7 +1,7 @@
-package net.ryan.Service;
+package net.ryan.service;
 
-import net.ryan.DTO.*;
-import net.ryan.Entities.*;
+import net.ryan.dto.*;
+import net.ryan.entities.*;
 import net.ryan.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
