@@ -8,8 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public interface BasicBeanInformationRepository extends JpaRepository<BasicBeanInformation, Integer> {
 
@@ -28,7 +26,25 @@ public interface BasicBeanInformationRepository extends JpaRepository<BasicBeanI
                                                            @Param("originId") Integer originId,
                                                            Pageable pageable);
 
+    @Query(nativeQuery = true, value="update \"BasicBeanInformation\" set \"BeanName\" = ?1 where \"BeanName\"=?2")
+    Integer updateBeanName(String newBeanName, String currentBeanName);
 
+    @Query(nativeQuery = true, value="update \"BasicBeanInformation\" set \"ScientificName\" = ?1 where \"BeanName\"=?2")
+    Integer updateScientificName(String newScientificName, String currentBeanName);
 
+    @Query(nativeQuery = true, value="update \"BasicBeanInformation\" set \"BeanContent\" = ?1 where \"BeanName\"=?2")
+    Integer updateBeanContent(String newBeanContent, String currentBeanName);
+
+    @Query(nativeQuery = true, value="update \"BasicBeanInformation\" set \"OriginId\" = ?1 where \"BeanName\"=?2")
+    Integer updateOriginId(Integer newOriginId, String currentBeanName);
+
+    @Query(nativeQuery = true, value="update \"BasicBeanInformation\" set \"TypeId\" = ?1 where \"BeanName\"=?2")
+    Integer updateTypeId(Integer newTypeId, String currentBeanName);
+
+    @Query(nativeQuery = true, value="update \"BasicBeanInformation\" set \"ShapeId\" = ?1 where \"BeanName\"=?2")
+    Integer updateShapeId(Integer newShapeId, String currentBeanName);
+
+    @Query(nativeQuery = true, value="update \"BasicBeanInformation\" set \"ColourId\" = ?1 where \"BeanName\"=?2")
+    Integer updateColourId(Integer newColourId, String currentBeanName);
 
 }
