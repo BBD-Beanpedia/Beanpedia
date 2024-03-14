@@ -1,13 +1,16 @@
 package net.ryan.cli.options;
 
+import net.ryan.CliOptionHelper;
 import net.ryan.bean.BeanModelFull;
 import net.ryan.bean.BeanModelPage;
-import net.ryan.util.BeanDataHandler;
-import net.ryan.util.DisplayHelper;
-import net.ryan.util.InputUtils;
-import net.ryan.util.MapUtils;
+import net.ryan.bean.FilterPageModel;
+import net.ryan.cli.BeanDisplay;
+import net.ryan.cli.Identifiable;
+import net.ryan.cli.PaginationField;
+import net.ryan.util.*;
 
 import java.util.Map;
+import java.util.function.Function;
 
 public class CliSearchOption implements CliOption {
 
@@ -23,58 +26,33 @@ public class CliSearchOption implements CliOption {
 
         InputUtils.getInstance()
                   .readStringFromConsoleDirect()
-                  .ifSuccess(s -> searchForBean(s, 0))
+                  .ifSuccess(s -> searchForBean(0, s))
                   .ifError(s -> System.out.println("Error: " + s.getMessage()));
     }
 
-    private static void searchForBean(String beanName, int page) {
+    private static void searchForBean(int page, String beanName) {
         BeanDataHandler.getInstance()
                        .searchBean(beanName, page)
-                       .ifSuccess(beanModelPage -> displayBeans(page, beanModelPage))
+                       .ifSuccess(beanModelPage -> displayBeans(beanName, page, beanModelPage))
                        .ifError(e -> {
                            //TODO: better message
                            System.out.println(e.getMessage());
-
-                           System.out.println("Error making request to Api would you like to try again");
-                           InputUtils.getInstance()
-                                     .readStringFromConsoleLowerCase();
-//                           searchForBean(beanName, page);
-                       });
-
-
-    }
-
-    // TODO: UTIL
-    private static void displayBeans(int givenPage, BeanModelPage pageBeanList) {
-        final Integer totalPages = pageBeanList.maxPages();
-        System.out.printf("Page %d of %d\n", givenPage + 1, totalPages);
-        final Map<Integer, BeanModelFull> beanModelMap = MapUtils.listToMap(pageBeanList.beanList());
-        beanModelMap.forEach(DisplayHelper::displayOption);
-
-
-
-    }
-
-
-/*    private void searchForBean(String beanName, int currentPage) {
-        BeanDataHandler.getInstance()
-                       .searchBean(beanName, currentPage)
-                       .map(data -> new Pair<>(data.first(), MapUtils.listToMap(data.second())))
-                       .ifSuccess(integerListPair -> showSearchedBeans(integerListPair, currentPage))
-                       .ifError(e -> {
-                           System.out.println("Error making request to Api would you like to try again");
-                           InputUtils.getInstance()
-                                     .readStringFromConsoleLowerCase();
-                           searchForBean(beanName, currentPage);
                        });
     }
 
-    private void showSearchedBeans(Pair<Integer, Map<Integer, ShortBeanModel>> integerListPair, int currentPage) {
-        System.out.printf("Showing page %d of %d\n", currentPage, integerListPair.first());
-        integerListPair.second()
-                       .forEach(DisplayHelper::displayOption);
+    private static void displayBeans(String name, int currentPage, BeanModelPage pageBeanList) {
+        BeanDisplay.handleDisplayBeansPaginated(currentPage, pageBeanList, (f) -> handlePage(f, currentPage, name), BeanDisplay::showBean);
+    }
 
-    }*/
-
-
+    private static void handlePage(PaginationField f, int givenPage, String name) {
+        switch (f) {
+            case NEXT -> searchForBean(givenPage + 1, name);
+            case PREVIOUS -> searchForBean(givenPage - 1, name);
+            case MENU -> {
+                CliOptionHelper.getInstance()
+                               .show();
+                System.out.println("Returning to main menu...");
+            }
+        }
+    }
 }

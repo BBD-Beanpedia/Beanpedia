@@ -29,7 +29,7 @@ public class BeanDisplay {
             stringBuffer.append(" or 'next' to view the next page");
         }
         if (currentPage > 0) {
-            options.add(PaginationField.PREV);
+            options.add(PaginationField.PREVIOUS);
             stringBuffer.append(" or 'prev' to view the previous page");
         }
         options.add(PaginationField.MENU);

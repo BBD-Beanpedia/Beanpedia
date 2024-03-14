@@ -1,10 +1,10 @@
-package net.ryan.Controller;
+package net.ryan.controller;
 
-import net.ryan.DTO.BeanColourDTO;
-import net.ryan.DTO.BeanOriginDTO;
-import net.ryan.DTO.BeanShapeDTO;
-import net.ryan.DTO.BeanTypeDTO;
-import net.ryan.Service.BeanAttributesService;
+import net.ryan.dto.BeanColourDTO;
+import net.ryan.dto.BeanOriginDTO;
+import net.ryan.dto.BeanShapeDTO;
+import net.ryan.dto.BeanTypeDTO;
+import net.ryan.service.BeanAttributesService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.GetMapping;

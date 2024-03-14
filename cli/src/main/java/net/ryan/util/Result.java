@@ -76,7 +76,7 @@ public class Result<S> implements Supplier<S> {
         return exception;
     }
 
-    private boolean isSuccess() {
+    public boolean isSuccess() {
         return supplier != null;
     }
 

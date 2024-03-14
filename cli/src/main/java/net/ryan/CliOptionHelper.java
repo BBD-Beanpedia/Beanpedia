@@ -9,8 +9,6 @@ import java.util.Map;
 
 public class CliOptionHelper {
 
-    private final Map<Integer, CliOption> cliOptions;
-
     private static CliOptionHelper instance;
 
     public static CliOptionHelper getInstance() {
@@ -18,8 +16,10 @@ public class CliOptionHelper {
         return instance;
     }
 
+    private final Map<Integer, CliOption> cliOptions;
+
     private static CliOptionHelper register() {
-        List<CliOption> options = List.of(new CliViewOption(), new CliSearchOption(), new CliFilterOption(), new CliCreateOption(), new CliUpdateOption(), new CliAuthOption(), new CliExitOption());
+        List<CliOption> options = List.of(new CliViewOption(), new CliSearchOption(), new CliFilterOption(), new CliCreateOption(), new CliAuthOption(), new CliExitOption());
         return new CliOptionHelper(MapUtils.listToMap(options));
     }
 
@@ -29,9 +29,9 @@ public class CliOptionHelper {
     }
 
     public void show() {
-        System.out.println("Chose an option");
+        System.out.println("Choose an option:");
         cliOptions.forEach((integer, cliOption) -> System.out.printf("\t%d. %s\n", integer + 1, cliOption.getName()));
-        System.out.println("Enter a number to chose an option: ");
+        System.out.print("Enter a number to run an option: ");
         getInputInRange();
     }
 
@@ -43,7 +43,6 @@ public class CliOptionHelper {
                       System.out.println("Error: Unrecognized command " + error.getMessage());
                       show();
                   });
-
     }
 
 

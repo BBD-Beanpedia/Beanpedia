@@ -24,9 +24,9 @@ public class Main {
                    .ifSuccess(System.out::println);
 */
 
-//        System.out.println("Welcome to the Bean Encyclopedia CLI!");
-
-        CliOptionHelper.getInstance().show();
+        System.out.println("Welcome to the Bean Encyclopedia CLI!\n");
+        CliOptionHelper.getInstance()
+                       .show();
 
 /*        InputUtils.getInstance().readIntRangeFromConsole(0, 15)
                 .ifSuccess(System.out::println)

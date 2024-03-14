@@ -1,4 +1,4 @@
-package net.ryan.DTO;
+package net.ryan.dto;
 
 import lombok.Data;
 
