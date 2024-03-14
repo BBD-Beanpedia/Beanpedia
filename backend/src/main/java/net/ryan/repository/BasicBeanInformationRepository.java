@@ -1,4 +1,4 @@
-package net.ryan.Repository;
+package net.ryan.repository;
 
 import jakarta.transaction.Transactional;
 import net.ryan.entities.BasicBeanInformation;

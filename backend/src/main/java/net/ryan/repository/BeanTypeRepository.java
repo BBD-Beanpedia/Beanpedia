@@ -1,4 +1,4 @@
-package net.ryan.Repository;
+package net.ryan.repository;
 
 import net.ryan.entities.BeanType;
 import org.springframework.data.jpa.repository.JpaRepository;

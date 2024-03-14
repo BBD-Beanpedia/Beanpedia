@@ -1,11 +1,11 @@
-package net.ryan.Service;
+package net.ryan.service;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import net.ryan.dto.BeanDTO;
 import net.ryan.entities.BasicBeanInformation;
-import net.ryan.Repository.*;
+import net.ryan.repository.*;
 import net.ryan.service.BeanService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

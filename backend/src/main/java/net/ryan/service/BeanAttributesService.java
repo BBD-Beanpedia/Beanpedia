@@ -1,9 +1,9 @@
 package net.ryan.service;
 
-import net.ryan.Repository.BeanColourRepository;
-import net.ryan.Repository.BeanOriginRepository;
-import net.ryan.Repository.BeanShapeRepository;
-import net.ryan.Repository.BeanTypeRepository;
+import net.ryan.repository.BeanColourRepository;
+import net.ryan.repository.BeanOriginRepository;
+import net.ryan.repository.BeanShapeRepository;
+import net.ryan.repository.BeanTypeRepository;
 import net.ryan.dto.BeanColourDTO;
 import net.ryan.dto.BeanOriginDTO;
 import net.ryan.dto.BeanShapeDTO;

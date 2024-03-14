@@ -1,20 +1,17 @@
-package net.ryan.Service;
+package net.ryan.service;
 
 import net.ryan.dto.BeanDTO;
 import net.ryan.entities.*;
-import net.ryan.Repository.*;
+import net.ryan.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 
 @Service
 public class BeanService {
-
     BasicBeanInformationRepository basicBeanInformationRepository;
     BeanColourRepository beanColourRepository;
     BeanOriginRepository beanOriginRepository;
@@ -56,21 +53,17 @@ public class BeanService {
      */
     public boolean updateBean(BeanDTO beanDTO){
 
-        AtomicBoolean updateDone = new AtomicBoolean(false);
-
+//        System.out.println(beanDTO);
 
         switch (beanDTO.getSelection()){
             case "1":
                 this.basicBeanInformationRepository.updateBeanName(beanDTO.getNewBeanName(), beanDTO.getBeanName());
-                updateDone.set(true);
                 break;
             case "2":
                 this.basicBeanInformationRepository.updateScientificName(beanDTO.getScientificName(), beanDTO.getBeanName());
-                updateDone.set(true);
                 break;
             case "3":
-                this.basicBeanInformationRepository.updateBeanContent(beanDTO.getContent(), beanDTO.getBeanName());
-                updateDone.set(true);
+                this.basicBeanInformationRepository.updateScientificName(beanDTO.getContent(), beanDTO.getBeanName());
                 break;
             case "4":
 
@@ -84,7 +77,6 @@ public class BeanService {
 
                 beanOrigins.stream().forEach(beanOrigin -> {
                     if(beanDTO.getOrigin().equals(beanOrigin.getOrigin())){
-                        updateDone.set(true);
                         this.basicBeanInformationRepository.updateOriginId(beanOrigin.getOriginId(), beanDTO.getBeanName());
                     }
                 });
@@ -102,7 +94,6 @@ public class BeanService {
 
                 beanTypes.stream().forEach(beanType -> {
                     if(beanDTO.getType().equals(beanType.getBeanType())){
-                        updateDone.set(true);
                         this.basicBeanInformationRepository.updateTypeId(beanType.getTypeId(), beanDTO.getBeanName());
                     }
                 });
@@ -120,7 +111,6 @@ public class BeanService {
 
                 beanShapes.stream().forEach(beanShape -> {
                     if(beanDTO.getShape().equals(beanShape.getShape())){
-                        updateDone.set(true);
                         this.basicBeanInformationRepository.updateShapeId(beanShape.getShapeId(), beanDTO.getBeanName());
                     }
                 });
@@ -136,10 +126,8 @@ public class BeanService {
                     beanColour.setColour(beanColour.getColour().toLowerCase().replaceAll("\\s+", ""));
                 });
 
-
                 beanColours.stream().forEach(beanColour -> {
                     if(beanDTO.getColour().equals(beanColour.getColour())){
-                        updateDone.set(true);
                         this.basicBeanInformationRepository.updateColourId(beanColour.getColourId(), beanDTO.getBeanName());
                     }
                 });
@@ -149,8 +137,7 @@ public class BeanService {
                 break;
         }
 
-        return updateDone.get();
-
+        return false;
     }
 
     public String createBean(BeanDTO beanDTO){
@@ -160,6 +147,8 @@ public class BeanService {
         basicBeanInformation.setBeanName(beanDTO.getBeanName());
         basicBeanInformation.setScientificName(beanDTO.getScientificName());
         basicBeanInformation.setBeanContent(beanDTO.getContent());
+
+        ////////////////////////////////////////////
 
         List<BeanOrigin> beanOrigins = beanOriginRepository.getAllBeans();
 
@@ -173,6 +162,9 @@ public class BeanService {
             return "The origin is not recognised. Please try again.";
         }
 
+
+        ///////////////////////////////////////
+
         List<BeanType> beanTypes = beanTypeRepository.getAllBeans();
 
         beanTypes.stream().forEach(beanType -> {
@@ -185,6 +177,8 @@ public class BeanService {
             return "The bean type is not recognised. Please try again.";
         }
 
+        ///////////////////////////////////////
+
         List<BeanShape> beanShapes = beanShapeRepository.getAllBeans();
 
         beanShapes.stream().forEach(beanShape -> {
@@ -196,6 +190,8 @@ public class BeanService {
         if(basicBeanInformation.getShapeId() == null){
             return "The bean shape is not recognised. Please try again.";
         }
+
+        ///////////////////////////////////////
 
         List<BeanColour> beanColours = beanColourRepository.getAllBeans();
 
