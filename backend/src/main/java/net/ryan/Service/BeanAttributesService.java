@@ -1,8 +1,17 @@
 package net.ryan.service;
 
-import net.ryan.dto.*;
-import net.ryan.entities.*;
-import net.ryan.Repository.*;
+import net.ryan.Repository.BeanColourRepository;
+import net.ryan.Repository.BeanOriginRepository;
+import net.ryan.Repository.BeanShapeRepository;
+import net.ryan.Repository.BeanTypeRepository;
+import net.ryan.dto.BeanColourDTO;
+import net.ryan.dto.BeanOriginDTO;
+import net.ryan.dto.BeanShapeDTO;
+import net.ryan.dto.BeanTypeDTO;
+import net.ryan.entities.BeanColour;
+import net.ryan.entities.BeanOrigin;
+import net.ryan.entities.BeanShape;
+import net.ryan.entities.BeanType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

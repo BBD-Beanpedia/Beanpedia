@@ -1,4 +1,4 @@
-package net.ryan.Service;
+package net.ryan.service;
 
 import net.ryan.dto.BeanDTO;
 import net.ryan.entities.*;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 public class BeanService {
-
+//
     BasicBeanInformationRepository basicBeanInformationRepository;
     BeanColourRepository beanColourRepository;
     BeanOriginRepository beanOriginRepository;
