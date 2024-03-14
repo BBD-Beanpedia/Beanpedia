@@ -4,12 +4,11 @@ on:
 
 jobs:
   build:
-
     runs-on: ${{ matrix.os }} }
     strategy:
       matrix:
         os: [ ubuntu-latest, macOS-latest, windows-latest ]
-        java: [ '21' ]
+        java: [ '21.0.2' ]
     steps:
       - name: Git checkout
         uses: actions/checkout@v4
