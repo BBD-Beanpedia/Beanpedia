@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import net.ryan.dto.BeanDTO;
 import net.ryan.entities.BasicBeanInformation;
 import net.ryan.Repository.*;
-import net.ryan.service.BeanService;
+//import net.ryan.Service.BeanService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
