@@ -58,7 +58,7 @@ public class UpdateBeanDisplay {
         return (updateField) -> {
             final BeanDataHandler dataHandler = BeanDataHandler.getInstance();
             switch (updateField) {
-                case NAME -> showUpdateDataSimple(updateField, beanModel::getName, beanModel::setBeanName);
+                case NAME -> showUpdateDataSimple(updateField, beanModel::getName, beanModel::setName);
                 case CONTENT -> showUpdateDataSimple(updateField, beanModel::getContent, beanModel::setContent);
                 case SCIENTIFIC_NAME ->
                         showUpdateDataSimple(updateField, beanModel::getScientificName, beanModel::setScientificName);
@@ -70,7 +70,7 @@ public class UpdateBeanDisplay {
                         showUpdateData(updateField, dataHandler::requestAllShapes, beanModel::getShape, beanModel::setShape);
                 case COLOUR ->
                         showUpdateData(updateField, dataHandler::requestAllColours, beanModel::getColour, beanModel::setColour);
-                case FINISH -> dataHandler.updateBean(beanModel.toJsonString())
+                case FINISH -> dataHandler.updateBean(beanModel)
                                           .ifSuccess(_s -> System.out.println("Bean Updated."))
                                           .ifError(e -> System.out.println("Error:" + e.getMessage()));
             }
