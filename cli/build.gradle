@@ -4,6 +4,10 @@ plugins {
     id 'org.beryx.jlink' version '2.24.1'
 }
 
+run {
+    standardInput = System.in
+}
+
 group = 'net.ryan'
 version = '1.0.0'
 

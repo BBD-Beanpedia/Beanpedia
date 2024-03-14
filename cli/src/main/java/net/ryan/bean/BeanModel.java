@@ -6,13 +6,18 @@ import java.util.Objects;
 public final class BeanModel implements JsonSerializable {
     private final int beanId;
     private String beanName;
+    private String newBeanName;
     private String scientificName;
     private String content;
     private final int originId;
+    private String origin;
     private final int typeId;
+    private String type;
     private final int shapeId;
+    private String shape;
     private final int colourId;
-
+    private  String colour;
+    private String selection;
 
     public BeanModel(int beanId, String beanName, String scientificName, String content, int originId, int typeId, int shapeId, int colourId) {
         this.beanId = beanId;
@@ -34,6 +39,23 @@ public final class BeanModel implements JsonSerializable {
                         "content": "%s"
                     }
                 """, beanId, beanName, scientificName, content);
+    }
+
+    public String toJsonStringUpdate() {
+
+        return String.format("""
+                    {
+                        "beanName": "%s",
+                        "scientificName": "%s",
+                        "beanContent": "%s",
+                        "origin": "%s",
+                        "type": "%s",
+                        "shape": "%s",
+                        "colour":"%s",
+                        "selection": "%s",
+                        "newBeanName": "%s"
+                    }
+                """, beanName, scientificName, content, origin, type, shape, colour, selection, newBeanName);
     }
 
 
@@ -65,6 +87,26 @@ public final class BeanModel implements JsonSerializable {
     public void setContent(String content) {
         this.content = content;
     }
+
+    public String getOrigin(){return this.origin;}
+
+    public void setOrigin(String origin){this.origin = origin;}
+
+    public String getType(){return this.type;}
+
+    public void setType(String type){this.type = type;}
+
+    public String getShape(){return this.shape;}
+
+    public void setShape(String shape){this.shape = shape;}
+
+    public String getColour(){return this.colour;}
+
+    public void setColour(String colour){this.colour = colour;}
+
+    public void setSelection(String selection){this.selection = selection;}
+
+    public void setNewBeanName(String newBeanName){this.newBeanName = newBeanName;}
 
     @Override
     public boolean equals(Object obj) {
