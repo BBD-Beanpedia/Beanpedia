@@ -70,5 +70,5 @@ jobs:
       - name: Upload Runnable
         uses: actions/upload-artifact@v4
         with:
-          name: beanpedia${{ matrix.java }}-${{ matrix.os }}
-          path: cli/build/image.*
+          name: runnable-cli-beanpedia${{ matrix.java }}-${{ matrix.os }}
+          path: cli/build/jpackage/ClI/*
