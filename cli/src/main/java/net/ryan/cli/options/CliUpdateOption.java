@@ -43,7 +43,7 @@ public class CliUpdateOption implements CliOption {
             System.out.println("\n--Bean updated successfully!---");
             System.out.println("---Redirecting to Main Menu---\n");
 
-            CliOptionHelper options = CliOptionHelper.register();
+            CliOptionHelper options = CliOptionHelper.getInstance();
             options.show();
 
         }
@@ -62,7 +62,7 @@ public class CliUpdateOption implements CliOption {
                 .ifSuccess(searchTerm -> {
                     if(searchTerm.equalsIgnoreCase("back")){
                         System.out.println();
-                        CliOptionHelper options = CliOptionHelper.register();
+                        CliOptionHelper options = CliOptionHelper.getInstance();
                         options.show();
                     }
                     constructBeanModel(searchTerm);
@@ -178,7 +178,7 @@ public class CliUpdateOption implements CliOption {
                         .ifSuccess(beanModel::setColour);
             }
             case FINISH -> {
-                CliOptionHelper options = CliOptionHelper.register();
+                CliOptionHelper options = CliOptionHelper.getInstance();
                 options.show();
             }
             default -> {

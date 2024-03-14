@@ -26,7 +26,7 @@ public class CliViewOption implements CliOption {
         BeanDataHandler.getInstance()
                        .requestListOfBeansPaged(page)
                        .ifSuccess(givenPage -> displayBeans(page, givenPage))
-                       .ifError(e -> System.out.println("Error -> Cant make call to server: " + e.getMessage()));
+                       .ifError(e -> e.printStackTrace());
     }
 
     private void displayBeans(int givenPage, BeanModelPage pageBeanList) {

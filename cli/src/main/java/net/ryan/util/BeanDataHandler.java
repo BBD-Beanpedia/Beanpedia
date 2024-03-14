@@ -35,9 +35,9 @@ public class BeanDataHandler {
             TYPE_ENDPOINT = "/beans/attributes/types",
             COLOUR_ENDPOINT = "/beans/attributes/colours",
             WELCOME="/greeter",
-            GITHUB_AUTH="https://github.com/login/",
+            GITHUB_AUTH="https://github.com/login",
             GITHUB_DEVICE = "/device/code",
-            GITHUB_POLL = "oauth/access_token";
+            GITHUB_POLL = "/oauth/access_token";
     // @formatter:on
 
     private String authToken = "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiam1vdXRvbjE5IiwiZ2l0aHViX2lkIjoxMjI4MjA4OTksImV4cCI6MTcxMDQ2MDMxNiwiaWF0IjoxNzEwNDE3MTE2fQ.SqVGuDItVkaTxyKZoPGP-sWNbef7mhNaNom-C83saz9T7VLqFWWxvwcaXk44FWZrXj1ywwiVRDSHB5kl9fyNEvWs85n3d09Px4pA7ufSbMwf7wPRwP6vpGGXZZH-JFHyGp70VjNItFFf-2nrSDz_RAaPVBTAiboGkvt42VSoXRzRLzJg4yZUgD7IE_joh8usL1UvcPqTE5s_EyQ3vv33ppe86Te_RA-sHOXx999ZvObaCL7Nlz_R9Qr6p-Hqljl6UUYg3g-ZDxRi9aD8S95ObZ09rP1bB9DCGCifM9-gOmsFnDv5y561VYasjjFXX6GS4xinePjdFC8ln7P6mGHcKQ";
@@ -144,14 +144,14 @@ public class BeanDataHandler {
 
     public Result<GithubAuthDeviceModel> getGithubAuth() {
         return HttpHandler.newPostRequest(GITHUB_AUTH + GITHUB_DEVICE)
-                          .map(request -> request.bodyJson("{\"client_id\": \"a2a0895678d18622ca6d\"}"))
+                          .map(request -> request.bodyJsonReal("{\"client_id\": \"2f4dc8cbcebf01a1ae88\"}"))
                           .mapToNew(HttpHandler.Request::sendJson)
-                          .map(JsonParser::parseGithubAuth);
+                          .map(JsonParser::parseGithubAuth).ifError(e -> e.printStackTrace());
     }
 
     public Result<String> getGithubPoll(String deviceCode) {
         return HttpHandler.newPostRequest(GITHUB_AUTH + GITHUB_POLL)
-                          .map(request -> request.bodyJson("{\"client_id\": \"a2a0895678d18622ca6d\", \"device_code\": \"" + deviceCode + "\", \"grant_type\": \"urn:ietf:params:oauth:grant-type:device_code\"}"))
+                          .map(request -> request.bodyJsonReal("{\"client_id\": \"2f4dc8cbcebf01a1ae88\", \"device_code\": \"" + deviceCode + "\", \"grant_type\": \"urn:ietf:params:oauth:grant-type:device_code\"}"))
                           .mapToNew(HttpHandler.Request::sendJson)
                           .map(JsonParser::parseGithubPoll);
     }
@@ -164,8 +164,6 @@ public class BeanDataHandler {
         HttpHandler.newPostRequest(BASE_URL + "/token")
                    .map(request -> request.bodyJson(""))
                    .mapToNew(HttpHandler.Request::sendJson);
-
-
     }
 
     public Result<Void> updateBean(BeanModelFull beanModel) {

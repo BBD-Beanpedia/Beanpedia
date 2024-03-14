@@ -1,5 +1,6 @@
 package net.ryan.cli.options;
 
+import net.ryan.CliOptionHelper;
 import net.ryan.bean.GithubAuthDeviceModel;
 import net.ryan.util.BeanDataHandler;
 
@@ -25,23 +26,21 @@ public class CliAuthOption implements CliOption {
 
     private void navigateToGithub(GithubAuthDeviceModel githubAuthDeviceModel) {
         System.out.printf("Please Navigate to %s and enter this code %s\n", githubAuthDeviceModel.verificationUri(), githubAuthDeviceModel.userCode());
-        try(ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1))
+        final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
         {
 
             final Runnable pollForToken = () -> BeanDataHandler.getInstance()
                                                                .getGithubPoll(githubAuthDeviceModel.deviceCode())
-                                                               .ifSuccess(token -> pollForTokenCheck(token, executorService));
+                                                               .ifSuccess(token -> {
+                                                                   System.out.println("Successfully got access token");
+                                                                   BeanDataHandler.getInstance()
+                                                                                  .setAuthToken(token);
+                                                                   executorService.shutdownNow();
+                                                                   CliOptionHelper.getInstance()
+                                                                                  .show();
+                                                               });
             executorService.scheduleAtFixedRate(pollForToken, 0, githubAuthDeviceModel.interval() + 1, TimeUnit.SECONDS);
         }
-    }
-
-    private static void pollForTokenCheck(String token, ScheduledExecutorService executorService) {
-        BeanDataHandler.getInstance()
-                       .requestAndSaveToken(token)
-        ;
-        executorService.shutdownNow();
-
-        //TODO: Navigate to home screen again
     }
 
 

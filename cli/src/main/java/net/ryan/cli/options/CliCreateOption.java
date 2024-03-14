@@ -28,7 +28,7 @@ public class CliCreateOption implements CliOption {
         final String beanName = getStringAssured();
         if(beanName.equalsIgnoreCase("back")){
             System.out.println();
-            CliOptionHelper options = CliOptionHelper.register();
+            CliOptionHelper options = CliOptionHelper.getInstance();
             options.show();
         }
 
@@ -65,7 +65,7 @@ public class CliCreateOption implements CliOption {
             System.out.println("\n---" + response.get() + "---\n");
             System.out.println("---Redirecting to Main Menu---\n");
 
-            CliOptionHelper options = CliOptionHelper.register();
+            CliOptionHelper options = CliOptionHelper.getInstance();
             options.show();
         }
 
