@@ -1,10 +1,9 @@
-package net.ryan.Service;
+package net.ryan.service;
 
 
 import net.ryan.dto.*;
 import net.ryan.entities.*;
-import net.ryan.Repository.*;
-import net.ryan.service.BeanAttributesService;
+import net.ryan.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -15,7 +14,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Collections;
-import java.util.List;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;

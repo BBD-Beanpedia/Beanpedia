@@ -51,7 +51,7 @@ public class BeanService {
     6 = shape
     7 = colour
      */
-    public void updateBean(BeanDTO beanDTO){
+    public boolean updateBean(BeanDTO beanDTO){
 
 //        System.out.println(beanDTO);
 
@@ -137,6 +137,7 @@ public class BeanService {
                 break;
         }
 
+        return false;
     }
 
     public String createBean(BeanDTO beanDTO){
