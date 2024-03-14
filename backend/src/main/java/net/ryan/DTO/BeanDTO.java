@@ -11,4 +11,6 @@ public class BeanDTO {
     private String type;
     private String shape;
     private String colour;
+    private String selection;
+    private String newBeanName;
 }

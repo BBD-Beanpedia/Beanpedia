@@ -23,8 +23,8 @@ public class BeanDataHandler {
 
     // @formatter:off
     private static final String
-            //BASE_URL = "http://34.249.42.139:8080",
-            BASE_URL = "http://localhost:8080",
+            BASE_URL = "http://34.249.42.139:8080",
+            //BASE_URL = "http://localhost:8080",
             INSERT_ENDPOINT = "/addBean",
             GET_ALL_ENDPOINT = "/beans/all",
             SEARCH_ENDPOINT = "/beans/search",

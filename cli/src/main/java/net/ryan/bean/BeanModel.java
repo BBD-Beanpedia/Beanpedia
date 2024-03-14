@@ -6,6 +6,7 @@ import java.util.Objects;
 public final class BeanModel implements JsonSerializable {
     private final int beanId;
     private String beanName;
+    private String newBeanName;
     private String scientificName;
     private String content;
     private final int originId;
@@ -16,6 +17,7 @@ public final class BeanModel implements JsonSerializable {
     private String shape;
     private final int colourId;
     private  String colour;
+    private String selection;
 
     public BeanModel(int beanId, String beanName, String scientificName, String content, int originId, int typeId, int shapeId, int colourId) {
         this.beanId = beanId;
@@ -49,10 +51,11 @@ public final class BeanModel implements JsonSerializable {
                         "origin": "%s",
                         "type": "%s",
                         "shape": "%s",
-                        "colour": %s
+                        "colour":"%s",
+                        "selection": "%s",
+                        "newBeanName": "%s"
                     }
-                """, beanName, scientificName, content, origin, type, shape, colour);
-
+                """, beanName, scientificName, content, origin, type, shape, colour, selection, newBeanName);
     }
 
 
@@ -101,6 +104,9 @@ public final class BeanModel implements JsonSerializable {
 
     public void setColour(String colour){this.colour = colour;}
 
+    public void setSelection(String selection){this.selection = selection;}
+
+    public void setNewBeanName(String newBeanName){this.newBeanName = newBeanName;}
 
     @Override
     public boolean equals(Object obj) {

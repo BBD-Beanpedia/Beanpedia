@@ -1,4 +1,4 @@
-/*package net.ryan.service;
+package net.ryan.service;
 
 import net.ryan.model.GithubDataResp;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -29,4 +29,4 @@ public class TokenService {
         return this.jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
-}*/
+}

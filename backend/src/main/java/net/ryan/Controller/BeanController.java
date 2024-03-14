@@ -48,11 +48,23 @@ public class BeanController {
         return beanService.findBeansByCriteria(typeId, shapeId, colourId, originId, pageable);
     }
 
+    /*
+    1 = name
+    2 = scientific name
+    3 = content
+    4 = origin
+    5 = type
+    6 = shape
+    7 = colour
+     */
     @PostMapping("/update")
-    public void updateBean(@RequestBody BeanDTO test){
-
-        System.out.println("Hello world!");
-
-        System.out.println(test);
+    public void updateBean(@RequestBody BeanDTO beanDTO){
+        this.beanService.updateBean(beanDTO);
     }
+
+    @PostMapping("/insert")
+    public void insertBean(@RequestBody BeanDTO beanDTO){
+
+    }
+
 }

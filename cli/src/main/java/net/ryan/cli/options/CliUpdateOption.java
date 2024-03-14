@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class CliUpdateOption implements CliOption {
 
     private BeanModel model;
+    private Integer selection;
 
     @Override
     public String getName() {
@@ -33,7 +34,9 @@ public class CliUpdateOption implements CliOption {
 
         getInputFromOptions(updateOptions, model);
 
-        BeanDataHandler.getInstance().updateBean(model.toJsonStringUpdate()).ifError(e -> System.out.println(e));
+        model.setSelection(Integer.toString(this.selection + 1));
+
+        BeanDataHandler.getInstance().updateBean(model.toJsonStringUpdate());
     }
 
     private void selectBean(){
@@ -57,6 +60,7 @@ public class CliUpdateOption implements CliOption {
         model.setType(modelFull.getType());
         model.setShape(modelFull.getShape());
         model.setColour(modelFull.getColour());
+        model.setNewBeanName(modelFull.getName());
 
         this.model = model;
     }
@@ -64,7 +68,12 @@ public class CliUpdateOption implements CliOption {
     private void getInputFromOptions(Map<Integer, UpdateOption> updateOptions, BeanModel beanModel) {
         InputUtils.getInstance()
                   .readMapChoiceRangeFromConsole(updateOptions)
-                  .ifSuccess(updateOptionSelected -> handleSelection(updateOptions, updateOptionSelected, beanModel))
+                  .ifSuccess(updateOptionSelected -> {
+                      handleSelection(updateOptions, updateOptionSelected, beanModel);
+                      if(updateOptionSelected.ordinal() != 7){
+                          this.selection = updateOptionSelected.ordinal();
+                      }
+                  })
                   .ifError(e -> {
                       System.out.println("Error: Unable to read int from console, " + e.getMessage());
                       getInputFromOptions(updateOptions, beanModel);
@@ -80,7 +89,7 @@ public class CliUpdateOption implements CliOption {
                 InputUtils.getInstance()
                           .readStringFromConsoleDirect()
                           .ifError(e -> System.out.println("Unable to read string from console"))
-                          .ifSuccess(beanModel::setBeanName);
+                          .ifSuccess(beanModel::setNewBeanName);
                 System.out.println("Updated Bean Name: " + beanModel.getBeanName());
                 System.out.println("Select a number to continue editing or the number of " + UpdateOption.FINISH.getName() + " to finish");
                 getInputFromOptions(updateOptions, beanModel);
