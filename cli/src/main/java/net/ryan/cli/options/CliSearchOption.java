@@ -21,12 +21,16 @@ public class CliSearchOption implements CliOption {
 
     @Override
     public void run() {
-        System.out.println("---Search Beans---");
-        System.out.println("Enter bean name to search for, or type back to return to the main menu:");
+        System.out.println("\n---Search Beans---");
+        System.out.println("Enter bean name to search for, or 'menu' to return to main menu:");
 
         InputUtils.getInstance()
                   .readStringFromConsoleDirect()
-                  .ifSuccess(s -> searchForBean(0, s))
+                  .ifSuccess(s -> {
+                      if (s.equals("menu"))
+                          CliOptionHelper.getInstance().show();
+                      searchForBean(0, s);
+                  })
                   .ifError(s -> System.out.println("Error: " + s.getMessage()));
     }
 

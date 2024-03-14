@@ -18,7 +18,7 @@ public class CliCreateOption implements CliOption {
     @Override
     public void run() {
 
-        System.out.println("---Create new bean---");
+        System.out.println("\n---Create new bean---");
         System.out.println("Enter beans name");
         final String name = getStringAssured();
         System.out.println("Enter beans scientific name");

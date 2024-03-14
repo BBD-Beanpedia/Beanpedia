@@ -29,13 +29,13 @@ public class CliOptionHelper {
     }
 
     public void show() {
-        System.out.println("Choose an option:");
+        System.out.println("Select an option:\n");
         cliOptions.forEach((integer, cliOption) -> System.out.printf("\t%d. %s\n", integer + 1, cliOption.getName()));
-        System.out.print("Enter a number to run an option: ");
+        System.out.print("\nEnter a number to select an option: ");
         getInputInRange();
     }
 
-    public void getInputInRange() {
+    private void getInputInRange() {
         InputUtils.getInstance()
                   .readMapChoiceRangeFromConsole(cliOptions)
                   .ifSuccess(CliOption::run)
