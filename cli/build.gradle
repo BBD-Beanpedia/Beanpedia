@@ -30,21 +30,34 @@ test {
     useJUnitPlatform()
 }
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'net.ryan.Main'
+    }
+}
+
+/*
 application {
     mainClass = "net.ryan.Main"
     mainModule = "beanpedia.cli.main"
 }
+*/
 
-jar {
+/*jar {
     manifest {
         attributes 'Implementation-Title': "ClI",
                 'Main-Class': 'net.ryan.Main'
     }
-}
+}*/
 
-jlink {
+/*jlink {
     launcher {
         name = 'ClI'
+        customImage {
+            jdkModules = [
+                    'java.base', 'java.sql', 'java.desktop', 'java.logging', 'jdk.crypto.ec', 'jdk.crypto.cryptoki'
+            ]
+        }
     }
     jpackage {
         if (org.gradle.internal.os.OperatingSystem.current().windows) {
@@ -52,4 +65,4 @@ jlink {
             imageOptions += ['--win-console']
         }
     }
-}
+}*/
