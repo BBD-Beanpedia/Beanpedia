@@ -1,3 +1,8 @@
+# Project Overview
+Welcome Bean Enthusiasts!
+
+Beanpedia is envisioned as a comprehensive digital encyclopedia dedicated to all things beans, offering an extensive database of bean varieties, complete with their colour, size, origin, and type. It aims to serve as a one-stop resource for bean enthusiasts, gardeners, and cooks alike, featuring a rich collection of bean information. By weaving together educational content, culinary inspiration, and practical gardening advice, Beanpedia aspires to celebrate the diversity and significance of beans in cultures around the world, promoting sustainability and a deeper appreciation for this versatile food.
+
 # Project Installation
 
 This section of the README will provide instructions to get the project running in a development environment.
@@ -28,6 +33,12 @@ Before you begin ensure that you have the following installed
       ./gradle build
    ```
    If the build is successful, you can find the compiled classes and JAR file in the build directory's of backend and cli.
+
+## ERD
+
+![Example Image](./ERD/BRD.drawio.png)
+
+## Setting up the Database
 
 ## Physical ERD Diagram Editing
 
