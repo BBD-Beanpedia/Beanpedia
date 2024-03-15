@@ -19,7 +19,7 @@ public class CliOptionHelper {
     private final Map<Integer, CliOption> cliOptions;
 
     private static CliOptionHelper register() {
-        List<CliOption> options = List.of(new CliViewOption(), new CliSearchOption(), new CliFilterOption(), new CliUpdateOption(), new CliCreateOption(), new CliExitOption());
+        List<CliOption> options = List.of(new CliViewOption(), new CliSearchOption(), new CliFilterOption(), /*new CliUpdateOption(), new CliCreateOption(),*/ new CliExitOption());
         return new CliOptionHelper(MapUtils.listToMap(options));
     }
 
