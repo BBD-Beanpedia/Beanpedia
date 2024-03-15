@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 public class BeanService {
@@ -53,17 +54,20 @@ public class BeanService {
      */
     public boolean updateBean(BeanDTO beanDTO){
 
-//        System.out.println(beanDTO);
+        AtomicBoolean returnB = new AtomicBoolean(false);
 
         switch (beanDTO.getSelection()){
             case "1":
                 this.basicBeanInformationRepository.updateBeanName(beanDTO.getNewBeanName(), beanDTO.getBeanName());
+                returnB.set(true);
                 break;
             case "2":
                 this.basicBeanInformationRepository.updateScientificName(beanDTO.getScientificName(), beanDTO.getBeanName());
+                returnB.set(true);
                 break;
             case "3":
                 this.basicBeanInformationRepository.updateScientificName(beanDTO.getContent(), beanDTO.getBeanName());
+                returnB.set(true);
                 break;
             case "4":
 
@@ -77,6 +81,7 @@ public class BeanService {
 
                 beanOrigins.stream().forEach(beanOrigin -> {
                     if(beanDTO.getOrigin().equals(beanOrigin.getOrigin())){
+                        returnB.set(true);
                         this.basicBeanInformationRepository.updateOriginId(beanOrigin.getOriginId(), beanDTO.getBeanName());
                     }
                 });
@@ -94,6 +99,7 @@ public class BeanService {
 
                 beanTypes.stream().forEach(beanType -> {
                     if(beanDTO.getType().equals(beanType.getBeanType())){
+                        returnB.set(true);
                         this.basicBeanInformationRepository.updateTypeId(beanType.getTypeId(), beanDTO.getBeanName());
                     }
                 });
@@ -111,6 +117,7 @@ public class BeanService {
 
                 beanShapes.stream().forEach(beanShape -> {
                     if(beanDTO.getShape().equals(beanShape.getShape())){
+                        returnB.set(true);
                         this.basicBeanInformationRepository.updateShapeId(beanShape.getShapeId(), beanDTO.getBeanName());
                     }
                 });
@@ -128,6 +135,7 @@ public class BeanService {
 
                 beanColours.stream().forEach(beanColour -> {
                     if(beanDTO.getColour().equals(beanColour.getColour())){
+                        returnB.set(true);
                         this.basicBeanInformationRepository.updateColourId(beanColour.getColourId(), beanDTO.getBeanName());
                     }
                 });
@@ -137,7 +145,7 @@ public class BeanService {
                 break;
         }
 
-        return false;
+        return returnB.get();
     }
 
     public String createBean(BeanDTO beanDTO){
