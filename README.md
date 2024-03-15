@@ -23,7 +23,7 @@ Beanpedia is envisioned as a comprehensive digital encyclopedia dedicated to all
 
 # Links
 ## JIRA
-- [JIRA]([https://www.google.com](https://beanpedia.atlassian.net/jira/software/projects/BEAN/boards/1))
+- [JIRA](https://beanpedia.atlassian.net/jira/software/projects/BEAN/boards/1)
 
 ## Confluence
 - [Confluence](https://beanpedia.atlassian.net/wiki/spaces/BEAN)
